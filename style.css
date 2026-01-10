@@ -297,13 +297,13 @@ body {
 
 @keyframes skiing {
     0% {
-        transform: translate(-40px, -30px) rotate(-15deg);
+        transform: translate(-350px, -40px) rotate(-20deg);
     }
     50% {
-        transform: translate(40px, 30px) rotate(15deg);
+        transform: translate(350px, 40px) rotate(20deg);
     }
     100% {
-        transform: translate(-40px, -30px) rotate(-15deg);
+        transform: translate(-350px, -40px) rotate(-20deg);
     }
 }
 
