@@ -5,21 +5,38 @@
     box-sizing: border-box;
 }
 
+:root {
+    /* Val di Fassa / Ladin Color Palette */
+    --alpine-cream: #F5F1E8;
+    --warm-stone: #D4C4B0;
+    --mountain-brown: #8B7355;
+    --dark-wood: #5C4A3A;
+    --forest-green: #3D5941;
+    --deep-pine: #2B3D2F;
+    --snow-white: #FDFDFB;
+    --slate-gray: #656D6F;
+
+    /* Accent colors (subtle Olympic tones) */
+    --olympic-blue: #4A6FA5;
+    --warm-gold: #C9A961;
+    --terracotta: #A0685C;
+}
+
 body {
-    font-family: 'Montserrat', sans-serif;
-    color: #2c3e50;
-    line-height: 1.6;
+    font-family: 'Lato', sans-serif;
+    color: var(--dark-wood);
+    line-height: 1.8;
     overflow-x: hidden;
-    background: linear-gradient(to bottom, #e8f4f8 0%, #ffffff 100%);
+    background: var(--alpine-cream);
 }
 
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 40px;
 }
 
-/* Snow Animation */
+/* Snow Animation - More Subtle */
 .snow-container {
     position: fixed;
     top: 0;
@@ -28,49 +45,50 @@ body {
     height: 100%;
     pointer-events: none;
     z-index: 1;
+    opacity: 0.4;
 }
 
 .snowflake {
     position: absolute;
     top: -10px;
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 1.5em;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.2em;
     animation: fall linear infinite;
 }
 
 .snowflake:nth-child(1) {
     left: 10%;
-    animation-duration: 10s;
+    animation-duration: 12s;
     animation-delay: 0s;
 }
 
 .snowflake:nth-child(2) {
     left: 25%;
-    animation-duration: 12s;
+    animation-duration: 15s;
     animation-delay: 2s;
 }
 
 .snowflake:nth-child(3) {
     left: 40%;
-    animation-duration: 9s;
+    animation-duration: 11s;
     animation-delay: 4s;
 }
 
 .snowflake:nth-child(4) {
     left: 60%;
-    animation-duration: 11s;
+    animation-duration: 14s;
     animation-delay: 1s;
 }
 
 .snowflake:nth-child(5) {
     left: 75%;
-    animation-duration: 13s;
+    animation-duration: 16s;
     animation-delay: 3s;
 }
 
 .snowflake:nth-child(6) {
     left: 90%;
-    animation-duration: 10s;
+    animation-duration: 13s;
     animation-delay: 5s;
 }
 
@@ -80,18 +98,37 @@ body {
     }
 }
 
-/* Hero Section */
+/* Hero Section - Natural Mountain Aesthetic */
 .hero {
     position: relative;
-    min-height: 600px;
+    min-height: 85vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #0066b3 0%, #003d82 50%, #8b0000 100%);
+    background:
+        linear-gradient(to bottom,
+            rgba(45, 61, 47, 0.85) 0%,
+            rgba(59, 69, 65, 0.75) 50%,
+            rgba(92, 74, 58, 0.85) 100%
+        ),
+        linear-gradient(to top, var(--dark-wood) 0%, transparent 50%);
     overflow: hidden;
     text-align: center;
-    color: white;
-    padding: 60px 20px;
+    color: var(--snow-white);
+    padding: 80px 20px;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+        radial-gradient(ellipse at 30% 40%, rgba(74, 111, 165, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 60%, rgba(201, 169, 97, 0.1) 0%, transparent 50%);
+    pointer-events: none;
 }
 
 .mountain-backdrop {
@@ -99,85 +136,84 @@ body {
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 300px;
+    height: 400px;
     background:
-        linear-gradient(to right, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%),
-        linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.3) 50%, transparent 60%),
-        linear-gradient(225deg, transparent 40%, rgba(255,255,255,0.3) 50%, transparent 60%);
-    background-size: 100% 100%, 400px 300px, 400px 300px;
-    background-position: center bottom, left bottom, right bottom;
+        linear-gradient(135deg, transparent 45%, rgba(92, 74, 58, 0.4) 50%, transparent 55%),
+        linear-gradient(225deg, transparent 45%, rgba(92, 74, 58, 0.4) 50%, transparent 55%),
+        linear-gradient(105deg, transparent 48%, rgba(140, 115, 85, 0.3) 50%, transparent 52%);
+    background-size: 600px 400px, 600px 400px, 800px 400px;
+    background-position: 10% bottom, 60% bottom, 85% bottom;
     background-repeat: no-repeat;
-    opacity: 0.4;
+    opacity: 0.6;
 }
 
 .hero-content {
     position: relative;
     z-index: 2;
+    max-width: 900px;
 }
 
-/* Olympic Rings */
+/* Olympic Rings - More Refined */
 .olympic-rings {
     display: flex;
     justify-content: center;
-    gap: 15px;
-    margin-bottom: 30px;
+    gap: 18px;
+    margin-bottom: 50px;
     flex-wrap: wrap;
+    opacity: 0.85;
 }
 
 .ring {
-    width: 60px;
-    height: 60px;
-    border: 6px solid;
+    width: 55px;
+    height: 55px;
+    border: 5px solid;
     border-radius: 50%;
     display: inline-block;
 }
 
-.ring.blue { border-color: #0085C7; }
-.ring.yellow { border-color: #F4C300; }
-.ring.black { border-color: #000000; }
-.ring.green { border-color: #009F3D; }
-.ring.red { border-color: #DF0024; }
+.ring.blue { border-color: var(--olympic-blue); }
+.ring.yellow { border-color: var(--warm-gold); }
+.ring.black { border-color: var(--snow-white); }
+.ring.green { border-color: var(--forest-green); }
+.ring.red { border-color: var(--terracotta); }
 
 .main-title {
-    font-size: 4em;
-    font-weight: 700;
-    margin: 20px 0;
+    font-family: 'Playfair Display', serif;
+    font-size: 5em;
+    font-weight: 600;
+    margin: 30px 0 20px;
     text-transform: uppercase;
-    letter-spacing: 3px;
-    text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
-    animation: glow 2s ease-in-out infinite alternate;
-}
-
-@keyframes glow {
-    from {
-        text-shadow: 3px 3px 6px rgba(0,0,0,0.3), 0 0 20px rgba(255,255,255,0.3);
-    }
-    to {
-        text-shadow: 3px 3px 6px rgba(0,0,0,0.3), 0 0 30px rgba(255,255,255,0.5);
-    }
+    letter-spacing: 8px;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
+    color: var(--snow-white);
 }
 
 .subtitle {
-    font-size: 2em;
+    font-family: 'Lato', sans-serif;
+    font-size: 1.8em;
     font-weight: 300;
-    margin-bottom: 20px;
-    letter-spacing: 2px;
+    margin-bottom: 40px;
+    letter-spacing: 3px;
+    color: var(--warm-stone);
 }
 
 .milano-cortina {
-    margin-top: 30px;
-    padding: 15px 40px;
-    background: rgba(255, 255, 255, 0.2);
+    margin-top: 40px;
+    padding: 18px 50px;
+    background: rgba(92, 74, 58, 0.5);
     backdrop-filter: blur(10px);
-    border-radius: 50px;
+    border: 2px solid rgba(212, 196, 176, 0.4);
+    border-radius: 4px;
     display: inline-block;
 }
 
 .location-text {
-    font-size: 1.5em;
-    font-weight: 600;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4em;
+    font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 3px;
+    color: var(--warm-stone);
 }
 
 /* Main Content */
@@ -187,222 +223,323 @@ main {
 }
 
 section {
-    padding: 60px 20px;
+    padding: 90px 20px;
 }
 
-/* Event Details */
+/* Event Details - Natural Elegance */
 .event-details {
-    background: white;
-    margin-top: -50px;
+    background: var(--snow-white);
     position: relative;
     z-index: 3;
 }
 
 .detail-card {
     text-align: center;
-    margin-bottom: 50px;
+    margin-bottom: 70px;
+    padding-top: 40px;
 }
 
 .icon {
-    font-size: 4em;
-    margin-bottom: 20px;
+    font-size: 4.5em;
+    margin-bottom: 30px;
+    filter: grayscale(20%);
 }
 
 .detail-card h3 {
-    font-size: 2.5em;
-    color: #0066b3;
-    margin-bottom: 15px;
+    font-family: 'Playfair Display', serif;
+    font-size: 3em;
+    color: var(--deep-pine);
+    margin-bottom: 20px;
+    font-weight: 600;
 }
 
 .lead {
-    font-size: 1.3em;
-    color: #555;
+    font-size: 1.4em;
+    color: var(--slate-gray);
     max-width: 700px;
     margin: 0 auto;
+    line-height: 1.8;
+    font-weight: 300;
 }
 
 .info-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-    margin-top: 40px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
+    margin-top: 60px;
 }
 
 .info-box {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    padding: 40px 30px;
-    border-radius: 20px;
+    background: linear-gradient(135deg, var(--alpine-cream) 0%, var(--warm-stone) 100%);
+    padding: 50px 40px;
+    border-radius: 2px;
     text-align: center;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 20px rgba(92, 74, 58, 0.15);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 3px solid transparent;
-    background-clip: padding-box;
+    border-top: 4px solid var(--mountain-brown);
+    position: relative;
+    overflow: hidden;
+}
+
+.info-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg,
+        var(--olympic-blue) 0%,
+        var(--warm-gold) 25%,
+        var(--mountain-brown) 50%,
+        var(--forest-green) 75%,
+        var(--terracotta) 100%
+    );
 }
 
 .info-box:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 10px 30px rgba(0,102,179,0.2);
+    transform: translateY(-8px);
+    box-shadow: 0 8px 30px rgba(92, 74, 58, 0.25);
 }
 
 .info-icon {
     font-size: 3em;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+    filter: grayscale(20%);
 }
 
 .info-box h4 {
+    font-family: 'Playfair Display', serif;
     font-size: 1.8em;
-    color: #003d82;
-    margin-bottom: 15px;
+    color: var(--deep-pine);
+    margin-bottom: 20px;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
+    font-weight: 600;
 }
 
 .info-box p {
-    font-size: 1.1em;
-    color: #555;
-    margin: 5px 0;
+    font-size: 1.15em;
+    color: var(--dark-wood);
+    margin: 8px 0;
+    font-weight: 300;
 }
 
 .time {
-    font-size: 1.4em !important;
-    font-weight: 600;
-    color: #0066b3 !important;
-    margin-top: 10px !important;
+    font-size: 1.5em !important;
+    font-weight: 400 !important;
+    color: var(--mountain-brown) !important;
+    margin-top: 15px !important;
+    font-family: 'Playfair Display', serif;
 }
 
 .address {
-    font-weight: 500;
+    font-weight: 400;
 }
 
 .theme-detail {
     font-style: italic;
-    color: #8b0000 !important;
+    color: var(--terracotta) !important;
+    font-weight: 400 !important;
 }
 
-/* Theme Section */
+/* Theme Section - Ladin Pattern */
 .theme-section {
-    background: linear-gradient(135deg, #003d82 0%, #0066b3 100%);
-    color: white;
+    background: var(--deep-pine);
+    color: var(--alpine-cream);
+    position: relative;
+    overflow: hidden;
+}
+
+.theme-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+        repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(212, 196, 176, 0.03) 40px, rgba(212, 196, 176, 0.03) 80px),
+        repeating-linear-gradient(-45deg, transparent, transparent 40px, rgba(212, 196, 176, 0.03) 40px, rgba(212, 196, 176, 0.03) 80px);
+    opacity: 0.5;
 }
 
 .alpine-border {
-    border: 5px solid rgba(255,255,255,0.3);
-    border-radius: 20px;
-    padding: 50px;
+    border: 3px solid rgba(212, 196, 176, 0.3);
+    border-radius: 0;
+    padding: 70px 60px;
     text-align: center;
-    background: rgba(255,255,255,0.1);
+    background: rgba(92, 74, 58, 0.2);
     backdrop-filter: blur(5px);
+    position: relative;
 }
 
 .section-title {
-    font-size: 2.5em;
-    margin-bottom: 25px;
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8em;
+    margin-bottom: 35px;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 4px;
+    font-weight: 600;
+    color: var(--warm-stone);
 }
 
 .theme-description {
-    font-size: 1.2em;
-    line-height: 1.8;
-    margin-bottom: 30px;
+    font-size: 1.25em;
+    line-height: 2;
+    margin-bottom: 40px;
     max-width: 800px;
     margin-left: auto;
     margin-right: auto;
+    font-weight: 300;
+    color: var(--alpine-cream);
 }
 
 .sports-icons {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 25px;
     flex-wrap: wrap;
-    margin-top: 30px;
+    margin-top: 40px;
 }
 
 .sport {
-    background: rgba(255,255,255,0.2);
-    padding: 15px 25px;
-    border-radius: 30px;
+    background: rgba(92, 74, 58, 0.4);
+    padding: 16px 32px;
+    border-radius: 2px;
     font-size: 1.1em;
-    font-weight: 500;
+    font-weight: 400;
     transition: all 0.3s ease;
+    border: 1px solid rgba(212, 196, 176, 0.3);
+    color: var(--warm-stone);
 }
 
 .sport:hover {
-    background: rgba(255,255,255,0.3);
-    transform: scale(1.1);
+    background: rgba(92, 74, 58, 0.6);
+    transform: translateY(-3px);
+    border-color: var(--warm-gold);
 }
 
-/* Sud Tyrol Section */
+/* Sud Tyrol Section - Wood Texture Feel */
 .sud-tyrol-section {
-    background: #ffffff;
+    background:
+        linear-gradient(135deg, rgba(212, 196, 176, 0.3) 0%, transparent 100%),
+        var(--alpine-cream);
+    position: relative;
+}
+
+.sud-tyrol-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     background-image:
-        repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(0,102,179,0.03) 35px, rgba(0,102,179,0.03) 70px);
+        linear-gradient(90deg, transparent 0%, rgba(139, 115, 85, 0.03) 50%, transparent 100%),
+        repeating-linear-gradient(0deg, transparent, transparent 4px, rgba(92, 74, 58, 0.02) 4px, rgba(92, 74, 58, 0.02) 8px);
+    pointer-events: none;
 }
 
 .ladin-pattern {
     max-width: 900px;
     margin: 0 auto;
     text-align: center;
-    padding: 40px;
-    background: white;
-    border-radius: 20px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-    border: 4px solid;
-    border-image: linear-gradient(135deg, #0066b3, #8b0000, #F4C300) 1;
+    padding: 70px 60px;
+    background: var(--snow-white);
+    border-radius: 0;
+    box-shadow: 0 8px 40px rgba(92, 74, 58, 0.15);
+    border: 1px solid var(--warm-stone);
+    position: relative;
+}
+
+.ladin-pattern::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+    border: 2px solid var(--warm-stone);
+    opacity: 0.3;
+    pointer-events: none;
 }
 
 .ladin-pattern .section-title {
-    color: #003d82;
-    font-size: 2.8em;
-    margin-bottom: 10px;
+    color: var(--deep-pine);
+    font-size: 3em;
+    margin-bottom: 15px;
+    font-family: 'Playfair Display', serif;
 }
 
 .subtitle-text {
-    font-size: 1.3em;
-    color: #8b0000;
+    font-size: 1.4em;
+    color: var(--mountain-brown);
     font-style: italic;
-    margin-bottom: 25px;
+    margin-bottom: 35px;
+    font-weight: 300;
 }
 
 .description {
-    font-size: 1.1em;
-    color: #555;
-    line-height: 1.8;
+    font-size: 1.15em;
+    color: var(--slate-gray);
+    line-height: 2;
+    font-weight: 300;
 }
 
-/* Countdown Section */
+/* Countdown Section - Warm Earth Tones */
 .countdown-section {
-    background: linear-gradient(to right, #8b0000 0%, #b22222 100%);
-    color: white;
+    background: linear-gradient(135deg, var(--mountain-brown) 0%, var(--terracotta) 100%);
+    color: var(--snow-white);
+    position: relative;
+    overflow: hidden;
+}
+
+.countdown-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+        repeating-linear-gradient(60deg, transparent, transparent 60px, rgba(255, 255, 255, 0.02) 60px, rgba(255, 255, 255, 0.02) 120px);
+    pointer-events: none;
 }
 
 .countdown-box {
     text-align: center;
-    max-width: 600px;
+    max-width: 700px;
     margin: 0 auto;
+    position: relative;
 }
 
 .countdown-box h3 {
-    font-size: 2.5em;
-    margin-bottom: 20px;
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8em;
+    margin-bottom: 30px;
+    font-weight: 600;
+    letter-spacing: 2px;
 }
 
 .due-date {
-    font-size: 1.5em;
-    margin: 20px 0;
-    font-weight: 600;
+    font-size: 1.6em;
+    margin: 25px 0;
+    font-weight: 400;
+    color: var(--alpine-cream);
 }
 
 .medal-icons {
     display: flex;
     justify-content: center;
-    gap: 30px;
-    margin-top: 30px;
+    gap: 35px;
+    margin-top: 40px;
 }
 
 .medal {
     font-size: 4em;
-    animation: bounce 2s ease-in-out infinite;
+    animation: gentleBounce 3s ease-in-out infinite;
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
 }
 
 .medal:nth-child(1) {
@@ -410,155 +547,210 @@ section {
 }
 
 .medal:nth-child(2) {
-    animation-delay: 0.3s;
+    animation-delay: 0.4s;
 }
 
 .medal:nth-child(3) {
-    animation-delay: 0.6s;
+    animation-delay: 0.8s;
 }
 
-@keyframes bounce {
+@keyframes gentleBounce {
     0%, 100% {
         transform: translateY(0);
     }
     50% {
-        transform: translateY(-20px);
+        transform: translateY(-15px);
     }
 }
 
-/* RSVP Section */
+/* RSVP Section - Elegant */
 .rsvp-section {
-    background: #f8f9fa;
+    background: var(--alpine-cream);
 }
 
 .rsvp-card {
-    background: white;
-    padding: 60px;
-    border-radius: 20px;
+    background: var(--snow-white);
+    padding: 80px 70px;
+    border-radius: 0;
     text-align: center;
-    max-width: 600px;
+    max-width: 650px;
     margin: 0 auto;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-    border: 3px solid #0066b3;
+    box-shadow: 0 8px 40px rgba(92, 74, 58, 0.15);
+    border: 1px solid var(--warm-stone);
+    position: relative;
+}
+
+.rsvp-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(90deg,
+        var(--olympic-blue),
+        var(--warm-gold),
+        var(--mountain-brown),
+        var(--forest-green),
+        var(--terracotta)
+    );
 }
 
 .rsvp-card h3 {
-    font-size: 2.5em;
-    color: #003d82;
-    margin-bottom: 20px;
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8em;
+    color: var(--deep-pine);
+    margin-bottom: 25px;
+    font-weight: 600;
 }
 
 .rsvp-card p {
-    font-size: 1.2em;
-    color: #555;
-    margin: 15px 0;
+    font-size: 1.25em;
+    color: var(--slate-gray);
+    margin: 18px 0;
+    font-weight: 300;
 }
 
 .contact-info {
-    font-weight: 600;
-    color: #0066b3 !important;
-    font-size: 1.3em !important;
-    margin-top: 25px !important;
+    font-weight: 400 !important;
+    color: var(--mountain-brown) !important;
+    font-size: 1.4em !important;
+    margin-top: 35px !important;
+    font-family: 'Playfair Display', serif;
 }
 
-/* Footer */
+/* Footer - Natural */
 footer {
-    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-    color: white;
-    padding: 50px 20px;
+    background: linear-gradient(135deg, var(--dark-wood) 0%, var(--deep-pine) 100%);
+    color: var(--alpine-cream);
+    padding: 60px 20px;
     text-align: center;
+    border-top: 4px solid var(--mountain-brown);
 }
 
 .olympic-rings-footer {
     display: flex;
     justify-content: center;
-    gap: 10px;
-    margin-bottom: 20px;
+    gap: 12px;
+    margin-bottom: 30px;
+    opacity: 0.8;
 }
 
 .ring-small {
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     border: 3px solid;
     border-radius: 50%;
     display: inline-block;
 }
 
-.ring-small.blue { border-color: #0085C7; }
-.ring-small.yellow { border-color: #F4C300; }
-.ring-small.black { border-color: #ffffff; }
-.ring-small.green { border-color: #009F3D; }
-.ring-small.red { border-color: #DF0024; }
+.ring-small.blue { border-color: var(--olympic-blue); }
+.ring-small.yellow { border-color: var(--warm-gold); }
+.ring-small.black { border-color: var(--snow-white); }
+.ring-small.green { border-color: var(--forest-green); }
+.ring-small.red { border-color: var(--terracotta); }
 
 footer p {
-    margin: 10px 0;
-    font-size: 1.1em;
+    margin: 12px 0;
+    font-size: 1.15em;
+    font-weight: 300;
 }
 
 .motto {
+    font-family: 'Playfair Display', serif;
     font-style: italic;
-    font-size: 1.3em !important;
-    font-weight: 600;
-    margin-top: 20px !important;
+    font-size: 1.4em !important;
+    font-weight: 500;
+    margin-top: 25px !important;
+    color: var(--warm-stone);
 }
 
 .sub-motto {
-    font-size: 1em !important;
-    opacity: 0.8;
+    font-size: 1.05em !important;
+    opacity: 0.75;
+    font-weight: 300;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    .container {
+        padding: 0 25px;
+    }
+
     .main-title {
-        font-size: 2.5em;
+        font-size: 2.8em;
+        letter-spacing: 4px;
     }
 
     .subtitle {
-        font-size: 1.5em;
+        font-size: 1.4em;
     }
 
     .ring {
-        width: 40px;
-        height: 40px;
+        width: 45px;
+        height: 45px;
         border: 4px solid;
     }
 
     .info-grid {
         grid-template-columns: 1fr;
+        gap: 30px;
     }
 
     .alpine-border {
-        padding: 30px 20px;
+        padding: 40px 30px;
+    }
+
+    .ladin-pattern {
+        padding: 50px 35px;
     }
 
     .section-title {
-        font-size: 1.8em;
+        font-size: 2em;
     }
 
     .rsvp-card {
-        padding: 40px 30px;
+        padding: 50px 40px;
     }
 
     .sports-icons {
         flex-direction: column;
-        align-items: center;
+        align-items: stretch;
+    }
+
+    .sport {
+        text-align: center;
+    }
+
+    section {
+        padding: 60px 20px;
     }
 }
 
 @media (max-width: 480px) {
     .main-title {
-        font-size: 2em;
+        font-size: 2.2em;
+        letter-spacing: 2px;
     }
 
     .location-text {
-        font-size: 1.2em;
+        font-size: 1.1em;
     }
 
     .medal-icons {
-        gap: 15px;
+        gap: 20px;
     }
 
     .medal {
         font-size: 3em;
+    }
+
+    .detail-card h3 {
+        font-size: 2.2em;
+    }
+
+    .ladin-pattern .section-title {
+        font-size: 2.2em;
     }
 }
