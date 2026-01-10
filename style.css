@@ -30,7 +30,7 @@ body {
     color: var(--dark-wood);
     line-height: 1.8;
     overflow-x: hidden;
-    background: linear-gradient(to bottom, var(--sky-blue) 0%, var(--lavender) 50%, var(--alpine-cream) 100%);
+    background: var(--warm-gold);
 }
 
 .container {
@@ -272,13 +272,13 @@ body {
 
 @keyframes skiing {
     0% {
-        transform: translate(-30px, -20px) rotate(-5deg);
+        transform: translate(-40px, -30px) rotate(-15deg);
     }
     50% {
-        transform: translate(30px, 20px) rotate(5deg);
+        transform: translate(40px, 30px) rotate(15deg);
     }
     100% {
-        transform: translate(-30px, -20px) rotate(-5deg);
+        transform: translate(-40px, -30px) rotate(-15deg);
     }
 }
 
@@ -450,13 +450,13 @@ section {
 }
 
 .info-box {
-    background: linear-gradient(135deg, var(--alpine-cream) 0%, var(--warm-stone) 100%);
+    background: linear-gradient(135deg, var(--olympic-blue) 0%, var(--lavender) 100%);
     padding: 50px 40px;
-    border-radius: 2px;
+    border-radius: 12px;
     text-align: center;
-    box-shadow: 0 4px 20px rgba(92, 74, 58, 0.15);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border-top: 4px solid var(--mountain-brown);
+    border: 3px solid var(--snow-white);
     position: relative;
     overflow: hidden;
 }
@@ -479,19 +479,19 @@ section {
 
 .info-box:hover {
     transform: translateY(-8px);
-    box-shadow: 0 8px 30px rgba(92, 74, 58, 0.25);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
 }
 
 .info-icon {
     font-size: 3em;
     margin-bottom: 20px;
-    filter: grayscale(20%);
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
 }
 
 .info-box h4 {
     font-family: 'Playfair Display', serif;
     font-size: 1.8em;
-    color: var(--deep-pine);
+    color: var(--snow-white);
     margin-bottom: 20px;
     text-transform: uppercase;
     letter-spacing: 2px;
@@ -500,7 +500,7 @@ section {
 
 .info-box p {
     font-size: 1.15em;
-    color: var(--dark-wood);
+    color: var(--snow-white);
     margin: 8px 0;
     font-weight: 300;
 }
@@ -508,7 +508,7 @@ section {
 .time {
     font-size: 1.5em !important;
     font-weight: 400 !important;
-    color: var(--mountain-brown) !important;
+    color: var(--warm-gold) !important;
     margin-top: 15px !important;
     font-family: 'Playfair Display', serif;
 }
@@ -519,7 +519,7 @@ section {
 
 .theme-detail {
     font-style: italic;
-    color: var(--terracotta) !important;
+    color: var(--warm-gold) !important;
     font-weight: 400 !important;
 }
 
