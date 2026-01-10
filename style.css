@@ -330,7 +330,9 @@ body {
 .olympic-rings {
     display: flex;
     justify-content: center;
-    margin: 25px 0 30px;
+    align-items: center;
+    margin: 25px auto 30px;
+    width: 100%;
 }
 
 .rings-svg {
@@ -1227,7 +1229,7 @@ footer p {
     .hero {
         min-height: 100vh;
         padding: 30px 20px;
-        padding-top: 15vh;
+        padding-top: 22vh;
     }
 
     .dolomites-backdrop {
@@ -1367,7 +1369,7 @@ footer p {
     .hero {
         min-height: 100vh;
         padding: 20px 15px;
-        padding-top: 12vh;
+        padding-top: 18vh;
     }
 
     .civetta-owl-logo {
