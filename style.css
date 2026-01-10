@@ -30,7 +30,7 @@ body {
     color: var(--dark-wood);
     line-height: 1.8;
     overflow-x: hidden;
-    background: var(--alpine-cream);
+    background: linear-gradient(to bottom, var(--sky-blue) 0%, var(--lavender) 50%, var(--alpine-cream) 100%);
 }
 
 .container {
@@ -266,16 +266,19 @@ body {
     width: 320px;
     height: 400px;
     margin: 0 auto 35px;
-    animation: gentleFloat 4s ease-in-out infinite;
+    animation: skiing 4s ease-in-out infinite;
     filter: drop-shadow(4px 4px 15px rgba(0, 0, 0, 0.5));
 }
 
-@keyframes gentleFloat {
-    0%, 100% {
-        transform: translateY(0) rotate(0deg);
+@keyframes skiing {
+    0% {
+        transform: translate(-30px, -20px) rotate(-5deg);
     }
     50% {
-        transform: translateY(-12px) rotate(1deg);
+        transform: translate(30px, 20px) rotate(5deg);
+    }
+    100% {
+        transform: translate(-30px, -20px) rotate(-5deg);
     }
 }
 
@@ -367,8 +370,17 @@ body {
 
 .vibe-icon {
     font-size: 3.5em;
-    animation: gentleFloat 3s ease-in-out infinite;
+    animation: iconFloat 3s ease-in-out infinite;
     filter: drop-shadow(2px 2px 8px rgba(0, 0, 0, 0.2));
+}
+
+@keyframes iconFloat {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-12px);
+    }
 }
 
 .vibe-icon:nth-child(2) {
