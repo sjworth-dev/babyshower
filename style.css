@@ -164,6 +164,9 @@ body {
     position: relative;
     z-index: 4;
     max-width: 900px;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
 }
 
 /* Civetta Owl Logo - Skiing on Sellaronda */
@@ -351,24 +354,33 @@ body {
     font-family: 'Permanent Marker', cursive;
     font-size: 4.5em;
     font-weight: 400;
-    margin: 30px 0 15px;
+    margin: 30px auto 15px;
     text-transform: uppercase;
     letter-spacing: 3px;
     line-height: 1.1;
     color: var(--snow-white);
     text-shadow:
-        3px 3px 0px rgba(0, 0, 0, 0.4),
-        6px 6px 15px rgba(0, 0, 0, 0.3);
+        0 0 10px rgba(0, 0, 0, 0.5),
+        0 0 20px rgba(0, 0, 0, 0.3),
+        0 4px 8px rgba(0, 0, 0, 0.4);
+    display: block;
+    width: 100%;
+    text-align: center;
 }
 
 .subtitle-script {
     font-family: 'Dancing Script', cursive;
     font-size: 2.8em;
     font-weight: 600;
-    margin-bottom: 30px;
+    margin: 0 auto 30px;
     letter-spacing: 1px;
     color: var(--warm-gold);
-    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+    text-shadow:
+        0 0 8px rgba(0, 0, 0, 0.4),
+        0 2px 4px rgba(0, 0, 0, 0.3);
+    display: block;
+    width: 100%;
+    text-align: center;
 }
 
 /* Script title variations */
