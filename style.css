@@ -407,7 +407,7 @@ section {
 
 /* Event Details - Natural Elegance */
 .event-details {
-    background: var(--snow-white);
+    background: var(--warm-gold);
     position: relative;
     z-index: 3;
 }
@@ -642,7 +642,7 @@ section {
     margin: 0 auto;
     text-align: center;
     padding: 70px 60px;
-    background: var(--snow-white);
+    background: var(--warm-gold);
     border-radius: 0;
     box-shadow: 0 8px 40px rgba(92, 74, 58, 0.15);
     border: 1px solid var(--warm-stone);
@@ -803,11 +803,11 @@ section {
 
 /* RSVP Section - Elegant */
 .rsvp-section {
-    background: var(--alpine-cream);
+    background: var(--warm-gold);
 }
 
 .rsvp-card {
-    background: var(--snow-white);
+    background: var(--warm-gold);
     padding: 80px 70px;
     border-radius: 0;
     text-align: center;
