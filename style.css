@@ -1,0 +1,564 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    color: #2c3e50;
+    line-height: 1.6;
+    overflow-x: hidden;
+    background: linear-gradient(to bottom, #e8f4f8 0%, #ffffff 100%);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Snow Animation */
+.snow-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.snowflake {
+    position: absolute;
+    top: -10px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.5em;
+    animation: fall linear infinite;
+}
+
+.snowflake:nth-child(1) {
+    left: 10%;
+    animation-duration: 10s;
+    animation-delay: 0s;
+}
+
+.snowflake:nth-child(2) {
+    left: 25%;
+    animation-duration: 12s;
+    animation-delay: 2s;
+}
+
+.snowflake:nth-child(3) {
+    left: 40%;
+    animation-duration: 9s;
+    animation-delay: 4s;
+}
+
+.snowflake:nth-child(4) {
+    left: 60%;
+    animation-duration: 11s;
+    animation-delay: 1s;
+}
+
+.snowflake:nth-child(5) {
+    left: 75%;
+    animation-duration: 13s;
+    animation-delay: 3s;
+}
+
+.snowflake:nth-child(6) {
+    left: 90%;
+    animation-duration: 10s;
+    animation-delay: 5s;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(100vh);
+    }
+}
+
+/* Hero Section */
+.hero {
+    position: relative;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #0066b3 0%, #003d82 50%, #8b0000 100%);
+    overflow: hidden;
+    text-align: center;
+    color: white;
+    padding: 60px 20px;
+}
+
+.mountain-backdrop {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 300px;
+    background:
+        linear-gradient(to right, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%),
+        linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.3) 50%, transparent 60%),
+        linear-gradient(225deg, transparent 40%, rgba(255,255,255,0.3) 50%, transparent 60%);
+    background-size: 100% 100%, 400px 300px, 400px 300px;
+    background-position: center bottom, left bottom, right bottom;
+    background-repeat: no-repeat;
+    opacity: 0.4;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+/* Olympic Rings */
+.olympic-rings {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.ring {
+    width: 60px;
+    height: 60px;
+    border: 6px solid;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.ring.blue { border-color: #0085C7; }
+.ring.yellow { border-color: #F4C300; }
+.ring.black { border-color: #000000; }
+.ring.green { border-color: #009F3D; }
+.ring.red { border-color: #DF0024; }
+
+.main-title {
+    font-size: 4em;
+    font-weight: 700;
+    margin: 20px 0;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from {
+        text-shadow: 3px 3px 6px rgba(0,0,0,0.3), 0 0 20px rgba(255,255,255,0.3);
+    }
+    to {
+        text-shadow: 3px 3px 6px rgba(0,0,0,0.3), 0 0 30px rgba(255,255,255,0.5);
+    }
+}
+
+.subtitle {
+    font-size: 2em;
+    font-weight: 300;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+}
+
+.milano-cortina {
+    margin-top: 30px;
+    padding: 15px 40px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border-radius: 50px;
+    display: inline-block;
+}
+
+.location-text {
+    font-size: 1.5em;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Main Content */
+main {
+    position: relative;
+    z-index: 2;
+}
+
+section {
+    padding: 60px 20px;
+}
+
+/* Event Details */
+.event-details {
+    background: white;
+    margin-top: -50px;
+    position: relative;
+    z-index: 3;
+}
+
+.detail-card {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.icon {
+    font-size: 4em;
+    margin-bottom: 20px;
+}
+
+.detail-card h3 {
+    font-size: 2.5em;
+    color: #0066b3;
+    margin-bottom: 15px;
+}
+
+.lead {
+    font-size: 1.3em;
+    color: #555;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.info-box {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 40px 30px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 3px solid transparent;
+    background-clip: padding-box;
+}
+
+.info-box:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(0,102,179,0.2);
+}
+
+.info-icon {
+    font-size: 3em;
+    margin-bottom: 15px;
+}
+
+.info-box h4 {
+    font-size: 1.8em;
+    color: #003d82;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.info-box p {
+    font-size: 1.1em;
+    color: #555;
+    margin: 5px 0;
+}
+
+.time {
+    font-size: 1.4em !important;
+    font-weight: 600;
+    color: #0066b3 !important;
+    margin-top: 10px !important;
+}
+
+.address {
+    font-weight: 500;
+}
+
+.theme-detail {
+    font-style: italic;
+    color: #8b0000 !important;
+}
+
+/* Theme Section */
+.theme-section {
+    background: linear-gradient(135deg, #003d82 0%, #0066b3 100%);
+    color: white;
+}
+
+.alpine-border {
+    border: 5px solid rgba(255,255,255,0.3);
+    border-radius: 20px;
+    padding: 50px;
+    text-align: center;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(5px);
+}
+
+.section-title {
+    font-size: 2.5em;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.theme-description {
+    font-size: 1.2em;
+    line-height: 1.8;
+    margin-bottom: 30px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.sports-icons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+.sport {
+    background: rgba(255,255,255,0.2);
+    padding: 15px 25px;
+    border-radius: 30px;
+    font-size: 1.1em;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.sport:hover {
+    background: rgba(255,255,255,0.3);
+    transform: scale(1.1);
+}
+
+/* Sud Tyrol Section */
+.sud-tyrol-section {
+    background: #ffffff;
+    background-image:
+        repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(0,102,179,0.03) 35px, rgba(0,102,179,0.03) 70px);
+}
+
+.ladin-pattern {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 40px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    border: 4px solid;
+    border-image: linear-gradient(135deg, #0066b3, #8b0000, #F4C300) 1;
+}
+
+.ladin-pattern .section-title {
+    color: #003d82;
+    font-size: 2.8em;
+    margin-bottom: 10px;
+}
+
+.subtitle-text {
+    font-size: 1.3em;
+    color: #8b0000;
+    font-style: italic;
+    margin-bottom: 25px;
+}
+
+.description {
+    font-size: 1.1em;
+    color: #555;
+    line-height: 1.8;
+}
+
+/* Countdown Section */
+.countdown-section {
+    background: linear-gradient(to right, #8b0000 0%, #b22222 100%);
+    color: white;
+}
+
+.countdown-box {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.countdown-box h3 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+.due-date {
+    font-size: 1.5em;
+    margin: 20px 0;
+    font-weight: 600;
+}
+
+.medal-icons {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.medal {
+    font-size: 4em;
+    animation: bounce 2s ease-in-out infinite;
+}
+
+.medal:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.medal:nth-child(2) {
+    animation-delay: 0.3s;
+}
+
+.medal:nth-child(3) {
+    animation-delay: 0.6s;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+/* RSVP Section */
+.rsvp-section {
+    background: #f8f9fa;
+}
+
+.rsvp-card {
+    background: white;
+    padding: 60px;
+    border-radius: 20px;
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    border: 3px solid #0066b3;
+}
+
+.rsvp-card h3 {
+    font-size: 2.5em;
+    color: #003d82;
+    margin-bottom: 20px;
+}
+
+.rsvp-card p {
+    font-size: 1.2em;
+    color: #555;
+    margin: 15px 0;
+}
+
+.contact-info {
+    font-weight: 600;
+    color: #0066b3 !important;
+    font-size: 1.3em !important;
+    margin-top: 25px !important;
+}
+
+/* Footer */
+footer {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    color: white;
+    padding: 50px 20px;
+    text-align: center;
+}
+
+.olympic-rings-footer {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.ring-small {
+    width: 30px;
+    height: 30px;
+    border: 3px solid;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.ring-small.blue { border-color: #0085C7; }
+.ring-small.yellow { border-color: #F4C300; }
+.ring-small.black { border-color: #ffffff; }
+.ring-small.green { border-color: #009F3D; }
+.ring-small.red { border-color: #DF0024; }
+
+footer p {
+    margin: 10px 0;
+    font-size: 1.1em;
+}
+
+.motto {
+    font-style: italic;
+    font-size: 1.3em !important;
+    font-weight: 600;
+    margin-top: 20px !important;
+}
+
+.sub-motto {
+    font-size: 1em !important;
+    opacity: 0.8;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main-title {
+        font-size: 2.5em;
+    }
+
+    .subtitle {
+        font-size: 1.5em;
+    }
+
+    .ring {
+        width: 40px;
+        height: 40px;
+        border: 4px solid;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .alpine-border {
+        padding: 30px 20px;
+    }
+
+    .section-title {
+        font-size: 1.8em;
+    }
+
+    .rsvp-card {
+        padding: 40px 30px;
+    }
+
+    .sports-icons {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-title {
+        font-size: 2em;
+    }
+
+    .location-text {
+        font-size: 1.2em;
+    }
+
+    .medal-icons {
+        gap: 15px;
+    }
+
+    .medal {
+        font-size: 3em;
+    }
+}
