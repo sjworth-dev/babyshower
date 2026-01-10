@@ -1133,6 +1133,19 @@ footer p {
     .civetta-owl-logo {
         width: 240px;
         height: 300px;
+        animation: skiing-mobile 4s ease-in-out infinite;
+    }
+
+    @keyframes skiing-mobile {
+        0% {
+            transform: translate(-150px, -30px) rotate(-20deg);
+        }
+        50% {
+            transform: translate(150px, 30px) rotate(20deg);
+        }
+        100% {
+            transform: translate(-150px, -30px) rotate(-20deg);
+        }
     }
 
     .main-title {
@@ -1232,6 +1245,19 @@ footer p {
     .civetta-owl-logo {
         width: 200px;
         height: 250px;
+        animation: skiing-small 4s ease-in-out infinite;
+    }
+
+    @keyframes skiing-small {
+        0% {
+            transform: translate(-80px, -25px) rotate(-18deg);
+        }
+        50% {
+            transform: translate(80px, 25px) rotate(18deg);
+        }
+        100% {
+            transform: translate(-80px, -25px) rotate(-18deg);
+        }
     }
 
     .main-title {
