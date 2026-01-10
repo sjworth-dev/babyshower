@@ -272,13 +272,13 @@ body {
     max-width: 900px;
 }
 
-/* Civetta Owl Logo */
+/* Civetta Owl Logo - Vintage Ski Style */
 .civetta-owl-logo {
-    width: 140px;
-    height: 160px;
-    margin: 0 auto 30px;
+    width: 160px;
+    height: 200px;
+    margin: 0 auto 25px;
     animation: gentleFloat 4s ease-in-out infinite;
-    filter: drop-shadow(3px 3px 8px rgba(0, 0, 0, 0.4));
+    filter: drop-shadow(3px 3px 10px rgba(0, 0, 0, 0.5));
 }
 
 @keyframes gentleFloat {
@@ -286,13 +286,26 @@ body {
         transform: translateY(0) rotate(0deg);
     }
     50% {
-        transform: translateY(-10px) rotate(2deg);
+        transform: translateY(-12px) rotate(1deg);
     }
 }
 
 .civetta-owl-logo svg {
     width: 100%;
     height: 100%;
+}
+
+/* Olympic Rings SVG Container */
+.olympic-rings {
+    display: flex;
+    justify-content: center;
+    margin: 25px 0 30px;
+}
+
+.rings-svg {
+    width: 280px;
+    height: 100px;
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
 }
 
 /* Dolomiti Subtitle */
@@ -305,67 +318,45 @@ body {
     text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
 }
 
-/* Olympic Rings - More Refined */
-.olympic-rings {
-    display: flex;
-    justify-content: center;
-    gap: 18px;
-    margin: 25px 0 30px;
-    flex-wrap: wrap;
-    opacity: 0.9;
-}
-
-.ring {
-    width: 55px;
-    height: 55px;
-    border: 5px solid;
-    border-radius: 50%;
-    display: inline-block;
-}
-
-.ring.blue { border-color: var(--olympic-blue); }
-.ring.yellow { border-color: var(--warm-gold); }
-.ring.black { border-color: var(--snow-white); }
-.ring.green { border-color: var(--forest-green); }
-.ring.red { border-color: var(--terracotta); }
 
 .main-title {
     font-family: 'Playfair Display', serif;
-    font-size: 5em;
+    font-size: 4.5em;
     font-weight: 600;
-    margin: 30px 0 20px;
+    margin: 30px 0 15px;
     text-transform: uppercase;
-    letter-spacing: 8px;
+    letter-spacing: 6px;
     text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
     color: var(--snow-white);
 }
 
-.subtitle {
-    font-family: 'Lato', sans-serif;
-    font-size: 1.8em;
-    font-weight: 300;
-    margin-bottom: 40px;
-    letter-spacing: 3px;
-    color: var(--warm-stone);
+.subtitle-script {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.8em;
+    font-weight: 600;
+    margin-bottom: 30px;
+    letter-spacing: 1px;
+    color: var(--warm-gold);
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
 }
 
-.milano-cortina {
-    margin-top: 40px;
-    padding: 18px 50px;
-    background: rgba(92, 74, 58, 0.5);
-    backdrop-filter: blur(10px);
-    border: 2px solid rgba(212, 196, 176, 0.4);
-    border-radius: 4px;
-    display: inline-block;
+/* Script title variations */
+.section-title-script {
+    font-family: 'Dancing Script', cursive;
+    font-size: 3.5em;
+    margin-bottom: 25px;
+    letter-spacing: 2px;
+    font-weight: 600;
+    color: var(--warm-gold);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.location-text {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.4em;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    color: var(--warm-stone);
+.rsvp-title-script {
+    font-family: 'Dancing Script', cursive;
+    font-size: 3.2em;
+    color: var(--deep-pine);
+    margin-bottom: 20px;
+    font-weight: 700;
 }
 
 /* Main Content */
@@ -822,12 +813,181 @@ section {
     font-weight: 300;
 }
 
-.contact-info {
-    font-weight: 400 !important;
-    color: var(--mountain-brown) !important;
-    font-size: 1.4em !important;
-    margin-top: 35px !important;
+.rsvp-intro {
+    font-size: 1.2em;
+    color: var(--slate-gray);
+    margin-bottom: 40px;
+    font-weight: 300;
+}
+
+/* RSVP Form Styling */
+.rsvp-form {
+    text-align: left;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 1.1em;
+    color: var(--dark-wood);
+    margin-bottom: 8px;
+    font-weight: 500;
+    font-family: 'Lato', sans-serif;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="tel"],
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 14px 16px;
+    font-size: 1em;
+    border: 2px solid var(--warm-stone);
+    border-radius: 4px;
+    background: var(--snow-white);
+    font-family: 'Lato', sans-serif;
+    transition: all 0.3s ease;
+    color: var(--dark-wood);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--mountain-brown);
+    box-shadow: 0 0 0 3px rgba(139, 115, 85, 0.1);
+}
+
+.form-group select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath fill='%235C4A3A' d='M0 0l6 8 6-8z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 45px;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.radio-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 12px 16px;
+    border: 2px solid var(--warm-stone);
+    border-radius: 4px;
+    background: var(--snow-white);
+    transition: all 0.3s ease;
+}
+
+.radio-label:hover {
+    border-color: var(--mountain-brown);
+    background: rgba(212, 196, 176, 0.1);
+}
+
+.radio-label input[type="radio"] {
+    margin-right: 12px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: var(--mountain-brown);
+}
+
+.radio-label span {
+    font-size: 1.05em;
+    color: var(--dark-wood);
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 18px 30px;
+    font-size: 1.3em;
+    font-weight: 600;
     font-family: 'Playfair Display', serif;
+    color: var(--snow-white);
+    background: linear-gradient(135deg, var(--mountain-brown) 0%, var(--terracotta) 100%);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    box-shadow: 0 4px 15px rgba(139, 115, 85, 0.3);
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(139, 115, 85, 0.4);
+    background: linear-gradient(135deg, var(--terracotta) 0%, var(--mountain-brown) 100%);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+}
+
+.form-note {
+    text-align: center;
+    font-size: 0.9em;
+    color: var(--slate-gray);
+    margin-top: 15px;
+    font-style: italic;
+}
+
+/* Form Success/Error Messages */
+.form-message {
+    text-align: center;
+    padding: 40px 30px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.success-message {
+    background: linear-gradient(135deg, rgba(61, 89, 65, 0.1) 0%, rgba(61, 89, 65, 0.05) 100%);
+    border: 2px solid var(--forest-green);
+}
+
+.success-message h4 {
+    color: var(--forest-green);
+    font-size: 2em;
+    margin-bottom: 10px;
+    font-family: 'Dancing Script', cursive;
+}
+
+.success-message p {
+    color: var(--dark-wood);
+    font-size: 1.1em;
+}
+
+.error-message {
+    background: linear-gradient(135deg, rgba(160, 104, 92, 0.1) 0%, rgba(160, 104, 92, 0.05) 100%);
+    border: 2px solid var(--terracotta);
+}
+
+.error-message h4 {
+    color: var(--terracotta);
+    font-size: 2em;
+    margin-bottom: 10px;
+    font-family: 'Dancing Script', cursive;
+}
+
+.error-message p {
+    color: var(--dark-wood);
+    font-size: 1.1em;
 }
 
 /* Footer - Natural */
@@ -847,19 +1007,10 @@ footer {
     opacity: 0.8;
 }
 
-.ring-small {
-    width: 32px;
-    height: 32px;
-    border: 3px solid;
-    border-radius: 50%;
-    display: inline-block;
+.olympic-rings-footer svg {
+    width: 200px;
+    height: 70px;
 }
-
-.ring-small.blue { border-color: var(--olympic-blue); }
-.ring-small.yellow { border-color: var(--warm-gold); }
-.ring-small.black { border-color: var(--snow-white); }
-.ring-small.green { border-color: var(--forest-green); }
-.ring-small.red { border-color: var(--terracotta); }
 
 footer p {
     margin: 12px 0;
@@ -918,27 +1069,42 @@ footer p {
     }
 
     .civetta-owl-logo {
-        width: 100px;
-        height: 115px;
+        width: 120px;
+        height: 150px;
     }
 
     .main-title {
-        font-size: 2.2em;
+        font-size: 2.5em;
         letter-spacing: 3px;
     }
 
-    .subtitle {
-        font-size: 1.3em;
+    .subtitle-script {
+        font-size: 2em;
+    }
+
+    .section-title-script {
+        font-size: 2.5em;
+    }
+
+    .rsvp-title-script {
+        font-size: 2.3em;
     }
 
     .dolomiti-subtitle {
         font-size: 1em;
     }
 
-    .ring {
-        width: 40px;
-        height: 40px;
-        border: 4px solid;
+    .rings-svg {
+        width: 220px;
+        height: 80px;
+    }
+
+    .rsvp-card {
+        padding: 50px 25px;
+    }
+
+    .rsvp-form {
+        padding: 0 10px;
     }
 
     .info-grid {
@@ -1002,21 +1168,45 @@ footer p {
     }
 
     .civetta-owl-logo {
-        width: 80px;
-        height: 92px;
+        width: 100px;
+        height: 125px;
     }
 
     .main-title {
-        font-size: 1.6em;
+        font-size: 1.8em;
         letter-spacing: 1px;
     }
 
-    .location-text {
-        font-size: 1em;
+    .subtitle-script {
+        font-size: 1.6em;
+    }
+
+    .section-title-script {
+        font-size: 2em;
+    }
+
+    .rsvp-title-script {
+        font-size: 2em;
     }
 
     .dolomiti-subtitle {
-        font-size: 0.85em;
+        font-size: 0.9em;
+    }
+
+    .rings-svg {
+        width: 200px;
+        height: 70px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+
+    .submit-btn {
+        font-size: 1.1em;
+        padding: 16px 24px;
     }
 
     .medal-icons {
