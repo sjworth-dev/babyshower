@@ -6,24 +6,27 @@
 }
 
 :root {
-    /* Val di Fassa / Ladin Color Palette */
-    --alpine-cream: #F5F1E8;
-    --warm-stone: #D4C4B0;
-    --mountain-brown: #8B7355;
-    --dark-wood: #5C4A3A;
-    --forest-green: #3D5941;
-    --deep-pine: #2B3D2F;
-    --snow-white: #FDFDFB;
-    --slate-gray: #656D6F;
+    /* Vibrant Alpine Color Palette */
+    --alpine-cream: #FFF8E7;
+    --warm-stone: #FFDB9A;
+    --mountain-brown: #D4A574;
+    --dark-wood: #8B6F47;
+    --forest-green: #5FA777;
+    --deep-pine: #4A7C59;
+    --snow-white: #FFFFFF;
+    --slate-gray: #7A8C8D;
 
-    /* Accent colors (subtle Olympic tones) */
-    --olympic-blue: #4A6FA5;
-    --warm-gold: #C9A961;
-    --terracotta: #A0685C;
+    /* Vibrant Olympic/Winter colors */
+    --olympic-blue: #0085C7;
+    --warm-gold: #F4C300;
+    --terracotta: #DF0024;
+    --sky-blue: #87CEEB;
+    --sunset-pink: #FFB6D9;
+    --lavender: #B19CD9;
 }
 
 body {
-    font-family: 'Lato', sans-serif;
+    font-family: 'Dancing Script', cursive;
     color: var(--dark-wood);
     line-height: 1.8;
     overflow-x: hidden;
@@ -36,7 +39,7 @@ body {
     padding: 0 40px;
 }
 
-/* Snow Animation - More Subtle */
+/* Snow Animation - Lots of Snow! */
 .snow-container {
     position: fixed;
     top: 0;
@@ -44,53 +47,39 @@ body {
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 1;
-    opacity: 0.4;
+    z-index: 1000;
+    opacity: 0.8;
 }
 
 .snowflake {
     position: absolute;
     top: -10px;
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 1.2em;
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 1.5em;
     animation: fall linear infinite;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
 }
 
-.snowflake:nth-child(1) {
-    left: 10%;
-    animation-duration: 12s;
-    animation-delay: 0s;
-}
-
-.snowflake:nth-child(2) {
-    left: 25%;
-    animation-duration: 15s;
-    animation-delay: 2s;
-}
-
-.snowflake:nth-child(3) {
-    left: 40%;
-    animation-duration: 11s;
-    animation-delay: 4s;
-}
-
-.snowflake:nth-child(4) {
-    left: 60%;
-    animation-duration: 14s;
-    animation-delay: 1s;
-}
-
-.snowflake:nth-child(5) {
-    left: 75%;
-    animation-duration: 16s;
-    animation-delay: 3s;
-}
-
-.snowflake:nth-child(6) {
-    left: 90%;
-    animation-duration: 13s;
-    animation-delay: 5s;
-}
+.snowflake:nth-child(1) { left: 5%; animation-duration: 10s; animation-delay: 0s; }
+.snowflake:nth-child(2) { left: 12%; animation-duration: 13s; animation-delay: 1s; }
+.snowflake:nth-child(3) { left: 18%; animation-duration: 9s; animation-delay: 2s; }
+.snowflake:nth-child(4) { left: 25%; animation-duration: 12s; animation-delay: 0.5s; }
+.snowflake:nth-child(5) { left: 32%; animation-duration: 11s; animation-delay: 3s; }
+.snowflake:nth-child(6) { left: 38%; animation-duration: 14s; animation-delay: 1.5s; }
+.snowflake:nth-child(7) { left: 45%; animation-duration: 10s; animation-delay: 2.5s; }
+.snowflake:nth-child(8) { left: 52%; animation-duration: 13s; animation-delay: 0.2s; }
+.snowflake:nth-child(9) { left: 58%; animation-duration: 11s; animation-delay: 3.5s; }
+.snowflake:nth-child(10) { left: 65%; animation-duration: 12s; animation-delay: 1.2s; }
+.snowflake:nth-child(11) { left: 71%; animation-duration: 14s; animation-delay: 2.8s; }
+.snowflake:nth-child(12) { left: 77%; animation-duration: 10s; animation-delay: 0.8s; }
+.snowflake:nth-child(13) { left: 83%; animation-duration: 13s; animation-delay: 3.2s; }
+.snowflake:nth-child(14) { left: 88%; animation-duration: 11s; animation-delay: 1.8s; }
+.snowflake:nth-child(15) { left: 93%; animation-duration: 12s; animation-delay: 2.2s; }
+.snowflake:nth-child(16) { left: 8%; animation-duration: 14s; animation-delay: 4s; }
+.snowflake:nth-child(17) { left: 28%; animation-duration: 10s; animation-delay: 4.5s; }
+.snowflake:nth-child(18) { left: 48%; animation-duration: 13s; animation-delay: 5s; }
+.snowflake:nth-child(19) { left: 68%; animation-duration: 11s; animation-delay: 5.5s; }
+.snowflake:nth-child(20) { left: 95%; animation-duration: 12s; animation-delay: 6s; }
 
 @keyframes fall {
     to {
@@ -98,7 +87,7 @@ body {
     }
 }
 
-/* Hero Section - Dramatic Italian Alps */
+/* Hero Section - Vibrant Winter Wonderland */
 .hero {
     position: relative;
     min-height: 90vh;
@@ -106,13 +95,13 @@ body {
     align-items: center;
     justify-content: center;
     background:
-        radial-gradient(ellipse at 50% 100%, rgba(201, 169, 97, 0.15) 0%, transparent 60%),
+        radial-gradient(ellipse at 50% 100%, rgba(244, 195, 0, 0.2) 0%, transparent 60%),
         linear-gradient(to bottom,
-            #4A6FA5 0%,
-            #6B8EC7 20%,
-            #8FA8D5 40%,
-            #B5C4DD 60%,
-            #D4C4B0 100%
+            var(--olympic-blue) 0%,
+            var(--sky-blue) 30%,
+            var(--lavender) 60%,
+            var(--sunset-pink) 85%,
+            var(--warm-gold) 100%
         );
     overflow: hidden;
     text-align: center;
@@ -150,7 +139,7 @@ body {
     box-shadow: inset -20px 0 40px rgba(0, 0, 0, 0.3);
 }
 
-/* Tre Cime style peaks - dramatic vertical faces */
+/* Tre Cime style peaks - dramatic vertical faces - vibrant */
 .peak-1 {
     left: 5%;
     width: 180px;
@@ -174,10 +163,10 @@ body {
         35% 15%,
         40% 5%
     );
-    background: linear-gradient(135deg, #6B5847 0%, #5C4A3A 50%, #3D2F23 100%);
+    background: linear-gradient(135deg, var(--mountain-brown) 0%, var(--dark-wood) 50%, #5C4A3A 100%);
 }
 
-/* Marmolada - Queen of Dolomites, broader peak */
+/* Marmolada - broader peak - vibrant */
 .peak-2 {
     left: 25%;
     width: 300px;
@@ -197,11 +186,11 @@ body {
         35% 10%,
         45% 3%
     );
-    background: linear-gradient(120deg, #7A6555 0%, #5C4A3A 40%, #4A3828 100%);
+    background: linear-gradient(120deg, var(--warm-stone) 0%, var(--mountain-brown) 40%, var(--dark-wood) 100%);
     z-index: 2;
 }
 
-/* Civetta - steep dramatic face */
+/* Civetta - steep dramatic face - vibrant */
 .peak-3 {
     right: 25%;
     width: 220px;
@@ -223,11 +212,11 @@ body {
         42% 12%,
         47% 5%
     );
-    background: linear-gradient(110deg, #8B7355 0%, #5C4A3A 40%, #3D2F23 100%);
+    background: linear-gradient(110deg, var(--mountain-brown) 0%, var(--dark-wood) 40%, #5C4A3A 100%);
     z-index: 3;
 }
 
-/* Another dramatic peak */
+/* Another dramatic peak - vibrant */
 .peak-4 {
     right: 5%;
     width: 160px;
@@ -247,7 +236,7 @@ body {
         35% 20%,
         40% 8%
     );
-    background: linear-gradient(125deg, #6B5847 0%, #5C4A3A 50%, #2D1F15 100%);
+    background: linear-gradient(125deg, var(--mountain-brown) 0%, var(--dark-wood) 50%, #5C4A3A 100%);
 }
 
 /* Snow caps on peaks */
@@ -272,13 +261,13 @@ body {
     max-width: 900px;
 }
 
-/* Civetta Owl Logo - Vintage Ski Style */
+/* Civetta Owl Logo - Vintage Ski Style - MUCH LARGER */
 .civetta-owl-logo {
-    width: 160px;
-    height: 200px;
-    margin: 0 auto 25px;
+    width: 320px;
+    height: 400px;
+    margin: 0 auto 35px;
     animation: gentleFloat 4s ease-in-out infinite;
-    filter: drop-shadow(3px 3px 10px rgba(0, 0, 0, 0.5));
+    filter: drop-shadow(4px 4px 15px rgba(0, 0, 0, 0.5));
 }
 
 @keyframes gentleFloat {
@@ -357,6 +346,41 @@ body {
     color: var(--deep-pine);
     margin-bottom: 20px;
     font-weight: 700;
+}
+
+/* Theme Description Script */
+.theme-description-script {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.8em;
+    line-height: 1.6;
+    color: var(--dark-wood);
+    font-weight: 500;
+}
+
+/* Icon Row for Vibes */
+.icon-row {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin: 30px 0;
+}
+
+.vibe-icon {
+    font-size: 3.5em;
+    animation: gentleFloat 3s ease-in-out infinite;
+    filter: drop-shadow(2px 2px 8px rgba(0, 0, 0, 0.2));
+}
+
+.vibe-icon:nth-child(2) {
+    animation-delay: 0.5s;
+}
+
+.vibe-icon:nth-child(3) {
+    animation-delay: 1s;
+}
+
+.vibe-icon:nth-child(4) {
+    animation-delay: 1.5s;
 }
 
 /* Main Content */
@@ -833,11 +857,11 @@ section {
 
 .form-group label {
     display: block;
-    font-size: 1.1em;
+    font-size: 1.3em;
     color: var(--dark-wood);
     margin-bottom: 8px;
-    font-weight: 500;
-    font-family: 'Lato', sans-serif;
+    font-weight: 600;
+    font-family: 'Dancing Script', cursive;
 }
 
 .form-group input[type="text"],
@@ -847,11 +871,11 @@ section {
 .form-group textarea {
     width: 100%;
     padding: 14px 16px;
-    font-size: 1em;
-    border: 2px solid var(--warm-stone);
-    border-radius: 4px;
+    font-size: 1.05em;
+    border: 2px solid var(--warm-gold);
+    border-radius: 8px;
     background: var(--snow-white);
-    font-family: 'Lato', sans-serif;
+    font-family: 'Dancing Script', cursive;
     transition: all 0.3s ease;
     color: var(--dark-wood);
 }
@@ -1069,8 +1093,8 @@ footer p {
     }
 
     .civetta-owl-logo {
-        width: 120px;
-        height: 150px;
+        width: 240px;
+        height: 300px;
     }
 
     .main-title {
@@ -1168,8 +1192,8 @@ footer p {
     }
 
     .civetta-owl-logo {
-        width: 100px;
-        height: 125px;
+        width: 200px;
+        height: 250px;
     }
 
     .main-title {
