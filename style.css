@@ -193,8 +193,8 @@ body {
 
 /* Sam - slightly larger */
 .owl-sam {
-    width: 400px;
-    height: 290px;
+    width: 800px;
+    height: 580px;
     animation: skiing-sam 18s ease-in-out infinite;
     animation-delay: -6s;
     z-index: 101;
@@ -202,8 +202,8 @@ body {
 
 /* Gigi - leading the family */
 .owl-gigi {
-    width: 380px;
-    height: 276px;
+    width: 760px;
+    height: 552px;
     animation: skiing-gigi 18s ease-in-out infinite;
     animation-delay: -12s;
     z-index: 100;
@@ -1464,15 +1464,15 @@ footer p {
     }
 
     .owl-sam {
-        width: 300px;
-        height: 218px;
+        width: 600px;
+        height: 436px;
         animation: skiing-mobile 18s ease-in-out infinite;
         animation-delay: -6s;
     }
 
     .owl-gigi {
-        width: 290px;
-        height: 210px;
+        width: 580px;
+        height: 420px;
         animation: skiing-mobile 18s ease-in-out infinite;
         animation-delay: -12s;
     }
@@ -1580,11 +1580,13 @@ footer p {
 
     /* Floating Gigi - tablet */
     .floating-gigi-container {
-        height: 250px;
+        height: 180px;
+        margin-bottom: -50px;
     }
 
     .floating-gigi {
-        height: 420px;
+        height: 380px;
+        bottom: -40px;
     }
 
     /* Gigi Tourist, Sam Teaching and camera flash - tablet */
@@ -1636,15 +1638,15 @@ footer p {
     }
 
     .owl-sam {
-        width: 220px;
-        height: 160px;
+        width: 440px;
+        height: 320px;
         animation: skiing-small 18s ease-in-out infinite;
         animation-delay: -6s;
     }
 
     .owl-gigi {
-        width: 210px;
-        height: 152px;
+        width: 420px;
+        height: 304px;
         animation: skiing-small 18s ease-in-out infinite;
         animation-delay: -12s;
     }
@@ -1740,15 +1742,17 @@ footer p {
 
     /* Floating Gigi - mobile */
     .floating-gigi-container {
-        height: 180px;
+        height: 120px;
+        margin-bottom: 0;
     }
 
     .floating-gigi {
-        height: 300px;
+        height: 200px;
+        bottom: 0;
     }
 
     .detail-card h3 {
-        font-size: 1.6em;
+        font-size: 1.4em;
     }
 
     /* Gigi Tourist and camera flash - mobile */
