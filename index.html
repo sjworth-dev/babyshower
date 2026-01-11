@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <title>Baby Olympian Shower - Sam & Gigi</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Lato:wght@300;400;700&family=Pacifico&family=Dancing+Script:wght@400;500;600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=8">
+    <link rel="stylesheet" href="style.css?v=9">
 </head>
 <body>
     <div class="snow-container">
@@ -381,12 +381,73 @@
         </section>
     </main>
 
-    <!-- Ski Jump Section -->
+    <!-- Ski Jump Game Section -->
     <section class="ski-jump-section">
         <div class="container">
             <h2 class="section-title-script">The Launch Pad</h2>
-            <div class="ski-jump-container">
-                <img src="Gigi Pregnant.png?v=5" alt="Gigi" class="gigi-ramp">
+            <p class="game-instructions">Tap/Click when the baby owl reaches Gigi's belly for maximum launch!</p>
+
+            <div class="game-container" id="game-container">
+                <div class="game-area" id="game-area">
+                    <img src="Gigi Pregnant.png?v=5" alt="Gigi" class="gigi-ramp-game">
+
+                    <!-- Baby Owl -->
+                    <div class="game-owl" id="game-owl">
+                        <svg viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="20" y="115" width="70" height="6" fill="#A0685C" rx="3"/>
+                            <rect x="20" y="125" width="70" height="6" fill="#A0685C" rx="3"/>
+                            <ellipse cx="18" cy="118" rx="5" ry="4" fill="#8B7355"/>
+                            <ellipse cx="18" cy="128" rx="5" ry="4" fill="#8B7355"/>
+                            <rect x="55" y="113" width="12" height="10" fill="#656D6F" rx="1"/>
+                            <rect x="55" y="123" width="12" height="10" fill="#656D6F" rx="1"/>
+                            <ellipse cx="85" cy="85" rx="25" ry="30" fill="#3D2F23" stroke="#D4C4B0" stroke-width="2"/>
+                            <ellipse cx="85" cy="100" rx="22" ry="15" fill="#FFFFFF" stroke="#E8E8E8" stroke-width="1"/>
+                            <rect x="65" y="92" width="8" height="6" fill="#87CEEB" rx="1"/>
+                            <rect x="97" y="92" width="8" height="6" fill="#87CEEB" rx="1"/>
+                            <text x="78" y="102" font-size="8" fill="#87CEEB">&#9733;</text>
+                            <text x="88" y="100" font-size="6" fill="#FFB6D9">&#9733;</text>
+                            <rect x="70" y="108" width="8" height="12" fill="#8B7355" rx="2"/>
+                            <rect x="82" y="108" width="8" height="12" fill="#8B7355" rx="2"/>
+                            <circle cx="95" cy="50" r="30" fill="#5C4A3A" stroke="#D4C4B0" stroke-width="2"/>
+                            <path d="M 72 28 L 65 18 L 75 26" fill="#5C4A3A" stroke="#D4C4B0" stroke-width="1.5"/>
+                            <path d="M 118 28 L 125 18 L 115 26" fill="#5C4A3A" stroke="#D4C4B0" stroke-width="1.5"/>
+                            <ellipse cx="83" cy="48" rx="14" ry="12" fill="#F5F1E8" stroke="#2B3D2F" stroke-width="2"/>
+                            <ellipse cx="107" cy="48" rx="14" ry="12" fill="#F5F1E8" stroke="#2B3D2F" stroke-width="2"/>
+                            <circle cx="85" cy="46" r="8" fill="#2B3D2F"/>
+                            <circle cx="109" cy="46" r="8" fill="#2B3D2F"/>
+                            <circle cx="87" cy="44" r="3" fill="#FFFFFF"/>
+                            <circle cx="111" cy="44" r="3" fill="#FFFFFF"/>
+                            <path d="M 95 55 L 92 61 L 98 61 Z" fill="#C9A961" stroke="#8B7355" stroke-width="1"/>
+                        </svg>
+                    </div>
+
+                    <!-- Launch zone indicator -->
+                    <div class="launch-zone" id="launch-zone"></div>
+
+                    <!-- Distance markers -->
+                    <div class="distance-markers">
+                        <span class="marker" style="left: 60%;">10m</span>
+                        <span class="marker" style="left: 70%;">25m</span>
+                        <span class="marker" style="left: 80%;">50m</span>
+                        <span class="marker" style="left: 90%;">100m</span>
+                    </div>
+                </div>
+
+                <!-- Game UI -->
+                <div class="game-ui">
+                    <div class="score-display">
+                        <div class="current-score">
+                            <span class="label">Distance</span>
+                            <span class="value" id="current-distance">0m</span>
+                        </div>
+                        <div class="high-score">
+                            <span class="label">Best</span>
+                            <span class="value" id="high-score">0m</span>
+                        </div>
+                    </div>
+                    <button class="game-btn" id="start-btn">Start Game</button>
+                    <p class="tap-hint" id="tap-hint" style="display: none;">TAP NOW!</p>
+                </div>
             </div>
         </div>
     </section>
@@ -459,6 +520,185 @@
                     }, 100);
                 }, 150);
             }, 5000);
+        }
+
+        // ============ SKI JUMP GAME ============
+        const gameOwl = document.getElementById('game-owl');
+        const startBtn = document.getElementById('start-btn');
+        const tapHint = document.getElementById('tap-hint');
+        const launchZone = document.getElementById('launch-zone');
+        const currentDistanceEl = document.getElementById('current-distance');
+        const highScoreEl = document.getElementById('high-score');
+        const gameArea = document.getElementById('game-area');
+
+        let gameState = 'idle'; // idle, skiing, launched, flying, landed
+        let launchTiming = 0; // 0-100, where 100 is perfect timing at belly
+        let animationFrame;
+        let skiStartTime;
+        let highScore = localStorage.getItem('skiJumpHighScore') || 0;
+
+        // Initialize high score display
+        if (highScoreEl) highScoreEl.textContent = highScore + 'm';
+
+        function resetOwl() {
+            if (!gameOwl) return;
+            gameOwl.style.left = '5%';
+            gameOwl.style.bottom = '100px';
+            gameOwl.style.transform = 'rotate(0deg)';
+            gameOwl.classList.remove('skiing', 'flying', 'launching');
+        }
+
+        function startGame() {
+            if (!gameOwl || !startBtn) return;
+
+            gameState = 'skiing';
+            launchTiming = 0;
+            resetOwl();
+
+            startBtn.disabled = true;
+            startBtn.textContent = 'Skiing...';
+            tapHint.style.display = 'none';
+            launchZone.classList.add('active');
+            currentDistanceEl.textContent = '0m';
+
+            // Start skiing animation
+            gameOwl.classList.add('skiing');
+            skiStartTime = Date.now();
+
+            // Track position for launch timing
+            trackSkiPosition();
+        }
+
+        function trackSkiPosition() {
+            if (gameState !== 'skiing') return;
+
+            const elapsed = Date.now() - skiStartTime;
+            const progress = elapsed / 2500; // 2.5s animation
+
+            // Show tap hint when approaching belly (60-90% of animation)
+            if (progress > 0.5 && progress < 0.95) {
+                tapHint.style.display = 'block';
+
+                // Calculate timing score - best at 80% (belly peak)
+                const distanceFromPeak = Math.abs(progress - 0.8);
+                launchTiming = Math.max(0, 100 - (distanceFromPeak * 300));
+            } else {
+                tapHint.style.display = 'none';
+            }
+
+            // Auto-end if animation completes without launch
+            if (progress >= 1) {
+                launchOwl(10); // Minimum distance for missed timing
+                return;
+            }
+
+            animationFrame = requestAnimationFrame(trackSkiPosition);
+        }
+
+        function launchOwl(timing) {
+            if (gameState !== 'skiing') return;
+
+            gameState = 'launched';
+            cancelAnimationFrame(animationFrame);
+
+            tapHint.style.display = 'none';
+            launchZone.classList.remove('active');
+            gameOwl.classList.remove('skiing');
+
+            // Calculate distance based on timing (10-150m)
+            const distance = Math.round(10 + (timing * 1.4));
+
+            // Get current position
+            const computedStyle = window.getComputedStyle(gameOwl);
+            const currentLeft = parseFloat(computedStyle.left);
+            const currentBottom = parseFloat(computedStyle.bottom);
+
+            // Set current position explicitly
+            gameOwl.style.left = currentLeft + 'px';
+            gameOwl.style.bottom = currentBottom + 'px';
+
+            // Animate the flight
+            flyOwl(distance, currentLeft, currentBottom);
+        }
+
+        function flyOwl(distance, startLeft, startBottom) {
+            gameState = 'flying';
+            startBtn.textContent = 'Flying!';
+
+            const gameAreaWidth = gameArea.offsetWidth;
+            const targetLeft = Math.min(startLeft + (distance * 3), gameAreaWidth - 60);
+
+            // Create flight arc
+            let progress = 0;
+            const flightDuration = 1500 + (distance * 10);
+            const startTime = Date.now();
+
+            function animateFlight() {
+                const elapsed = Date.now() - startTime;
+                progress = Math.min(elapsed / flightDuration, 1);
+
+                // Parabolic arc
+                const x = startLeft + (targetLeft - startLeft) * progress;
+                const peakHeight = 100 + (distance * 0.5);
+                const y = startBottom + (peakHeight * Math.sin(progress * Math.PI));
+
+                gameOwl.style.left = x + 'px';
+                gameOwl.style.bottom = Math.max(50, y) + 'px';
+                gameOwl.style.transform = `rotate(${-30 + (progress * 60)}deg)`;
+
+                if (progress < 1) {
+                    requestAnimationFrame(animateFlight);
+                } else {
+                    landOwl(distance);
+                }
+            }
+
+            requestAnimationFrame(animateFlight);
+        }
+
+        function landOwl(distance) {
+            gameState = 'landed';
+
+            // Update score
+            currentDistanceEl.textContent = distance + 'm';
+
+            // Check high score
+            if (distance > highScore) {
+                highScore = distance;
+                localStorage.setItem('skiJumpHighScore', highScore);
+                highScoreEl.textContent = highScore + 'm';
+                startBtn.textContent = 'New Record! Play Again';
+            } else {
+                startBtn.textContent = 'Play Again';
+            }
+
+            startBtn.disabled = false;
+            gameState = 'idle';
+        }
+
+        // Event listeners
+        if (startBtn) {
+            startBtn.addEventListener('click', () => {
+                if (gameState === 'idle') {
+                    startGame();
+                }
+            });
+        }
+
+        // Launch on tap/click anywhere in game area during skiing
+        if (gameArea) {
+            gameArea.addEventListener('click', () => {
+                if (gameState === 'skiing') {
+                    launchOwl(launchTiming);
+                }
+            });
+
+            gameArea.addEventListener('touchstart', (e) => {
+                if (gameState === 'skiing') {
+                    e.preventDefault();
+                    launchOwl(launchTiming);
+                }
+            });
         }
     </script>
 </body>

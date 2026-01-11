@@ -1312,6 +1312,211 @@ footer p {
     overflow: visible;
 }
 
+/* Game Styles */
+.game-instructions {
+    text-align: center;
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.4em;
+    color: var(--deep-pine);
+    margin-bottom: 20px;
+}
+
+.game-container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: linear-gradient(180deg, #87CEEB 0%, #E0F0FF 60%, #fff 100%);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.game-area {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+    border-radius: 10px;
+    background: linear-gradient(180deg, #87CEEB 0%, #c9e4f5 100%);
+}
+
+.gigi-ramp-game {
+    position: absolute;
+    bottom: 30px;
+    left: 5%;
+    height: 250px;
+    width: auto;
+    transform: rotate(90deg);
+    transform-origin: bottom left;
+    mix-blend-mode: multiply;
+}
+
+.game-owl {
+    position: absolute;
+    width: 60px;
+    height: 50px;
+    bottom: 120px;
+    left: 5%;
+    z-index: 10;
+    transition: none;
+}
+
+.game-owl svg {
+    width: 100%;
+    height: 100%;
+}
+
+.game-owl.skiing {
+    animation: skiAlongBody 2.5s linear forwards;
+}
+
+.game-owl.launching {
+    transition: all 0.1s linear;
+}
+
+.game-owl.flying {
+    animation: flyArc 2s ease-out forwards;
+}
+
+@keyframes skiAlongBody {
+    0% {
+        left: 5%;
+        bottom: 100px;
+        transform: rotate(0deg);
+    }
+    30% {
+        left: 15%;
+        bottom: 110px;
+        transform: rotate(-5deg);
+    }
+    60% {
+        left: 25%;
+        bottom: 130px;
+        transform: rotate(-10deg);
+    }
+    80% {
+        left: 32%;
+        bottom: 160px;
+        transform: rotate(-20deg);
+    }
+    100% {
+        left: 38%;
+        bottom: 200px;
+        transform: rotate(-30deg);
+    }
+}
+
+.launch-zone {
+    position: absolute;
+    bottom: 150px;
+    left: 30%;
+    width: 60px;
+    height: 60px;
+    border: 3px dashed #FFD700;
+    border-radius: 50%;
+    opacity: 0;
+    z-index: 5;
+}
+
+.launch-zone.active {
+    opacity: 1;
+    animation: pulse 0.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.7; }
+    50% { transform: scale(1.2); opacity: 1; }
+}
+
+.distance-markers {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    height: 30px;
+}
+
+.distance-markers .marker {
+    position: absolute;
+    font-size: 0.8em;
+    color: var(--deep-pine);
+    font-weight: bold;
+    transform: translateX(-50%);
+}
+
+.game-ui {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    gap: 15px;
+}
+
+.score-display {
+    display: flex;
+    gap: 40px;
+}
+
+.current-score, .high-score {
+    text-align: center;
+}
+
+.score-display .label {
+    display: block;
+    font-size: 0.9em;
+    color: var(--dark-wood);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.score-display .value {
+    display: block;
+    font-size: 2.5em;
+    font-weight: bold;
+    color: var(--deep-pine);
+    font-family: 'Playfair Display', serif;
+}
+
+.high-score .value {
+    color: #FFD700;
+}
+
+.game-btn {
+    background: var(--deep-pine);
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    font-size: 1.2em;
+    font-family: 'Playfair Display', serif;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.game-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.game-btn:disabled {
+    background: #999;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.tap-hint {
+    font-size: 2em;
+    font-weight: bold;
+    color: #DF0024;
+    animation: blink 0.3s ease-in-out infinite;
+    margin: 0;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
 .jumping-owl {
     position: absolute;
     width: 70px;
