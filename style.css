@@ -477,6 +477,23 @@ section {
     filter: grayscale(20%);
 }
 
+.floating-gigi-container {
+    position: relative;
+    height: 220px;
+    margin-bottom: -100px;
+    overflow: visible;
+}
+
+.floating-gigi {
+    position: absolute;
+    left: 50%;
+    bottom: -80px;
+    height: 540px;
+    width: auto;
+    transform: translateX(-50%) rotate(90deg);
+    mix-blend-mode: multiply;
+}
+
 .detail-card h3 {
     font-family: 'Playfair Display', serif;
     font-size: 3em;
@@ -1186,7 +1203,7 @@ footer p {
 .ski-jump-section .section-title-script {
     text-align: center;
     color: var(--deep-pine);
-    margin-bottom: 20px;
+    margin-bottom: 80px;
 }
 
 .ski-jump-section .container {
@@ -1197,29 +1214,109 @@ footer p {
 .ski-jump-container {
     position: relative;
     width: 100%;
-    height: 350px;
-    overflow: hidden;
+    height: 500px;
+    overflow: visible;
 }
 
 .gigi-ramp {
     position: absolute;
-    bottom: -20px;
+    bottom: 50px;
     left: 50%;
     transform: translateX(-50%) rotate(90deg);
-    height: 100vw;
-    max-height: 800px;
     width: auto;
-    object-fit: cover;
-    object-position: center 30%;
-    clip-path: inset(15% 5% 20% 5%);
-    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.3));
+    height: 800px;
+    max-height: none;
+    object-fit: contain;
+    mix-blend-mode: multiply;
+}
+
+.gigi-tourist {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    width: auto;
+    object-fit: contain;
+    mix-blend-mode: multiply;
+}
+
+.theme-section .container {
+    position: relative;
+}
+
+.theme-section .gigi-tourist {
+    height: 450px;
+    left: 5%;
+    bottom: auto;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    filter: none;
+    mix-blend-mode: multiply;
+}
+
+.sam-teaching {
+    position: absolute;
+    bottom: 0;
+    right: 5%;
+    height: 450px;
+    width: auto;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    mix-blend-mode: multiply;
+}
+
+.camera-flash {
+    position: absolute;
+    left: 8%;
+    top: -5%;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle,
+        rgba(255,255,255,1) 0%,
+        rgba(255,255,255,1) 10%,
+        rgba(255,255,240,0.9) 20%,
+        rgba(255,255,200,0.6) 40%,
+        rgba(255,255,150,0.3) 60%,
+        rgba(255,255,100,0) 100%);
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 20;
+}
+
+.camera-flash.flash {
+    animation: cameraFlash 0.15s ease-out;
+}
+
+@keyframes cameraFlash {
+    0% {
+        opacity: 1;
+        transform: scale(0.3);
+        box-shadow: 0 0 100px 80px rgba(255,255,255,1), 0 0 200px 150px rgba(255,255,200,0.5);
+    }
+    30% {
+        opacity: 1;
+        transform: scale(1.2);
+        box-shadow: 0 0 150px 100px rgba(255,255,255,0.9), 0 0 300px 200px rgba(255,255,200,0.4);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(2);
+        box-shadow: 0 0 50px 30px rgba(255,255,255,0), 0 0 100px 60px rgba(255,255,200,0);
+    }
+}
+
+.theme-section {
+    overflow: visible;
 }
 
 .jumping-owl {
     position: absolute;
-    width: 80px;
-    height: 65px;
-    animation: ski-jump 4s cubic-bezier(0.25, 0.1, 0.6, 1.4) infinite;
+    width: 70px;
+    height: 60px;
+    animation: ski-jump 4s ease-in-out infinite;
     z-index: 10;
     filter: drop-shadow(3px 3px 10px rgba(0, 0, 0, 0.4));
 }
@@ -1229,53 +1326,110 @@ footer p {
     height: 100%;
 }
 
+/* Owl skis along Gigi's legs, follows belly curve, exits at 30 degrees */
 @keyframes ski-jump {
     0% {
-        bottom: 60px;
-        left: 8%;
-        transform: rotate(-5deg);
+        /* Start directly above her feet (right side) */
+        bottom: 200px;
+        right: 5%;
+        transform: rotate(0deg);
         opacity: 1;
     }
-    30% {
-        bottom: 100px;
-        left: 30%;
-        transform: rotate(-10deg);
+    8% {
+        /* Along her ankles */
+        bottom: 200px;
+        right: 12%;
+        transform: rotate(0deg);
         opacity: 1;
     }
-    50% {
-        bottom: 160px;
-        left: 48%;
-        transform: rotate(-15deg);
+    16% {
+        /* Along her calves */
+        bottom: 200px;
+        right: 20%;
+        transform: rotate(0deg);
         opacity: 1;
     }
-    65% {
+    24% {
+        /* At her knees */
+        bottom: 200px;
+        right: 28%;
+        transform: rotate(0deg);
+        opacity: 1;
+    }
+    32% {
+        /* Along her thighs */
+        bottom: 205px;
+        right: 36%;
+        transform: rotate(-3deg);
+        opacity: 1;
+    }
+    40% {
+        /* Upper thighs approaching belly */
+        bottom: 220px;
+        right: 42%;
+        transform: rotate(-8deg);
+        opacity: 1;
+    }
+    48% {
+        /* Starting up the belly curve */
         bottom: 260px;
-        left: 60%;
-        transform: rotate(-25deg);
+        right: 47%;
+        transform: rotate(-20deg);
         opacity: 1;
     }
-    78% {
-        bottom: 450px;
-        left: 72%;
+    56% {
+        /* Up the belly */
+        bottom: 320px;
+        right: 51%;
         transform: rotate(-35deg);
         opacity: 1;
     }
+    64% {
+        /* Peak of the belly - launch point! */
+        bottom: 380px;
+        right: 54%;
+        transform: rotate(-30deg);
+        opacity: 1;
+    }
+    72% {
+        /* Exiting at 30 degree slope */
+        bottom: 450px;
+        right: 62%;
+        transform: rotate(-30deg);
+        opacity: 1;
+    }
+    80% {
+        /* Continuing 30 degree trajectory */
+        bottom: 520px;
+        right: 70%;
+        transform: rotate(-30deg);
+        opacity: 1;
+    }
     88% {
-        bottom: 700px;
-        left: 82%;
-        transform: rotate(-40deg);
+        /* Still 30 degrees, heading off screen */
+        bottom: 590px;
+        right: 78%;
+        transform: rotate(-30deg);
+        opacity: 1;
+    }
+    95% {
+        /* Off screen */
+        bottom: 680px;
+        right: 88%;
+        transform: rotate(-30deg);
         opacity: 0;
     }
-    89% {
-        bottom: 60px;
-        left: 8%;
-        transform: rotate(-5deg);
+    96% {
+        /* Reset to start */
+        bottom: 200px;
+        right: 5%;
+        transform: rotate(0deg);
         opacity: 0;
     }
     100% {
-        bottom: 60px;
-        left: 8%;
-        transform: rotate(-5deg);
+        bottom: 200px;
+        right: 5%;
+        transform: rotate(0deg);
         opacity: 1;
     }
 }
@@ -1423,6 +1577,42 @@ footer p {
     section {
         padding: 60px 20px;
     }
+
+    /* Floating Gigi - tablet */
+    .floating-gigi-container {
+        height: 250px;
+    }
+
+    .floating-gigi {
+        height: 420px;
+    }
+
+    /* Gigi Tourist, Sam Teaching and camera flash - tablet */
+    .theme-section .gigi-tourist {
+        height: 350px;
+        left: 2%;
+    }
+
+    .sam-teaching {
+        height: 350px;
+        right: 2%;
+    }
+
+    .camera-flash {
+        left: 5%;
+        top: -8%;
+        width: 150px;
+        height: 150px;
+    }
+
+    /* Gigi Pregnant - tablet */
+    .ski-jump-container {
+        height: 400px;
+    }
+
+    .gigi-ramp {
+        height: 600px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -1546,5 +1736,64 @@ footer p {
 
     .skiing-focus {
         font-size: 1em;
+    }
+
+    /* Floating Gigi - mobile */
+    .floating-gigi-container {
+        height: 180px;
+    }
+
+    .floating-gigi {
+        height: 300px;
+    }
+
+    .detail-card h3 {
+        font-size: 1.6em;
+    }
+
+    /* Gigi Tourist and camera flash - mobile */
+    .theme-section .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .theme-section .gigi-tourist {
+        position: relative;
+        height: 280px;
+        left: auto;
+        top: auto;
+        transform: none;
+        margin-bottom: 20px;
+    }
+
+    .sam-teaching {
+        position: relative;
+        height: 280px;
+        right: auto;
+        top: auto;
+        transform: none;
+        margin-bottom: 20px;
+    }
+
+    .camera-flash {
+        left: 50%;
+        top: 5%;
+        transform: translateX(-50%);
+        width: 120px;
+        height: 120px;
+    }
+
+    /* Gigi Pregnant - mobile */
+    .ski-jump-section .section-title-script {
+        margin-bottom: 40px;
+    }
+
+    .ski-jump-container {
+        height: 300px;
+    }
+
+    .gigi-ramp {
+        height: 450px;
     }
 }
