@@ -1333,31 +1333,36 @@ footer p {
 .game-area {
     position: relative;
     width: 100%;
-    height: 350px;
+    height: 400px;
     overflow: hidden;
     border-radius: 10px;
     background: linear-gradient(180deg, #87CEEB 0%, #c9e4f5 100%);
+    cursor: pointer;
 }
 
+/* Gigi rotated 90deg to lie down - feet left, head right */
 .gigi-ramp-game {
     position: absolute;
-    bottom: 20px;
-    left: 10%;
-    height: 350px;
-    width: auto;
-    transform: rotate(90deg);
+    top: 50%;
+    left: 50%;
     transform-origin: center center;
+    transform: translate(-50%, -50%) rotate(90deg);
+    height: 95%;
+    width: auto;
     mix-blend-mode: multiply;
+    pointer-events: none;
 }
 
+/* Owl sits on belly, ready to launch */
 .game-owl {
     position: absolute;
-    width: 60px;
-    height: 50px;
-    bottom: 80px;
-    left: 5%;
+    width: 70px;
+    height: 60px;
+    left: 38%;
+    bottom: 200px;
     z-index: 10;
-    transition: none;
+    transition: all 0.1s ease-out;
+    transform-origin: center bottom;
 }
 
 .game-owl svg {
@@ -1365,88 +1370,57 @@ footer p {
     height: 100%;
 }
 
-.game-owl.skiing {
-    animation: skiAlongBody 2.5s linear forwards;
+.game-owl.charging {
+    animation: owlBounce 0.3s ease-in-out infinite;
 }
 
-.game-owl.launching {
-    transition: all 0.1s linear;
+@keyframes owlBounce {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-5px) scale(1.05); }
 }
 
-.game-owl.flying {
-    animation: flyArc 2s ease-out forwards;
-}
-
-@keyframes skiAlongBody {
-    0% {
-        left: 5%;
-        bottom: 80px;
-        transform: rotate(0deg);
-    }
-    20% {
-        left: 15%;
-        bottom: 90px;
-        transform: rotate(-3deg);
-    }
-    40% {
-        left: 25%;
-        bottom: 110px;
-        transform: rotate(-8deg);
-    }
-    60% {
-        left: 35%;
-        bottom: 150px;
-        transform: rotate(-15deg);
-    }
-    80% {
-        left: 42%;
-        bottom: 210px;
-        transform: rotate(-25deg);
-    }
-    100% {
-        /* Highest point of belly */
-        left: 48%;
-        bottom: 280px;
-        transform: rotate(-35deg);
-    }
-}
-
-.launch-zone {
+/* Power meter - vertical bar next to Gigi */
+.power-meter {
     position: absolute;
-    bottom: 250px;
-    left: 45%;
-    width: 70px;
-    height: 70px;
-    border: 3px dashed #FFD700;
-    border-radius: 50%;
-    opacity: 0;
-    z-index: 5;
+    left: 20px;
+    bottom: 40px;
+    width: 30px;
+    height: 300px;
+    background: rgba(0,0,0,0.3);
+    border: 3px solid #fff;
+    border-radius: 15px;
+    overflow: hidden;
+    z-index: 15;
 }
 
-.launch-zone.active {
-    opacity: 1;
-    animation: pulse 0.5s ease-in-out infinite;
-}
-
-@keyframes pulse {
-    0%, 100% { transform: scale(1); opacity: 0.7; }
-    50% { transform: scale(1.2); opacity: 1; }
-}
-
-.distance-markers {
+.power-fill {
     position: absolute;
-    bottom: 20px;
+    bottom: 0;
     left: 0;
-    right: 0;
-    height: 30px;
+    width: 100%;
+    height: 0%;
+    background: linear-gradient(to top, #00ff00 0%, #ffff00 50%, #ff0000 100%);
+    transition: height 0.05s linear;
+    border-radius: 0 0 12px 12px;
 }
 
-.distance-markers .marker {
+.power-target {
     position: absolute;
-    font-size: 0.8em;
+    top: 5%;
+    left: -5px;
+    right: -5px;
+    height: 20px;
+    border: 3px dashed gold;
+    border-radius: 5px;
+    background: rgba(255,215,0,0.2);
+}
+
+.power-label {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.1em;
     color: var(--deep-pine);
-    font-weight: bold;
-    transform: translateX(-50%);
+    margin-top: 10px;
+    text-align: center;
 }
 
 .game-ui {
