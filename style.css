@@ -1178,7 +1178,7 @@ footer p {
 /* Ski Jump Section */
 .ski-jump-section {
     background: linear-gradient(180deg, var(--glacier-blue) 0%, var(--alpine-mist) 50%, #E0F0FF 100%);
-    padding: 60px 20px 100px;
+    padding: 40px 0 0;
     position: relative;
     overflow: hidden;
 }
@@ -1186,38 +1186,32 @@ footer p {
 .ski-jump-section .section-title-script {
     text-align: center;
     color: var(--deep-pine);
-    margin-bottom: 40px;
+    margin-bottom: 20px;
 }
 
 .ski-jump-container {
     position: relative;
-    max-width: 800px;
-    margin: 0 auto;
-    height: 400px;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
+    width: 100%;
+    height: 500px;
+    overflow: hidden;
 }
 
 .gigi-ramp {
-    transform: rotate(90deg);
-    height: 350px;
-    width: auto;
-    object-fit: contain;
-    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.3));
     position: absolute;
     bottom: 0;
-    left: 50%;
-    transform: rotate(90deg) translateY(50%);
-    transform-origin: center center;
-    border-radius: 20px;
+    left: 0;
+    width: 100%;
+    height: auto;
+    transform: rotate(-90deg) scaleX(-1);
+    transform-origin: bottom left;
+    filter: drop-shadow(0 -10px 30px rgba(0, 0, 0, 0.3));
 }
 
 .jumping-owl {
     position: absolute;
-    width: 120px;
-    height: 100px;
-    animation: ski-jump 4s ease-in-out infinite;
+    width: 100px;
+    height: 80px;
+    animation: ski-jump 5s ease-in-out infinite;
     z-index: 10;
     filter: drop-shadow(3px 3px 10px rgba(0, 0, 0, 0.4));
 }
@@ -1229,39 +1223,52 @@ footer p {
 
 @keyframes ski-jump {
     0% {
-        bottom: 50px;
-        left: 20%;
-        transform: rotate(-15deg);
+        bottom: 80px;
+        left: 5%;
+        transform: rotate(-5deg);
+        opacity: 1;
     }
-    25% {
-        bottom: 180px;
-        left: 35%;
-        transform: rotate(-25deg);
+    20% {
+        bottom: 120px;
+        left: 25%;
+        transform: rotate(-8deg);
+        opacity: 1;
     }
     40% {
-        bottom: 280px;
-        left: 48%;
-        transform: rotate(-10deg);
+        bottom: 200px;
+        left: 45%;
+        transform: rotate(-12deg);
+        opacity: 1;
     }
-    50% {
+    55% {
         bottom: 320px;
-        left: 55%;
-        transform: rotate(5deg);
+        left: 58%;
+        transform: rotate(-20deg);
+        opacity: 1;
     }
-    65% {
-        bottom: 280px;
-        left: 65%;
-        transform: rotate(15deg);
+    70% {
+        bottom: 500px;
+        left: 68%;
+        transform: rotate(-30deg);
+        opacity: 1;
     }
-    80% {
-        bottom: 150px;
+    85% {
+        bottom: 700px;
         left: 75%;
-        transform: rotate(20deg);
+        transform: rotate(-35deg);
+        opacity: 0;
+    }
+    86% {
+        bottom: 80px;
+        left: 5%;
+        transform: rotate(-5deg);
+        opacity: 0;
     }
     100% {
-        bottom: 50px;
-        left: 20%;
-        transform: rotate(-15deg);
+        bottom: 80px;
+        left: 5%;
+        transform: rotate(-5deg);
+        opacity: 1;
     }
 }
 
