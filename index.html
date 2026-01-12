@@ -656,17 +656,18 @@
             distance = Math.max(5, distance);
 
             // Determine message based on distance
-            // 200m+ is considered 90th percentile (natural birth!)
+            // 280m+ is considered 97th percentile (natural birth!)
             let distanceLabel = '';
             let needsCSection = false;
-            if (distance >= 300) distanceLabel = '🏆 LEGENDARY!';
-            else if (distance >= 250) distanceLabel = '🥇 GOLD MEDAL!';
-            else if (distance >= 200) distanceLabel = '🥈 SILVER!';
+            if (distance >= 320) distanceLabel = '🏆 LEGENDARY!';
+            else if (distance >= 300) distanceLabel = '🥇 GOLD MEDAL!';
+            else if (distance >= 280) distanceLabel = '🥈 SILVER!';
             else {
                 needsCSection = true;
-                if (distance >= 150) distanceLabel = '🥉 BRONZE!';
-                else if (distance >= 100) distanceLabel = '✈️ Great flight!';
-                else if (distance >= 50) distanceLabel = '🛫 Decent!';
+                if (distance >= 250) distanceLabel = '🥉 BRONZE!';
+                else if (distance >= 200) distanceLabel = '✈️ Great flight!';
+                else if (distance >= 150) distanceLabel = '🛫 Decent!';
+                else if (distance >= 100) distanceLabel = '😅 Keep trying!';
                 else distanceLabel = '🐣 Keep practicing!';
             }
 
