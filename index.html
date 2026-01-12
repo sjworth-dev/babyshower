@@ -521,11 +521,28 @@
         let gameState = 'idle'; // idle, charging, flying
         let power = 0;
         let powerDirection = 1; // 1 = going up, -1 = going down
+        let powerSpeed = 2.5; // Base speed - will vary
         let animationFrame;
         let highScore = parseInt(localStorage.getItem('skiJumpHighScore')) || 0;
+        let windFactor = 0; // -30 to +30 bonus/penalty
+        let jumpCount = 0;
 
         // Initialize high score display
         if (highScoreEl) highScoreEl.textContent = highScore + 'm';
+
+        function generateWind() {
+            // Random wind from -30 to +30
+            windFactor = Math.round((Math.random() - 0.5) * 60);
+            return windFactor;
+        }
+
+        function getWindLabel() {
+            if (windFactor > 20) return '💨 Strong Tailwind!';
+            if (windFactor > 10) return '🌬️ Tailwind';
+            if (windFactor < -20) return '💨 Strong Headwind!';
+            if (windFactor < -10) return '🌬️ Headwind';
+            return '🍃 Calm';
+        }
 
         function resetOwl() {
             if (!gameOwl) return;
@@ -541,11 +558,19 @@
             gameState = 'charging';
             power = 0;
             powerDirection = 1;
+            jumpCount++;
+
+            // Increase difficulty over time - faster power bar
+            powerSpeed = 2.5 + Math.min(jumpCount * 0.15, 2.5); // Max speed 5
+
+            // Generate new wind for this jump
+            generateWind();
+
             resetOwl();
 
             startBtn.disabled = false;
             startBtn.textContent = 'TAP TO LAUNCH!';
-            powerLabel.textContent = 'Tap when the bar is full!';
+            powerLabel.textContent = getWindLabel() + ' - Hit the sweet spot!';
             currentDistanceEl.textContent = '0m';
 
             gameOwl.classList.add('charging');
@@ -555,8 +580,8 @@
         function animatePower() {
             if (gameState !== 'charging') return;
 
-            // Move power up and down
-            power += powerDirection * 2;
+            // Move power up and down at variable speed
+            power += powerDirection * powerSpeed;
 
             if (power >= 100) {
                 power = 100;
@@ -579,11 +604,61 @@
             cancelAnimationFrame(animationFrame);
             gameOwl.classList.remove('charging');
 
-            // Calculate distance based on power (10-150m)
-            const distance = Math.round(10 + (power * 1.4));
+            // ===== NEW SCORING SYSTEM =====
+            // Base distance from power (0-100 power = 20-200m base)
+            let baseDistance = 20 + (power * 1.8);
+
+            // Perfect zone bonus: 95-100 power gives big bonus
+            let perfectBonus = 0;
+            let timingLabel = '';
+
+            if (power >= 98) {
+                perfectBonus = 80 + Math.random() * 40; // 80-120 bonus
+                timingLabel = '🎯 PERFECT!';
+            } else if (power >= 95) {
+                perfectBonus = 50 + Math.random() * 30; // 50-80 bonus
+                timingLabel = '🔥 Excellent!';
+            } else if (power >= 90) {
+                perfectBonus = 25 + Math.random() * 25; // 25-50 bonus
+                timingLabel = '⭐ Great!';
+            } else if (power >= 75) {
+                perfectBonus = 10 + Math.random() * 15; // 10-25 bonus
+                timingLabel = '👍 Good!';
+            } else if (power >= 50) {
+                perfectBonus = Math.random() * 10; // 0-10 bonus
+                timingLabel = '😐 Okay';
+            } else if (power >= 25) {
+                perfectBonus = -20 + Math.random() * 10; // -20 to -10 penalty
+                timingLabel = '😬 Weak...';
+            } else {
+                perfectBonus = -40 + Math.random() * 15; // -40 to -25 penalty
+                timingLabel = '💥 Oops!';
+            }
+
+            // Apply wind factor
+            const windBonus = windFactor;
+
+            // Random "technique" factor (-15 to +15)
+            const techniqueFactor = (Math.random() - 0.5) * 30;
+
+            // Calculate final distance
+            let distance = Math.round(baseDistance + perfectBonus + windBonus + techniqueFactor);
+
+            // Minimum distance is 5m, no upper limit!
+            distance = Math.max(5, distance);
+
+            // Determine message based on distance
+            let distanceLabel = '';
+            if (distance >= 300) distanceLabel = '🏆 LEGENDARY!';
+            else if (distance >= 250) distanceLabel = '🥇 GOLD MEDAL!';
+            else if (distance >= 200) distanceLabel = '🥈 SILVER!';
+            else if (distance >= 150) distanceLabel = '🥉 BRONZE!';
+            else if (distance >= 100) distanceLabel = '✈️ Great flight!';
+            else if (distance >= 50) distanceLabel = '🛫 Decent!';
+            else distanceLabel = '🐣 Keep practicing!';
 
             startBtn.textContent = 'Launching... ' + distance + 'm!';
-            powerLabel.textContent = power >= 90 ? 'PERFECT!' : power >= 70 ? 'Great!' : power >= 50 ? 'Good!' : 'Try again!';
+            powerLabel.textContent = timingLabel + ' ' + distanceLabel;
 
             // Get owl position
             const startLeft = gameOwl.offsetLeft;
