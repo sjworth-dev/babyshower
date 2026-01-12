@@ -1430,7 +1430,7 @@ footer p {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.75);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1445,29 +1445,64 @@ footer p {
     visibility: visible;
 }
 
-.csection-message {
-    background: linear-gradient(135deg, #ff6b6b, #cc0000);
-    color: white;
-    font-family: 'Permanent Marker', cursive;
-    font-size: 1.8em;
-    padding: 25px 40px;
-    border-radius: 15px;
-    text-align: center;
-    line-height: 1.4;
-    box-shadow: 0 10px 40px rgba(255, 0, 0, 0.5);
-    animation: csection-pop 0.4s ease-out, pulse-banner 0.5s ease-in-out 0.4s infinite alternate;
-    border: 4px solid white;
+.doctor-speech {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    animation: doctor-pop 0.4s ease-out;
 }
 
-@keyframes csection-pop {
-    0% { transform: scale(0.5); opacity: 0; }
+.doctor-face {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 4px solid white;
+    object-fit: cover;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+    flex-shrink: 0;
+}
+
+.speech-bubble {
+    position: relative;
+    background: white;
+    border-radius: 20px;
+    padding: 20px 25px;
+    max-width: 280px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.3);
+    animation: bubble-pop 0.4s ease-out 0.1s both;
+}
+
+.speech-bubble::before {
+    content: '';
+    position: absolute;
+    left: -20px;
+    top: 30px;
+    border: 12px solid transparent;
+    border-right-color: white;
+}
+
+.speech-bubble p {
+    margin: 0;
+    font-family: 'Permanent Marker', cursive;
+    font-size: 1.3em;
+    color: #cc0000;
+    line-height: 1.3;
+}
+
+.speech-bubble p:first-child {
+    margin-bottom: 8px;
+}
+
+@keyframes doctor-pop {
+    0% { transform: scale(0.5) translateX(-50px); opacity: 0; }
+    70% { transform: scale(1.05) translateX(5px); }
+    100% { transform: scale(1) translateX(0); opacity: 1; }
+}
+
+@keyframes bubble-pop {
+    0% { transform: scale(0); opacity: 0; }
     70% { transform: scale(1.1); }
     100% { transform: scale(1); opacity: 1; }
-}
-
-@keyframes pulse-banner {
-    from { transform: scale(1); }
-    to { transform: scale(1.05); }
 }
 
 .game-ui {
