@@ -391,6 +391,13 @@
                 <div class="game-area" id="game-area">
                     <img src="Gigi Pregnant.png?v=5" alt="Gigi" class="gigi-ramp-game">
 
+                    <!-- C-Section Overlay -->
+                    <div class="csection-overlay" id="csection-overlay">
+                        <div class="csection-message">
+                            🏥 Not strong enough!<br>Time for a C-Section! 🏥
+                        </div>
+                    </div>
+
                     <!-- Power meter bar along Gigi's body -->
                     <div class="power-meter" id="power-meter">
                         <div class="power-fill" id="power-fill"></div>
@@ -517,6 +524,7 @@
         const currentDistanceEl = document.getElementById('current-distance');
         const highScoreEl = document.getElementById('high-score');
         const gameArea = document.getElementById('game-area');
+        const csectionOverlay = document.getElementById('csection-overlay');
 
         let gameState = 'idle'; // idle, charging, flying
         let power = 0;
@@ -663,10 +671,14 @@
             }
 
             startBtn.textContent = 'Launching... ' + distance + 'm!';
-            if (needsCSection) {
-                powerLabel.innerHTML = timingLabel + ' ' + distanceLabel + '<br><span class="csection-banner">🏥 Not strong enough! Time for a C-Section! 🏥</span>';
-            } else {
-                powerLabel.textContent = timingLabel + ' ' + distanceLabel;
+            powerLabel.textContent = timingLabel + ' ' + distanceLabel;
+
+            // Show C-Section overlay if below 90th percentile
+            if (needsCSection && csectionOverlay) {
+                csectionOverlay.classList.add('show');
+                setTimeout(() => {
+                    csectionOverlay.classList.remove('show');
+                }, 3000);
             }
 
             // Get owl position
