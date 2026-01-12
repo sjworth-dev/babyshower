@@ -648,17 +648,26 @@
             distance = Math.max(5, distance);
 
             // Determine message based on distance
+            // 200m+ is considered 90th percentile (natural birth!)
             let distanceLabel = '';
+            let needsCSection = false;
             if (distance >= 300) distanceLabel = '🏆 LEGENDARY!';
             else if (distance >= 250) distanceLabel = '🥇 GOLD MEDAL!';
             else if (distance >= 200) distanceLabel = '🥈 SILVER!';
-            else if (distance >= 150) distanceLabel = '🥉 BRONZE!';
-            else if (distance >= 100) distanceLabel = '✈️ Great flight!';
-            else if (distance >= 50) distanceLabel = '🛫 Decent!';
-            else distanceLabel = '🐣 Keep practicing!';
+            else {
+                needsCSection = true;
+                if (distance >= 150) distanceLabel = '🥉 BRONZE!';
+                else if (distance >= 100) distanceLabel = '✈️ Great flight!';
+                else if (distance >= 50) distanceLabel = '🛫 Decent!';
+                else distanceLabel = '🐣 Keep practicing!';
+            }
 
             startBtn.textContent = 'Launching... ' + distance + 'm!';
-            powerLabel.textContent = timingLabel + ' ' + distanceLabel;
+            if (needsCSection) {
+                powerLabel.innerHTML = timingLabel + ' ' + distanceLabel + '<br><span class="csection-banner">🏥 Not strong enough! Time for a C-Section! 🏥</span>';
+            } else {
+                powerLabel.textContent = timingLabel + ' ' + distanceLabel;
+            }
 
             // Get owl position
             const startLeft = gameOwl.offsetLeft;
