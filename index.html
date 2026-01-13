@@ -1171,6 +1171,32 @@
                 e.stopPropagation();
             }, { passive: false });
         }
+
+        // Snow globe touch support for mobile
+        const snowGlobes = document.querySelectorAll('.snow-globe');
+        snowGlobes.forEach(globe => {
+            let touchTimeout;
+
+            globe.addEventListener('touchstart', (e) => {
+                globe.classList.add('shaking');
+                // Clear any existing timeout
+                if (touchTimeout) clearTimeout(touchTimeout);
+            }, { passive: true });
+
+            globe.addEventListener('touchend', (e) => {
+                // Keep shaking for 2 seconds after touch ends
+                touchTimeout = setTimeout(() => {
+                    globe.classList.remove('shaking');
+                }, 2000);
+            }, { passive: true });
+
+            // Also handle touchcancel
+            globe.addEventListener('touchcancel', (e) => {
+                touchTimeout = setTimeout(() => {
+                    globe.classList.remove('shaking');
+                }, 2000);
+            }, { passive: true });
+        });
     </script>
 </body>
 </html>

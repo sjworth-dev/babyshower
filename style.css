@@ -1258,7 +1258,8 @@ footer p {
     transition: transform 0.3s ease;
 }
 
-.snow-globe:hover {
+.snow-globe:hover,
+.snow-globe.shaking {
     animation: globeShake 0.3s ease-in-out infinite;
 }
 
@@ -1366,25 +1367,26 @@ footer p {
 .snowflake:nth-child(11) { left: 50%; animation-duration: 4.1s; animation-delay: 0.4s; font-size: 10px; }
 .snowflake:nth-child(12) { left: 20%; animation-duration: 3.7s; animation-delay: 0.9s; font-size: 14px; }
 
-/* Intense swirl on hover */
-.snow-globe:hover .snowflake {
+/* Intense swirl on hover/touch */
+.snow-globe:hover .snowflake,
+.snow-globe.shaking .snowflake {
     animation-name: snowSwirl;
     animation-duration: 0.8s !important;
     opacity: 1 !important;
 }
 
-.snow-globe:hover .snowflake:nth-child(1) { animation-delay: 0s; }
-.snow-globe:hover .snowflake:nth-child(2) { animation-delay: 0.05s; }
-.snow-globe:hover .snowflake:nth-child(3) { animation-delay: 0.1s; }
-.snow-globe:hover .snowflake:nth-child(4) { animation-delay: 0.15s; }
-.snow-globe:hover .snowflake:nth-child(5) { animation-delay: 0.2s; }
-.snow-globe:hover .snowflake:nth-child(6) { animation-delay: 0.25s; }
-.snow-globe:hover .snowflake:nth-child(7) { animation-delay: 0.3s; }
-.snow-globe:hover .snowflake:nth-child(8) { animation-delay: 0.35s; }
-.snow-globe:hover .snowflake:nth-child(9) { animation-delay: 0.4s; }
-.snow-globe:hover .snowflake:nth-child(10) { animation-delay: 0.45s; }
-.snow-globe:hover .snowflake:nth-child(11) { animation-delay: 0.5s; }
-.snow-globe:hover .snowflake:nth-child(12) { animation-delay: 0.55s; }
+.snow-globe:hover .snowflake:nth-child(1), .snow-globe.shaking .snowflake:nth-child(1) { animation-delay: 0s; }
+.snow-globe:hover .snowflake:nth-child(2), .snow-globe.shaking .snowflake:nth-child(2) { animation-delay: 0.05s; }
+.snow-globe:hover .snowflake:nth-child(3), .snow-globe.shaking .snowflake:nth-child(3) { animation-delay: 0.1s; }
+.snow-globe:hover .snowflake:nth-child(4), .snow-globe.shaking .snowflake:nth-child(4) { animation-delay: 0.15s; }
+.snow-globe:hover .snowflake:nth-child(5), .snow-globe.shaking .snowflake:nth-child(5) { animation-delay: 0.2s; }
+.snow-globe:hover .snowflake:nth-child(6), .snow-globe.shaking .snowflake:nth-child(6) { animation-delay: 0.25s; }
+.snow-globe:hover .snowflake:nth-child(7), .snow-globe.shaking .snowflake:nth-child(7) { animation-delay: 0.3s; }
+.snow-globe:hover .snowflake:nth-child(8), .snow-globe.shaking .snowflake:nth-child(8) { animation-delay: 0.35s; }
+.snow-globe:hover .snowflake:nth-child(9), .snow-globe.shaking .snowflake:nth-child(9) { animation-delay: 0.4s; }
+.snow-globe:hover .snowflake:nth-child(10), .snow-globe.shaking .snowflake:nth-child(10) { animation-delay: 0.45s; }
+.snow-globe:hover .snowflake:nth-child(11), .snow-globe.shaking .snowflake:nth-child(11) { animation-delay: 0.5s; }
+.snow-globe:hover .snowflake:nth-child(12), .snow-globe.shaking .snowflake:nth-child(12) { animation-delay: 0.55s; }
 
 @keyframes snowfall {
     0% {
@@ -1490,24 +1492,29 @@ footer p {
 .snowflake.blizzard:nth-child(65) { left: 26%; top: 55%; }
 .snowflake.blizzard:nth-child(66) { left: 50%; top: 22%; }
 
-.snow-globe:hover .snowflake.blizzard {
+.snow-globe:hover .snowflake.blizzard,
+.snow-globe.shaking .snowflake.blizzard {
     opacity: 1;
     animation: blizzardSwirl 0.5s ease-in-out infinite;
 }
 
-.snow-globe:hover .snowflake.blizzard:nth-child(odd) {
+.snow-globe:hover .snowflake.blizzard:nth-child(odd),
+.snow-globe.shaking .snowflake.blizzard:nth-child(odd) {
     animation-name: blizzardSwirl2;
 }
 
-.snow-globe:hover .snowflake.blizzard:nth-child(3n) {
+.snow-globe:hover .snowflake.blizzard:nth-child(3n),
+.snow-globe.shaking .snowflake.blizzard:nth-child(3n) {
     animation-name: blizzardSwirl3;
 }
 
-.snow-globe:hover .snowflake.blizzard:nth-child(4n) {
+.snow-globe:hover .snowflake.blizzard:nth-child(4n),
+.snow-globe.shaking .snowflake.blizzard:nth-child(4n) {
     animation-duration: 0.4s;
 }
 
-.snow-globe:hover .snowflake.blizzard:nth-child(5n) {
+.snow-globe:hover .snowflake.blizzard:nth-child(5n),
+.snow-globe.shaking .snowflake.blizzard:nth-child(5n) {
     animation-duration: 0.6s;
 }
 
