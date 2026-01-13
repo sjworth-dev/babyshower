@@ -996,11 +996,23 @@
         // Event listeners
         if (contractionStartBtn) {
             contractionStartBtn.addEventListener('click', startContractionGame);
+            contractionStartBtn.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                startContractionGame();
+            }, { passive: false });
         }
 
         if (tapZone) {
             tapZone.addEventListener('click', handleTap);
-            tapZone.addEventListener('touchstart', handleTap, { passive: false });
+            tapZone.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                handleTap(e);
+            }, { passive: false });
+            tapZone.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+            }, { passive: false });
         }
     </script>
 </body>
