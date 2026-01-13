@@ -1533,6 +1533,162 @@ section {
     color: var(--slate-gray);
 }
 
+/* Admin Section */
+.admin-section {
+    margin-top: 40px;
+    padding: 30px;
+    background: linear-gradient(135deg, #fff3cd 0%, #ffeeba 100%);
+    border: 2px dashed var(--warm-gold);
+    border-radius: 20px;
+}
+
+.admin-header h4 {
+    color: var(--dark-wood);
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.admin-header p {
+    color: var(--slate-gray);
+    margin-bottom: 20px;
+}
+
+.admin-upload-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.photo-input {
+    display: none;
+}
+
+.upload-photo-btn {
+    background: linear-gradient(135deg, var(--warm-gold) 0%, #e6b800 100%);
+    color: var(--dark-wood);
+}
+
+.admin-photo-preview {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--alpine-mist);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.admin-photo-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.admin-status {
+    margin-top: 15px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.admin-status.success {
+    background: rgba(95, 167, 119, 0.2);
+    color: var(--forest-green);
+}
+
+.admin-status.error {
+    background: rgba(223, 0, 36, 0.1);
+    color: var(--terracotta);
+}
+
+.admin-status.loading {
+    background: rgba(0, 133, 199, 0.1);
+    color: var(--olympic-blue);
+}
+
+.registered-guests {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--warm-gold);
+}
+
+.registered-guests h5 {
+    font-size: 1.3em;
+    color: var(--dark-wood);
+    margin-bottom: 15px;
+}
+
+.registered-guests-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+}
+
+.registered-guest-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    position: relative;
+}
+
+.registered-guest-item img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--warm-gold);
+}
+
+.registered-guest-item span {
+    font-size: 0.85em;
+    color: var(--dark-wood);
+}
+
+.delete-guest-btn {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--terracotta);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toggle-admin-btn {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--alpine-mist);
+    border: 2px solid var(--mountain-shadow);
+    cursor: pointer;
+    font-size: 1.2em;
+    opacity: 0.5;
+    transition: all 0.3s ease;
+}
+
+.toggle-admin-btn:hover {
+    opacity: 1;
+    background: var(--warm-gold);
+}
+
+.face-rsvp-card {
+    position: relative;
+}
+
 /* Responsive */
 @media (max-width: 600px) {
     .camera-container {

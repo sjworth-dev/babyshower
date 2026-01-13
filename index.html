@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <title>Baby Olympian Shower - Sam & Gigi</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Lato:wght@300;400;700&family=Pacifico&family=Dancing+Script:wght@400;500;600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=18">
+    <link rel="stylesheet" href="style.css?v=19">
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
@@ -593,6 +593,35 @@
                         </div>
                         <p class="guest-count-text"><span id="total-attending">0</span> guests attending</p>
                     </div>
+
+                    <!-- Admin: Pre-register Guests (hidden by default) -->
+                    <div id="admin-section" class="admin-section" style="display: none;">
+                        <div class="admin-header">
+                            <h4>Admin: Pre-Register Guests</h4>
+                            <p>Upload photos of expected guests so they'll be recognized</p>
+                        </div>
+                        <div class="admin-upload-form">
+                            <input type="text" id="admin-guest-name" class="guest-name-input" placeholder="Guest's name">
+                            <input type="file" id="admin-photo-input" accept="image/*" class="photo-input">
+                            <label for="admin-photo-input" class="face-btn upload-photo-btn">
+                                <span class="btn-icon">📷</span>
+                                Choose Photo
+                            </label>
+                            <div id="admin-photo-preview" class="admin-photo-preview"></div>
+                            <button id="admin-save-guest" class="face-btn register-btn">
+                                <span class="btn-icon">✓</span>
+                                Save Guest
+                            </button>
+                        </div>
+                        <div id="admin-status" class="admin-status"></div>
+                        <div class="registered-guests">
+                            <h5>Registered Guests</h5>
+                            <div id="registered-guests-list" class="registered-guests-list"></div>
+                        </div>
+                    </div>
+
+                    <!-- Toggle Admin Mode -->
+                    <button id="toggle-admin" class="toggle-admin-btn">🔧</button>
                 </div>
             </div>
         </section>
@@ -1763,6 +1792,173 @@
 
         // Load guest list on page load
         loadGuestList();
+
+        // ============ ADMIN: PRE-REGISTER GUESTS ============
+        const toggleAdminBtn = document.getElementById('toggle-admin');
+        const adminSection = document.getElementById('admin-section');
+        const adminPhotoInput = document.getElementById('admin-photo-input');
+        const adminPhotoPreview = document.getElementById('admin-photo-preview');
+        const adminGuestName = document.getElementById('admin-guest-name');
+        const adminSaveGuest = document.getElementById('admin-save-guest');
+        const adminStatus = document.getElementById('admin-status');
+        const registeredGuestsList = document.getElementById('registered-guests-list');
+
+        let adminPhotoData = null;
+
+        // Toggle admin section
+        if (toggleAdminBtn) {
+            toggleAdminBtn.addEventListener('click', async () => {
+                if (adminSection.style.display === 'none') {
+                    adminSection.style.display = 'block';
+                    await loadFaceModels(); // Pre-load models
+                    loadRegisteredGuests();
+                } else {
+                    adminSection.style.display = 'none';
+                }
+            });
+        }
+
+        // Handle photo selection
+        if (adminPhotoInput) {
+            adminPhotoInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        adminPhotoData = event.target.result;
+                        adminPhotoPreview.innerHTML = `<img src="${adminPhotoData}" alt="Preview">`;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        // Save guest with photo
+        if (adminSaveGuest) {
+            adminSaveGuest.addEventListener('click', async () => {
+                const name = adminGuestName.value.trim();
+
+                if (!name) {
+                    showAdminStatus('Please enter guest name', 'error');
+                    return;
+                }
+
+                if (!adminPhotoData) {
+                    showAdminStatus('Please select a photo', 'error');
+                    return;
+                }
+
+                showAdminStatus('Processing face...', 'loading');
+
+                try {
+                    // Create image element for face detection
+                    const img = new Image();
+                    img.src = adminPhotoData;
+                    await img.decode();
+
+                    // Create canvas to process image
+                    const canvas = document.createElement('canvas');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0);
+
+                    // Detect face
+                    const detection = await faceapi
+                        .detectSingleFace(canvas)
+                        .withFaceLandmarks()
+                        .withFaceDescriptor();
+
+                    if (!detection) {
+                        showAdminStatus('No face detected in photo. Try another image.', 'error');
+                        return;
+                    }
+
+                    // Convert descriptor to object for Firebase
+                    const descriptorObj = {};
+                    detection.descriptor.forEach((val, i) => descriptorObj[i] = val);
+
+                    // Resize photo for storage (smaller file size)
+                    const resizedCanvas = document.createElement('canvas');
+                    const maxSize = 300;
+                    const scale = Math.min(maxSize / img.width, maxSize / img.height);
+                    resizedCanvas.width = img.width * scale;
+                    resizedCanvas.height = img.height * scale;
+                    resizedCanvas.getContext('2d').drawImage(img, 0, 0, resizedCanvas.width, resizedCanvas.height);
+                    const resizedPhoto = resizedCanvas.toDataURL('image/jpeg', 0.7);
+
+                    // Save to Firebase
+                    const newRef = guestsRef.push();
+                    await newRef.set({
+                        name: name,
+                        faceDescriptor: descriptorObj,
+                        photo: resizedPhoto,
+                        registeredAt: Date.now(),
+                        preRegistered: true
+                    });
+
+                    showAdminStatus(`${name} registered successfully!`, 'success');
+
+                    // Reset form
+                    adminGuestName.value = '';
+                    adminPhotoData = null;
+                    adminPhotoPreview.innerHTML = '';
+                    adminPhotoInput.value = '';
+
+                    // Reload list
+                    loadRegisteredGuests();
+                    loadGuestList();
+
+                } catch (error) {
+                    console.error('Error saving guest:', error);
+                    showAdminStatus('Error processing photo: ' + error.message, 'error');
+                }
+            });
+        }
+
+        function showAdminStatus(message, type) {
+            adminStatus.textContent = message;
+            adminStatus.className = 'admin-status ' + type;
+            if (type !== 'loading') {
+                setTimeout(() => {
+                    adminStatus.textContent = '';
+                    adminStatus.className = 'admin-status';
+                }, 4000);
+            }
+        }
+
+        // Load registered guests
+        async function loadRegisteredGuests() {
+            const snapshot = await guestsRef.once('value');
+            const guests = snapshot.val() || {};
+
+            registeredGuestsList.innerHTML = '';
+
+            for (const [id, guest] of Object.entries(guests)) {
+                if (guest.faceDescriptor) {
+                    const item = document.createElement('div');
+                    item.className = 'registered-guest-item';
+                    item.innerHTML = `
+                        <img src="${guest.photo || ''}" alt="${guest.name}">
+                        <span>${guest.name}</span>
+                        <button class="delete-guest-btn" data-id="${id}">×</button>
+                    `;
+                    registeredGuestsList.appendChild(item);
+                }
+            }
+
+            // Add delete handlers
+            document.querySelectorAll('.delete-guest-btn').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const id = e.target.dataset.id;
+                    if (confirm('Delete this guest?')) {
+                        await guestsRef.child(id).remove();
+                        loadRegisteredGuests();
+                        loadGuestList();
+                    }
+                });
+            });
+        }
     </script>
 </body>
 </html>
