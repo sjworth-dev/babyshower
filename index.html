@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <title>Baby Olympian Shower - Sam & Gigi</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Lato:wght@300;400;700&family=Pacifico&family=Dancing+Script:wght@400;500;600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=21">
+    <link rel="stylesheet" href="style.css?v=22">
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
@@ -2035,26 +2035,101 @@
 
             registeredGuestsList.innerHTML = '';
 
+            // Build list of available partners (guests without partners)
+            const availablePartners = [];
+            for (const [id, guest] of Object.entries(guests)) {
+                if (!guest.partnerId && guest.faceDescriptor) {
+                    availablePartners.push({ id, name: guest.name });
+                }
+            }
+
             for (const [id, guest] of Object.entries(guests)) {
                 if (guest.faceDescriptor) {
                     const item = document.createElement('div');
                     item.className = 'registered-guest-item';
-                    item.innerHTML = `
-                        <img src="${guest.photo || ''}" alt="${guest.name}">
-                        <span>${guest.name}</span>
-                        <button class="delete-guest-btn" data-id="${id}">×</button>
-                    `;
+
+                    // Check if this guest has a partner
+                    const partnerName = guest.partnerId && guests[guest.partnerId]
+                        ? guests[guest.partnerId].name
+                        : null;
+
+                    // Build partner options (exclude self and current partner)
+                    const partnerOptions = availablePartners
+                        .filter(p => p.id !== id)
+                        .map(p => `<option value="${p.id}">${p.name}</option>`)
+                        .join('');
+
+                    if (partnerName) {
+                        item.innerHTML = `
+                            <img src="${guest.photo || ''}" alt="${guest.name}">
+                            <div class="guest-info">
+                                <span class="guest-name">${guest.name}</span>
+                                <span class="partner-badge">💑 ${partnerName}</span>
+                            </div>
+                            <button class="unlink-btn" data-id="${id}" data-partner="${guest.partnerId}" title="Unlink partner">🔗</button>
+                            <button class="delete-guest-btn" data-id="${id}">×</button>
+                        `;
+                    } else {
+                        item.innerHTML = `
+                            <img src="${guest.photo || ''}" alt="${guest.name}">
+                            <div class="guest-info">
+                                <span class="guest-name">${guest.name}</span>
+                                <select class="link-partner-select" data-id="${id}">
+                                    <option value="">Link partner...</option>
+                                    ${partnerOptions}
+                                </select>
+                            </div>
+                            <button class="delete-guest-btn" data-id="${id}">×</button>
+                        `;
+                    }
                     registeredGuestsList.appendChild(item);
                 }
             }
+
+            // Add link partner handlers
+            document.querySelectorAll('.link-partner-select').forEach(select => {
+                select.addEventListener('change', async (e) => {
+                    const guestId = e.target.dataset.id;
+                    const partnerId = e.target.value;
+                    if (partnerId) {
+                        // Link both guests
+                        await guestsRef.child(guestId).update({ partnerId: partnerId });
+                        await guestsRef.child(partnerId).update({ partnerId: guestId });
+                        showAdminStatus('Partners linked!', 'success');
+                        loadRegisteredGuests();
+                        populateSpouseDropdown();
+                    }
+                });
+            });
+
+            // Add unlink handlers
+            document.querySelectorAll('.unlink-btn').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const guestId = e.target.dataset.id;
+                    const partnerId = e.target.dataset.partner;
+                    if (confirm('Unlink these partners?')) {
+                        await guestsRef.child(guestId).update({ partnerId: null });
+                        await guestsRef.child(partnerId).update({ partnerId: null });
+                        showAdminStatus('Partners unlinked', 'success');
+                        loadRegisteredGuests();
+                        populateSpouseDropdown();
+                    }
+                });
+            });
 
             // Add delete handlers
             document.querySelectorAll('.delete-guest-btn').forEach(btn => {
                 btn.addEventListener('click', async (e) => {
                     const id = e.target.dataset.id;
                     if (confirm('Delete this guest?')) {
+                        // Also unlink partner if exists
+                        const guest = guests[id];
+                        if (guest && guest.partnerId) {
+                            await guestsRef.child(guest.partnerId).update({ partnerId: null });
+                        }
                         await guestsRef.child(id).remove();
                         loadRegisteredGuests();
+                        populateSpouseDropdown();
                         loadGuestList();
                     }
                 });

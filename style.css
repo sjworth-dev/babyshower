@@ -1698,6 +1698,10 @@ section {
     align-items: center;
     gap: 5px;
     position: relative;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 12px;
+    min-width: 100px;
 }
 
 .registered-guest-item img {
@@ -1708,9 +1712,62 @@ section {
     border: 2px solid var(--warm-gold);
 }
 
+.registered-guest-item .guest-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.registered-guest-item .guest-name {
+    font-size: 0.9em;
+    font-weight: 600;
+    color: var(--dark-wood);
+}
+
 .registered-guest-item span {
     font-size: 0.85em;
     color: var(--dark-wood);
+}
+
+.partner-badge {
+    font-size: 0.75em !important;
+    color: var(--olympic-blue) !important;
+    background: rgba(0, 133, 199, 0.1);
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+
+.link-partner-select {
+    font-size: 0.75em;
+    padding: 4px 8px;
+    border: 1px solid var(--warm-gold);
+    border-radius: 8px;
+    background: white;
+    color: var(--slate-gray);
+    cursor: pointer;
+    max-width: 90px;
+}
+
+.unlink-btn {
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--olympic-blue);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.unlink-btn:hover {
+    background: #006699;
 }
 
 .delete-guest-btn {
