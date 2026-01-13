@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <title>Baby Olympian Shower - Sam & Gigi</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Lato:wght@300;400;700&family=Pacifico&family=Dancing+Script:wght@400;500;600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=22">
+    <link rel="stylesheet" href="style.css?v=23">
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
@@ -1724,14 +1724,29 @@
                 partnerRsvpSection.style.display = 'block';
                 partnerNameDisplay.textContent = currentPartner.name;
                 rsvpForPartnerCheckbox.checked = true;
+                updateAttendButtonText(true);
             } else {
                 partnerRsvpSection.style.display = 'none';
+                updateAttendButtonText(false);
             }
 
             // Reset buttons visibility
             attendYesBtn.style.display = 'block';
             attendNoBtn.style.display = 'block';
             guestCountSelection.style.display = 'none';
+        }
+
+        // Update button text based on partner checkbox
+        function updateAttendButtonText(includePartner) {
+            const btnText = includePartner ? "Yes, we'll be there!" : "Yes, I'll be there!";
+            attendYesBtn.innerHTML = `<span class="btn-icon">🎉</span>${btnText}`;
+        }
+
+        // Listen for partner checkbox changes
+        if (rsvpForPartnerCheckbox) {
+            rsvpForPartnerCheckbox.addEventListener('change', (e) => {
+                updateAttendButtonText(e.target.checked);
+            });
         }
 
         // Handle attendance selection
