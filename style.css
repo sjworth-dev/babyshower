@@ -1314,6 +1314,7 @@ footer p {
     object-fit: contain;
     z-index: 2;
     filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+    mix-blend-mode: multiply;
 }
 
 .globe-reflection {
