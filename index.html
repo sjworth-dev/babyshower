@@ -8,10 +8,12 @@
     <meta http-equiv="Expires" content="0">
     <title>Baby Olympian Shower - Sam & Gigi</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Lato:wght@300;400;700&family=Pacifico&family=Dancing+Script:wght@400;500;600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=17">
+    <link rel="stylesheet" href="style.css?v=18">
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    <!-- Face-api.js for facial recognition -->
+    <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
 </head>
 <body>
     <div class="snow-container">
@@ -486,55 +488,110 @@
 
         <section class="rsvp-section">
             <div class="container">
-                <div class="rsvp-card">
-                    <h3 class="rsvp-title-script">Please RSVP</h3>
-                    <p class="rsvp-intro">Let us know if you can join our celebration!</p>
+                <div class="rsvp-card face-rsvp-card">
+                    <h3 class="rsvp-title-script">RSVP with a Selfie!</h3>
+                    <p class="rsvp-intro">Take a quick selfie and we'll recognize you instantly</p>
 
-                    <form id="rsvp-form" class="rsvp-form" action="https://formspree.io/f/xojjapne" method="POST">
-                        <div class="form-group">
-                            <label for="name">Name(s) *</label>
-                            <input type="text" id="name" name="name" required placeholder="Your full name">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="guests">Number of Guests *</label>
-                            <select id="guests" name="guests" required>
-                                <option value="">Select number of guests</option>
-                                <option value="1">1 Guest</option>
-                                <option value="2">2 Guests</option>
-                                <option value="3">3 Guests</option>
-                                <option value="4">4 Guests</option>
-                                <option value="5+">5+ Guests</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="attending">Will you attend? *</label>
-                            <div class="radio-group">
-                                <label class="radio-label">
-                                    <input type="radio" name="attending" value="yes" required>
-                                    <span>Yes, we'll be there!</span>
-                                </label>
-                                <label class="radio-label">
-                                    <input type="radio" name="attending" value="no" required>
-                                    <span>Sorry, can't make it</span>
-                                </label>
+                    <!-- Step 1: Camera / Take Selfie -->
+                    <div id="face-rsvp-camera" class="face-rsvp-step">
+                        <div class="camera-container">
+                            <video id="face-video" autoplay muted playsinline></video>
+                            <canvas id="face-canvas"></canvas>
+                            <div id="face-overlay" class="face-overlay">
+                                <div class="face-guide"></div>
                             </div>
                         </div>
-
-                        <button type="submit" class="submit-btn">Send RSVP</button>
-
-                        <p class="form-note">* Required fields</p>
-                    </form>
-
-                    <div id="form-success" class="form-message success-message" style="display: none;">
-                        <h4>Thank you!</h4>
-                        <p>Your RSVP has been received. We can't wait to celebrate with you!</p>
+                        <div class="camera-controls">
+                            <button id="start-camera-btn" class="face-btn start-camera-btn">
+                                <span class="btn-icon">📸</span>
+                                Start Camera
+                            </button>
+                            <button id="capture-btn" class="face-btn capture-btn" style="display: none;">
+                                <span class="btn-icon">✨</span>
+                                Take Selfie
+                            </button>
+                        </div>
+                        <p class="camera-hint">Position your face in the circle</p>
+                        <div id="face-loading" class="face-loading" style="display: none;">
+                            <div class="face-spinner"></div>
+                            <span>Analyzing face...</span>
+                        </div>
                     </div>
 
-                    <div id="form-error" class="form-message error-message" style="display: none;">
-                        <h4>Oops!</h4>
-                        <p>Something went wrong. Please try again or contact us directly.</p>
+                    <!-- Step 2: Recognition Result -->
+                    <div id="face-rsvp-result" class="face-rsvp-step" style="display: none;">
+                        <div class="recognition-result">
+                            <img id="captured-face" class="captured-face" src="" alt="Your photo">
+                            <div id="recognition-status" class="recognition-status">
+                                <!-- Filled by JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: New Guest Registration -->
+                    <div id="face-rsvp-register" class="face-rsvp-step" style="display: none;">
+                        <div class="register-form">
+                            <h4>We don't recognize you yet!</h4>
+                            <p>Enter your name to register:</p>
+                            <input type="text" id="new-guest-name" class="guest-name-input" placeholder="Your name">
+                            <button id="register-guest-btn" class="face-btn register-btn">
+                                <span class="btn-icon">✓</span>
+                                Register Me
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: RSVP Selection -->
+                    <div id="face-rsvp-attend" class="face-rsvp-step" style="display: none;">
+                        <div class="attend-selection">
+                            <h4 id="welcome-name">Welcome!</h4>
+                            <p>Will you be joining us?</p>
+                            <div class="attend-buttons">
+                                <button id="attend-yes-btn" class="face-btn attend-btn attend-yes">
+                                    <span class="btn-icon">🎉</span>
+                                    Yes, I'll be there!
+                                </button>
+                                <button id="attend-no-btn" class="face-btn attend-btn attend-no">
+                                    <span class="btn-icon">😢</span>
+                                    Sorry, can't make it
+                                </button>
+                            </div>
+                            <div class="guest-count-selection" id="guest-count-selection" style="display: none;">
+                                <label>How many guests?</label>
+                                <select id="face-guest-count">
+                                    <option value="1">1 Guest</option>
+                                    <option value="2">2 Guests</option>
+                                    <option value="3">3 Guests</option>
+                                    <option value="4">4+ Guests</option>
+                                </select>
+                                <button id="confirm-rsvp-btn" class="face-btn confirm-btn">
+                                    <span class="btn-icon">✓</span>
+                                    Confirm RSVP
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 5: Success -->
+                    <div id="face-rsvp-success" class="face-rsvp-step" style="display: none;">
+                        <div class="rsvp-success-message">
+                            <div class="success-icon">🎿</div>
+                            <h4>You're all set!</h4>
+                            <p id="success-message-text">We can't wait to celebrate with you!</p>
+                            <button id="rsvp-again-btn" class="face-btn secondary-btn">
+                                <span class="btn-icon">👥</span>
+                                RSVP Another Guest
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Guest List Preview -->
+                    <div class="guest-list-preview">
+                        <h4>Who's Coming</h4>
+                        <div id="guest-faces" class="guest-faces">
+                            <!-- Filled by JS -->
+                        </div>
+                        <p class="guest-count-text"><span id="total-attending">0</span> guests attending</p>
                     </div>
                 </div>
             </div>
@@ -1405,6 +1462,307 @@
                 }, 2000);
             }, { passive: true });
         });
+
+        // ============ FACIAL RECOGNITION RSVP ============
+        const MODEL_URL = 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api/model';
+
+        // DOM Elements
+        const startCameraBtn = document.getElementById('start-camera-btn');
+        const captureBtn = document.getElementById('capture-btn');
+        const faceVideo = document.getElementById('face-video');
+        const faceCanvas = document.getElementById('face-canvas');
+        const faceLoading = document.getElementById('face-loading');
+        const cameraStep = document.getElementById('face-rsvp-camera');
+        const resultStep = document.getElementById('face-rsvp-result');
+        const registerStep = document.getElementById('face-rsvp-register');
+        const attendStep = document.getElementById('face-rsvp-attend');
+        const successStep = document.getElementById('face-rsvp-success');
+        const capturedFaceImg = document.getElementById('captured-face');
+        const recognitionStatus = document.getElementById('recognition-status');
+        const newGuestNameInput = document.getElementById('new-guest-name');
+        const registerGuestBtn = document.getElementById('register-guest-btn');
+        const welcomeName = document.getElementById('welcome-name');
+        const attendYesBtn = document.getElementById('attend-yes-btn');
+        const attendNoBtn = document.getElementById('attend-no-btn');
+        const guestCountSelection = document.getElementById('guest-count-selection');
+        const confirmRsvpBtn = document.getElementById('confirm-rsvp-btn');
+        const rsvpAgainBtn = document.getElementById('rsvp-again-btn');
+        const successMessageText = document.getElementById('success-message-text');
+        const guestFacesContainer = document.getElementById('guest-faces');
+        const totalAttendingEl = document.getElementById('total-attending');
+
+        let currentFaceDescriptor = null;
+        let currentGuestId = null;
+        let currentPhotoData = null;
+        let labeledDescriptors = [];
+        let modelsLoaded = false;
+
+        // Initialize Firebase for RSVP guests (using existing config)
+        const guestsRef = firebase.database().ref('rsvp-guests');
+
+        // Load face-api models
+        async function loadFaceModels() {
+            if (modelsLoaded) return;
+            try {
+                await faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL);
+                await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
+                await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL);
+                modelsLoaded = true;
+                console.log('Face-api models loaded');
+            } catch (error) {
+                console.error('Error loading face models:', error);
+            }
+        }
+
+        // Start camera
+        async function startCamera() {
+            try {
+                startCameraBtn.textContent = 'Loading...';
+                await loadFaceModels();
+
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: 'user', width: 640, height: 480 }
+                });
+                faceVideo.srcObject = stream;
+                await faceVideo.play();
+
+                startCameraBtn.style.display = 'none';
+                captureBtn.style.display = 'inline-flex';
+            } catch (error) {
+                console.error('Camera error:', error);
+                alert('Could not access camera. Please allow camera permissions.');
+                startCameraBtn.innerHTML = '<span class="btn-icon">📸</span> Try Again';
+            }
+        }
+
+        // Capture photo and analyze face
+        async function captureAndAnalyze() {
+            captureBtn.style.display = 'none';
+            faceLoading.style.display = 'flex';
+
+            // Capture photo
+            const ctx = faceCanvas.getContext('2d');
+            faceCanvas.width = faceVideo.videoWidth;
+            faceCanvas.height = faceVideo.videoHeight;
+            ctx.drawImage(faceVideo, 0, 0);
+            currentPhotoData = faceCanvas.toDataURL('image/jpeg', 0.8);
+            capturedFaceImg.src = currentPhotoData;
+
+            // Stop video stream
+            const stream = faceVideo.srcObject;
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+            }
+
+            try {
+                // Detect face
+                const detection = await faceapi
+                    .detectSingleFace(faceCanvas)
+                    .withFaceLandmarks()
+                    .withFaceDescriptor();
+
+                if (!detection) {
+                    faceLoading.style.display = 'none';
+                    alert('No face detected. Please try again with good lighting.');
+                    resetToCamera();
+                    return;
+                }
+
+                currentFaceDescriptor = detection.descriptor;
+
+                // Load existing guests and try to match
+                await loadGuestsAndMatch();
+
+            } catch (error) {
+                console.error('Face detection error:', error);
+                faceLoading.style.display = 'none';
+                alert('Error analyzing face. Please try again.');
+                resetToCamera();
+            }
+        }
+
+        // Load guests from Firebase and match face
+        async function loadGuestsAndMatch() {
+            const snapshot = await guestsRef.once('value');
+            const guests = snapshot.val() || {};
+
+            // Build labeled descriptors
+            labeledDescriptors = [];
+            for (const [id, guest] of Object.entries(guests)) {
+                if (guest.faceDescriptor) {
+                    const descriptor = new Float32Array(Object.values(guest.faceDescriptor));
+                    labeledDescriptors.push({
+                        id: id,
+                        name: guest.name,
+                        descriptor: descriptor,
+                        attending: guest.attending,
+                        photo: guest.photo
+                    });
+                }
+            }
+
+            // Try to find a match
+            let bestMatch = null;
+            let bestDistance = Infinity;
+            const THRESHOLD = 0.5; // Lower = more strict
+
+            for (const ld of labeledDescriptors) {
+                const distance = faceapi.euclideanDistance(currentFaceDescriptor, ld.descriptor);
+                if (distance < bestDistance && distance < THRESHOLD) {
+                    bestDistance = distance;
+                    bestMatch = ld;
+                }
+            }
+
+            faceLoading.style.display = 'none';
+            cameraStep.style.display = 'none';
+            resultStep.style.display = 'block';
+
+            if (bestMatch) {
+                // Recognized!
+                currentGuestId = bestMatch.id;
+                recognitionStatus.innerHTML = `<h4>Welcome back, ${bestMatch.name}!</h4><p>We recognize you!</p>`;
+                showAttendStep(bestMatch.name);
+            } else {
+                // New guest
+                recognitionStatus.innerHTML = `<h4>New Face!</h4><p>Let's get you registered</p>`;
+                setTimeout(() => {
+                    resultStep.style.display = 'none';
+                    registerStep.style.display = 'block';
+                }, 1500);
+            }
+        }
+
+        // Register new guest
+        async function registerNewGuest() {
+            const name = newGuestNameInput.value.trim();
+            if (!name) {
+                alert('Please enter your name');
+                return;
+            }
+
+            // Convert descriptor to regular object for Firebase
+            const descriptorObj = {};
+            currentFaceDescriptor.forEach((val, i) => descriptorObj[i] = val);
+
+            // Save to Firebase
+            const newRef = guestsRef.push();
+            currentGuestId = newRef.key;
+            await newRef.set({
+                name: name,
+                faceDescriptor: descriptorObj,
+                photo: currentPhotoData,
+                registeredAt: Date.now()
+            });
+
+            registerStep.style.display = 'none';
+            showAttendStep(name);
+        }
+
+        // Show attendance selection
+        function showAttendStep(name) {
+            resultStep.style.display = 'none';
+            registerStep.style.display = 'none';
+            attendStep.style.display = 'block';
+            welcomeName.textContent = `Welcome, ${name}!`;
+        }
+
+        // Handle attendance selection
+        async function selectAttending(isAttending) {
+            if (isAttending) {
+                guestCountSelection.style.display = 'block';
+                attendYesBtn.style.display = 'none';
+                attendNoBtn.style.display = 'none';
+            } else {
+                await saveRsvp(false, 0);
+            }
+        }
+
+        // Confirm RSVP
+        async function confirmRsvp() {
+            const guestCount = document.getElementById('face-guest-count').value;
+            await saveRsvp(true, parseInt(guestCount));
+        }
+
+        // Save RSVP to Firebase
+        async function saveRsvp(attending, guestCount) {
+            await guestsRef.child(currentGuestId).update({
+                attending: attending,
+                guestCount: guestCount,
+                rsvpAt: Date.now()
+            });
+
+            // Show success
+            attendStep.style.display = 'none';
+            successStep.style.display = 'block';
+
+            if (attending) {
+                successMessageText.textContent = `We can't wait to celebrate with you and your ${guestCount > 1 ? guestCount + ' guests' : 'guest'}!`;
+            } else {
+                successMessageText.textContent = "We're sorry you can't make it. We'll miss you!";
+            }
+
+            loadGuestList();
+        }
+
+        // Reset to camera view
+        function resetToCamera() {
+            currentFaceDescriptor = null;
+            currentGuestId = null;
+            currentPhotoData = null;
+
+            cameraStep.style.display = 'block';
+            resultStep.style.display = 'none';
+            registerStep.style.display = 'none';
+            attendStep.style.display = 'none';
+            successStep.style.display = 'none';
+            guestCountSelection.style.display = 'none';
+            attendYesBtn.style.display = 'inline-flex';
+            attendNoBtn.style.display = 'inline-flex';
+
+            startCameraBtn.style.display = 'inline-flex';
+            startCameraBtn.innerHTML = '<span class="btn-icon">📸</span> Start Camera';
+            captureBtn.style.display = 'none';
+            newGuestNameInput.value = '';
+        }
+
+        // Load and display guest list
+        async function loadGuestList() {
+            const snapshot = await guestsRef.once('value');
+            const guests = snapshot.val() || {};
+
+            guestFacesContainer.innerHTML = '';
+            let totalAttending = 0;
+
+            for (const [id, guest] of Object.entries(guests)) {
+                if (guest.attending) {
+                    totalAttending += guest.guestCount || 1;
+
+                    const item = document.createElement('div');
+                    item.className = 'guest-face-item';
+                    item.innerHTML = `
+                        <img src="${guest.photo || 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2240%22 fill=%22%23ddd%22/></svg>'}"
+                             alt="${guest.name}" class="guest-face-img">
+                        <span class="guest-face-name">${guest.name}</span>
+                    `;
+                    guestFacesContainer.appendChild(item);
+                }
+            }
+
+            totalAttendingEl.textContent = totalAttending;
+        }
+
+        // Event listeners
+        if (startCameraBtn) startCameraBtn.addEventListener('click', startCamera);
+        if (captureBtn) captureBtn.addEventListener('click', captureAndAnalyze);
+        if (registerGuestBtn) registerGuestBtn.addEventListener('click', registerNewGuest);
+        if (attendYesBtn) attendYesBtn.addEventListener('click', () => selectAttending(true));
+        if (attendNoBtn) attendNoBtn.addEventListener('click', () => selectAttending(false));
+        if (confirmRsvpBtn) confirmRsvpBtn.addEventListener('click', confirmRsvp);
+        if (rsvpAgainBtn) rsvpAgainBtn.addEventListener('click', resetToCamera);
+
+        // Load guest list on page load
+        loadGuestList();
     </script>
 </body>
 </html>
