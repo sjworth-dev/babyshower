@@ -620,7 +620,7 @@
                         <div class="wave-fill" id="wave-fill"></div>
                     </div>
                     <div class="tap-zone" id="tap-zone">
-                        <span class="tap-text" id="tap-text">👶</span>
+                        <img src="Gigi Head 1.png" alt="Tap!" class="tap-face" id="tap-face">
                         <div class="tap-counter" id="tap-counter">0</div>
                     </div>
                 </div>
@@ -994,12 +994,22 @@
         const contractionStatus = document.getElementById('contraction-status');
         const waveFill = document.getElementById('wave-fill');
         const tapZone = document.getElementById('tap-zone');
-        const tapText = document.getElementById('tap-text');
+        const tapFace = document.getElementById('tap-face');
         const tapCounter = document.getElementById('tap-counter');
         const contractionNum = document.getElementById('contraction-num');
         const totalTapsEl = document.getElementById('total-taps');
         const contractionBest = document.getElementById('contraction-best');
         const contractionTip = document.getElementById('contraction-tip');
+
+        // Face images to cycle through
+        const faceImages = [
+            'Gigi Head 1.png',
+            'Gigi Head 2.png',
+            'Gigi Head 3.png',
+            'Gigi Head 4.png',
+            'Parker 1.png'
+        ];
+        let faceIndex = 0;
 
         let contractionState = 'idle'; // idle, waiting, active, rest, done
         let currentContraction = 0;
@@ -1046,7 +1056,7 @@
             // Countdown
             let countdown = 3;
             contractionStatus.textContent = 'Contraction in ' + countdown + '...';
-            tapText.textContent = '😰';
+            tapFace.src = faceImages[0];
 
             const countdownInterval = setInterval(() => {
                 countdown--;
@@ -1063,9 +1073,10 @@
             contractionState = 'active';
             tapsThisContraction = 0;
             tapCounter.textContent = '0';
+            faceIndex = 0;
 
             contractionStatus.textContent = 'TAP TAP TAP!!! 😱';
-            tapText.textContent = '👶';
+            tapFace.src = faceImages[0];
             tapZone.classList.remove('disabled');
             tapZone.classList.add('active');
             contractionTip.textContent = 'TAP NOW!!!';
@@ -1095,8 +1106,9 @@
             tapCounter.textContent = tapsThisContraction;
             totalTapsEl.textContent = totalTaps;
 
-            // Visual feedback
-            tapText.textContent = tapsThisContraction % 2 === 0 ? '👶' : '🍼';
+            // Cycle through face images
+            faceIndex = (faceIndex + 1) % faceImages.length;
+            tapFace.src = faceImages[faceIndex];
         }
 
         function endContraction() {
@@ -1110,7 +1122,7 @@
 
             if (currentContraction < totalContractions) {
                 contractionStatus.textContent = 'Rest... 😮‍💨';
-                tapText.textContent = '😮‍💨';
+                tapFace.src = faceImages[0];
                 contractionTip.textContent = tapsThisContraction + ' taps! Next one coming...';
 
                 setTimeout(nextContraction, restDuration);
@@ -1142,7 +1154,7 @@
             else rating = '😅 Keep practicing!';
 
             contractionStatus.textContent = '🎉 Baby Delivered! 🎉';
-            tapText.textContent = '👶';
+            tapFace.src = 'Parker 1.png';
             tapCounter.textContent = '';
             contractionTip.textContent = rating + (isNewRecord ? ' NEW RECORD!' : '') + ' Total: ' + totalTaps + ' taps';
 

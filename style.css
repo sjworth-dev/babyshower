@@ -1947,9 +1947,13 @@ footer p {
     50% { transform: scale(1.05); }
 }
 
-.tap-text {
-    font-size: 4em;
-    line-height: 1;
+.tap-face {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
 
 .tap-counter {
