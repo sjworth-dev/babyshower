@@ -611,7 +611,20 @@
     <section class="contraction-section">
         <div class="container">
             <h2 class="section-title-script">Contraction Counter</h2>
-            <p class="game-instructions">When a contraction hits, tap as fast as you can! Survive all 5 contractions to deliver the baby!</p>
+            <p class="game-instructions">Upload your face and experience the joy of labor! Tap through 5 contractions to deliver the baby!</p>
+
+            <!-- Photo Upload Section -->
+            <div class="photo-upload-section" id="photo-upload-section">
+                <div class="upload-box" id="upload-box">
+                    <div class="upload-preview" id="upload-preview">
+                        <span class="upload-icon">📸</span>
+                        <span class="upload-text">Upload Your Face!</span>
+                    </div>
+                    <input type="file" id="face-upload" accept="image/*" hidden>
+                </div>
+                <input type="text" id="player-name" placeholder="Enter your name" class="name-input" maxlength="20">
+                <p class="upload-hint">Your face will appear during contractions!</p>
+            </div>
 
             <div class="contraction-game-container" id="contraction-game">
                 <div class="contraction-display">
@@ -620,7 +633,14 @@
                         <div class="wave-fill" id="wave-fill"></div>
                     </div>
                     <div class="tap-zone" id="tap-zone">
-                        <img src="Gigi Head 1.png" alt="Tap!" class="tap-face" id="tap-face">
+                        <div class="face-container" id="face-container">
+                            <img src="Gigi Head 1.png" alt="Tap!" class="tap-face" id="tap-face">
+                            <div class="sweat-drops" id="sweat-drops">
+                                <span class="sweat">💧</span>
+                                <span class="sweat">💧</span>
+                                <span class="sweat">💧</span>
+                            </div>
+                        </div>
                         <div class="tap-counter" id="tap-counter">0</div>
                     </div>
                 </div>
@@ -642,6 +662,14 @@
 
                 <button class="game-btn" id="contraction-start-btn">Start Labor!</button>
                 <p class="contraction-tip" id="contraction-tip">Tip: Use multiple fingers for maximum taps!</p>
+            </div>
+
+            <!-- Leaderboard Section -->
+            <div class="leaderboard-section" id="leaderboard-section">
+                <h3 class="leaderboard-title">🏆 Wall of Labor Champions 🏆</h3>
+                <div class="leaderboard-grid" id="leaderboard-grid">
+                    <!-- Entries will be added dynamically -->
+                </div>
             </div>
         </div>
     </section>
@@ -1000,16 +1028,22 @@
         const totalTapsEl = document.getElementById('total-taps');
         const contractionBest = document.getElementById('contraction-best');
         const contractionTip = document.getElementById('contraction-tip');
+        const sweatDrops = document.getElementById('sweat-drops');
+        const faceContainer = document.getElementById('face-container');
 
-        // Face images to cycle through
-        const faceImages = [
-            'Gigi Head 1.png',
-            'Gigi Head 2.png',
-            'Gigi Head 3.png',
-            'Gigi Head 4.png',
-            'Parker 1.png'
-        ];
-        let faceIndex = 0;
+        // Photo upload elements
+        const uploadBox = document.getElementById('upload-box');
+        const uploadPreview = document.getElementById('upload-preview');
+        const faceUpload = document.getElementById('face-upload');
+        const playerNameInput = document.getElementById('player-name');
+        const leaderboardGrid = document.getElementById('leaderboard-grid');
+
+        // Player data
+        let playerFaceData = null; // Base64 image data
+        let playerName = '';
+
+        // Default face (Gigi)
+        const defaultFace = 'Gigi Head 1.png';
 
         let contractionState = 'idle'; // idle, waiting, active, rest, done
         let currentContraction = 0;
@@ -1019,10 +1053,56 @@
         let bestTaps = parseInt(localStorage.getItem('contractionBest')) || 0;
         let contractionDuration = 4000; // ms - gets shorter each contraction
         let restDuration = 3000; // ms between contractions
+        let rednessLevel = 0;
 
         if (contractionBest) contractionBest.textContent = bestTaps;
 
+        // Photo upload handling
+        uploadBox.addEventListener('click', () => faceUpload.click());
+
+        faceUpload.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    playerFaceData = event.target.result;
+                    uploadPreview.innerHTML = `<img src="${playerFaceData}" alt="Your face">`;
+                    uploadBox.classList.add('has-image');
+                    tapFace.src = playerFaceData;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function updateRedness(progress) {
+            // Remove all redness classes
+            tapFace.classList.remove('red-1', 'red-2', 'red-3', 'red-4', 'red-5');
+
+            // Add appropriate redness based on progress (0-100)
+            if (progress > 80) {
+                tapFace.classList.add('red-5');
+                sweatDrops.classList.add('visible');
+            } else if (progress > 60) {
+                tapFace.classList.add('red-4');
+                sweatDrops.classList.add('visible');
+            } else if (progress > 40) {
+                tapFace.classList.add('red-3');
+                sweatDrops.classList.add('visible');
+            } else if (progress > 20) {
+                tapFace.classList.add('red-2');
+            } else if (progress > 0) {
+                tapFace.classList.add('red-1');
+            }
+        }
+
+        function resetFaceEffects() {
+            tapFace.classList.remove('red-1', 'red-2', 'red-3', 'red-4', 'red-5');
+            sweatDrops.classList.remove('visible');
+        }
+
         function startContractionGame() {
+            playerName = playerNameInput.value.trim() || 'Anonymous';
+
             currentContraction = 0;
             totalTaps = 0;
             tapsThisContraction = 0;
@@ -1035,6 +1115,10 @@
 
             contractionStartBtn.style.display = 'none';
             contractionTip.textContent = 'Get ready...';
+
+            // Set face to uploaded or default
+            tapFace.src = playerFaceData || defaultFace;
+            resetFaceEffects();
 
             nextContraction();
         }
@@ -1052,11 +1136,11 @@
             contractionNum.textContent = currentContraction + ' / ' + totalContractions;
             tapZone.classList.remove('active');
             tapZone.classList.add('disabled');
+            resetFaceEffects();
 
             // Countdown
             let countdown = 3;
             contractionStatus.textContent = 'Contraction in ' + countdown + '...';
-            tapFace.src = faceImages[0];
 
             const countdownInterval = setInterval(() => {
                 countdown--;
@@ -1073,15 +1157,13 @@
             contractionState = 'active';
             tapsThisContraction = 0;
             tapCounter.textContent = '0';
-            faceIndex = 0;
 
             contractionStatus.textContent = 'TAP TAP TAP!!! 😱';
-            tapFace.src = faceImages[0];
             tapZone.classList.remove('disabled');
             tapZone.classList.add('active');
             contractionTip.textContent = 'TAP NOW!!!';
 
-            // Animate wave
+            // Animate wave and redness
             waveFill.style.width = '0%';
             let startTime = Date.now();
 
@@ -1089,6 +1171,9 @@
                 const elapsed = Date.now() - startTime;
                 const progress = Math.min((elapsed / contractionDuration) * 100, 100);
                 waveFill.style.width = progress + '%';
+
+                // Update face redness based on progress
+                updateRedness(progress);
 
                 if (elapsed >= contractionDuration) {
                     clearInterval(waveInterval);
@@ -1106,15 +1191,18 @@
             tapCounter.textContent = tapsThisContraction;
             totalTapsEl.textContent = totalTaps;
 
-            // Cycle through face images
-            faceIndex = (faceIndex + 1) % faceImages.length;
-            tapFace.src = faceImages[faceIndex];
+            // Add extra shake on tap
+            faceContainer.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                faceContainer.style.transform = 'scale(1)';
+            }, 50);
         }
 
         function endContraction() {
             contractionState = 'rest';
             tapZone.classList.remove('active');
             tapZone.classList.add('disabled');
+            resetFaceEffects();
 
             // Shorter duration for next contraction (gets harder!)
             contractionDuration = Math.max(2000, contractionDuration - 400);
@@ -1122,7 +1210,6 @@
 
             if (currentContraction < totalContractions) {
                 contractionStatus.textContent = 'Rest... 😮‍💨';
-                tapFace.src = faceImages[0];
                 contractionTip.textContent = tapsThisContraction + ' taps! Next one coming...';
 
                 setTimeout(nextContraction, restDuration);
@@ -1135,6 +1222,7 @@
             contractionState = 'done';
             tapZone.classList.remove('active', 'disabled');
             waveFill.style.width = '0%';
+            resetFaceEffects();
 
             // Check for new record
             let isNewRecord = false;
@@ -1158,9 +1246,78 @@
             tapCounter.textContent = '';
             contractionTip.textContent = rating + (isNewRecord ? ' NEW RECORD!' : '') + ' Total: ' + totalTaps + ' taps';
 
+            // Save to leaderboard
+            saveToLeaderboard(playerName, totalTaps, playerFaceData);
+
             contractionStartBtn.textContent = 'Try Again!';
             contractionStartBtn.style.display = 'block';
         }
+
+        // ============ FIREBASE LEADERBOARD ============
+        // Firebase configuration - using Realtime Database
+        const firebaseConfig = {
+            apiKey: "AIzaSyDxQxQxQxQxQxQxQxQxQxQxQxQxQxQxQxQ",
+            authDomain: "babyshower-leaderboard.firebaseapp.com",
+            databaseURL: "https://babyshower-leaderboard-default-rtdb.firebaseio.com",
+            projectId: "babyshower-leaderboard",
+            storageBucket: "babyshower-leaderboard.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "1:123456789:web:abcdef123456"
+        };
+
+        // For now, use localStorage as fallback (Firebase can be added later)
+        let leaderboardData = JSON.parse(localStorage.getItem('laborLeaderboard')) || [];
+
+        function saveToLeaderboard(name, score, faceData) {
+            const entry = {
+                name: name,
+                score: score,
+                face: faceData || defaultFace,
+                timestamp: Date.now()
+            };
+
+            // Add to local array
+            leaderboardData.push(entry);
+
+            // Sort by score (highest first)
+            leaderboardData.sort((a, b) => b.score - a.score);
+
+            // Keep only top 20
+            leaderboardData = leaderboardData.slice(0, 20);
+
+            // Save to localStorage
+            localStorage.setItem('laborLeaderboard', JSON.stringify(leaderboardData));
+
+            // Update display
+            renderLeaderboard();
+        }
+
+        function renderLeaderboard() {
+            if (!leaderboardGrid) return;
+
+            if (leaderboardData.length === 0) {
+                leaderboardGrid.innerHTML = '<p class="no-entries">No champions yet! Be the first to complete labor!</p>';
+                return;
+            }
+
+            leaderboardGrid.innerHTML = leaderboardData.map((entry, index) => {
+                const rankClass = index < 3 ? `rank-${index + 1}` : '';
+                const rankEmoji = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `#${index + 1}`;
+                const faceUrl = entry.face && entry.face.startsWith('data:') ? entry.face : (entry.face || defaultFace);
+
+                return `
+                    <div class="leaderboard-entry ${rankClass}">
+                        <span class="leaderboard-rank">${rankEmoji}</span>
+                        <img src="${faceUrl}" alt="${entry.name}" class="leaderboard-face">
+                        <span class="leaderboard-name">${entry.name}</span>
+                        <span class="leaderboard-score">${entry.score} taps</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Load leaderboard on page load
+        renderLeaderboard();
 
         // Event listeners
         if (contractionStartBtn) {
