@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <title>Baby Olympian Shower - Sam & Gigi</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Lato:wght@300;400;700&family=Pacifico&family=Dancing+Script:wght@400;500;600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=20">
+    <link rel="stylesheet" href="style.css?v=21">
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
@@ -546,6 +546,13 @@
                         <div class="attend-selection">
                             <h4 id="welcome-name">Welcome!</h4>
                             <p>Will you be joining us?</p>
+                            <!-- Partner RSVP option (shown if guest has partner) -->
+                            <div id="partner-rsvp-section" class="partner-rsvp-section" style="display: none;">
+                                <label class="partner-checkbox-label">
+                                    <input type="checkbox" id="rsvp-for-partner" checked>
+                                    <span>Also RSVP for <span id="partner-name-display">your partner</span></span>
+                                </label>
+                            </div>
                             <div class="attend-buttons">
                                 <button id="attend-yes-btn" class="face-btn attend-btn attend-yes">
                                     <span class="btn-icon">🎉</span>
@@ -557,12 +564,12 @@
                                 </button>
                             </div>
                             <div class="guest-count-selection" id="guest-count-selection" style="display: none;">
-                                <label>How many guests?</label>
+                                <label>How many additional guests?</label>
                                 <select id="face-guest-count">
-                                    <option value="1">1 Guest</option>
-                                    <option value="2">2 Guests</option>
-                                    <option value="3">3 Guests</option>
-                                    <option value="4">4+ Guests</option>
+                                    <option value="0">Just us</option>
+                                    <option value="1">+1 Guest</option>
+                                    <option value="2">+2 Guests</option>
+                                    <option value="3">+3 Guests</option>
                                 </select>
                                 <button id="confirm-rsvp-btn" class="face-btn confirm-btn">
                                     <span class="btn-icon">✓</span>
@@ -602,6 +609,12 @@
                         </div>
                         <div class="admin-upload-form">
                             <input type="text" id="admin-guest-name" class="guest-name-input" placeholder="Guest's name">
+                            <div class="spouse-select-wrapper">
+                                <label for="admin-spouse-select">Spouse/Partner:</label>
+                                <select id="admin-spouse-select" class="spouse-select">
+                                    <option value="">None (Single)</option>
+                                </select>
+                            </div>
                             <input type="file" id="admin-photo-input" accept="image/*" class="photo-input">
                             <label for="admin-photo-input" class="face-btn upload-photo-btn">
                                 <span class="btn-icon">📷</span>
@@ -1625,7 +1638,8 @@
                         name: guest.name,
                         descriptor: descriptor,
                         attending: guest.attending,
-                        photo: guest.photo
+                        photo: guest.photo,
+                        partnerId: guest.partnerId || null
                     });
                 }
             }
@@ -1651,6 +1665,16 @@
                 // Recognized!
                 currentGuestId = bestMatch.id;
                 recognitionStatus.innerHTML = `<h4>Welcome back, ${bestMatch.name}!</h4><p>We recognize you!</p>`;
+
+                // Check if they have a partner
+                currentPartner = null;
+                if (bestMatch.partnerId && guests[bestMatch.partnerId]) {
+                    currentPartner = {
+                        id: bestMatch.partnerId,
+                        name: guests[bestMatch.partnerId].name
+                    };
+                }
+
                 showAttendStep(bestMatch.name);
             } else {
                 // New guest
@@ -1694,6 +1718,20 @@
             registerStep.style.display = 'none';
             attendStep.style.display = 'block';
             welcomeName.textContent = `Welcome, ${name}!`;
+
+            // Show/hide partner RSVP option
+            if (currentPartner) {
+                partnerRsvpSection.style.display = 'block';
+                partnerNameDisplay.textContent = currentPartner.name;
+                rsvpForPartnerCheckbox.checked = true;
+            } else {
+                partnerRsvpSection.style.display = 'none';
+            }
+
+            // Reset buttons visibility
+            attendYesBtn.style.display = 'block';
+            attendNoBtn.style.display = 'block';
+            guestCountSelection.style.display = 'none';
         }
 
         // Handle attendance selection
@@ -1715,20 +1753,43 @@
 
         // Save RSVP to Firebase
         async function saveRsvp(attending, guestCount) {
+            // Save current guest's RSVP
             await guestsRef.child(currentGuestId).update({
                 attending: attending,
                 guestCount: guestCount,
                 rsvpAt: Date.now()
             });
 
+            // Also RSVP for partner if checkbox is checked
+            let partnerIncluded = false;
+            if (currentPartner && rsvpForPartnerCheckbox.checked) {
+                await guestsRef.child(currentPartner.id).update({
+                    attending: attending,
+                    guestCount: 0, // Partner counted separately
+                    rsvpAt: Date.now(),
+                    rsvpByPartner: true
+                });
+                partnerIncluded = true;
+            }
+
             // Show success
             attendStep.style.display = 'none';
             successStep.style.display = 'block';
 
             if (attending) {
-                successMessageText.textContent = `We can't wait to celebrate with you and your ${guestCount > 1 ? guestCount + ' guests' : 'guest'}!`;
+                if (partnerIncluded) {
+                    const extraGuests = guestCount > 0 ? ` and ${guestCount} additional guest${guestCount > 1 ? 's' : ''}` : '';
+                    successMessageText.textContent = `We can't wait to celebrate with you and ${currentPartner.name}${extraGuests}!`;
+                } else {
+                    const guestText = guestCount > 0 ? ` and ${guestCount} guest${guestCount > 1 ? 's' : ''}` : '';
+                    successMessageText.textContent = `We can't wait to celebrate with you${guestText}!`;
+                }
             } else {
-                successMessageText.textContent = "We're sorry you can't make it. We'll miss you!";
+                if (partnerIncluded) {
+                    successMessageText.textContent = `We're sorry you and ${currentPartner.name} can't make it. We'll miss you both!`;
+                } else {
+                    successMessageText.textContent = "We're sorry you can't make it. We'll miss you!";
+                }
             }
 
             loadGuestList();
@@ -1739,6 +1800,7 @@
             currentFaceDescriptor = null;
             currentGuestId = null;
             currentPhotoData = null;
+            currentPartner = null;
 
             cameraStep.style.display = 'block';
             resultStep.style.display = 'none';
@@ -1799,11 +1861,16 @@
         const adminPhotoInput = document.getElementById('admin-photo-input');
         const adminPhotoPreview = document.getElementById('admin-photo-preview');
         const adminGuestName = document.getElementById('admin-guest-name');
+        const adminSpouseSelect = document.getElementById('admin-spouse-select');
         const adminSaveGuest = document.getElementById('admin-save-guest');
         const adminStatus = document.getElementById('admin-status');
         const registeredGuestsList = document.getElementById('registered-guests-list');
+        const partnerRsvpSection = document.getElementById('partner-rsvp-section');
+        const partnerNameDisplay = document.getElementById('partner-name-display');
+        const rsvpForPartnerCheckbox = document.getElementById('rsvp-for-partner');
 
         let adminPhotoData = null;
+        let currentPartner = null; // Store partner info when guest is recognized
 
         // Toggle admin section
         if (toggleAdminBtn) {
@@ -1812,10 +1879,29 @@
                     adminSection.style.display = 'block';
                     await loadFaceModels(); // Pre-load models
                     loadRegisteredGuests();
+                    populateSpouseDropdown();
                 } else {
                     adminSection.style.display = 'none';
                 }
             });
+        }
+
+        // Populate spouse dropdown with existing guests
+        async function populateSpouseDropdown() {
+            const snapshot = await guestsRef.once('value');
+            const guests = snapshot.val() || {};
+
+            adminSpouseSelect.innerHTML = '<option value="">None (Single)</option>';
+
+            for (const [id, guest] of Object.entries(guests)) {
+                // Only show guests who don't already have a partner
+                if (!guest.partnerId) {
+                    const option = document.createElement('option');
+                    option.value = id;
+                    option.textContent = guest.name;
+                    adminSpouseSelect.appendChild(option);
+                }
+            }
         }
 
         // Handle photo selection
@@ -1887,26 +1973,41 @@
                     resizedCanvas.getContext('2d').drawImage(img, 0, 0, resizedCanvas.width, resizedCanvas.height);
                     const resizedPhoto = resizedCanvas.toDataURL('image/jpeg', 0.7);
 
+                    // Get selected spouse/partner
+                    const partnerId = adminSpouseSelect.value;
+
                     // Save to Firebase
                     const newRef = guestsRef.push();
-                    await newRef.set({
+                    const guestData = {
                         name: name,
                         faceDescriptor: descriptorObj,
                         photo: resizedPhoto,
                         registeredAt: Date.now(),
                         preRegistered: true
-                    });
+                    };
 
-                    showAdminStatus(`${name} registered successfully!`, 'success');
+                    // If partner selected, link them both
+                    if (partnerId) {
+                        guestData.partnerId = partnerId;
+                        // Also update the partner to link back
+                        await guestsRef.child(partnerId).update({ partnerId: newRef.key });
+                    }
+
+                    await newRef.set(guestData);
+
+                    const partnerMsg = partnerId ? ' (linked with partner)' : '';
+                    showAdminStatus(`${name} registered successfully${partnerMsg}!`, 'success');
 
                     // Reset form
                     adminGuestName.value = '';
+                    adminSpouseSelect.value = '';
                     adminPhotoData = null;
                     adminPhotoPreview.innerHTML = '';
                     adminPhotoInput.value = '';
 
-                    // Reload list
+                    // Reload lists
                     loadRegisteredGuests();
+                    populateSpouseDropdown();
                     loadGuestList();
 
                 } catch (error) {
