@@ -450,6 +450,45 @@
         </div>
     </section>
 
+    <!-- Contraction Counter Game Section -->
+    <section class="contraction-section">
+        <div class="container">
+            <h2 class="section-title-script">Contraction Counter</h2>
+            <p class="game-instructions">When a contraction hits, tap as fast as you can! Survive all 5 contractions to deliver the baby!</p>
+
+            <div class="contraction-game-container" id="contraction-game">
+                <div class="contraction-display">
+                    <div class="contraction-status" id="contraction-status">Ready?</div>
+                    <div class="contraction-wave" id="contraction-wave">
+                        <div class="wave-fill" id="wave-fill"></div>
+                    </div>
+                    <div class="tap-zone" id="tap-zone">
+                        <span class="tap-text" id="tap-text">👶</span>
+                        <div class="tap-counter" id="tap-counter">0</div>
+                    </div>
+                </div>
+
+                <div class="contraction-stats">
+                    <div class="stat-box">
+                        <span class="stat-label">Contraction</span>
+                        <span class="stat-value" id="contraction-num">0 / 5</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Total Taps</span>
+                        <span class="stat-value" id="total-taps">0</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Best</span>
+                        <span class="stat-value" id="contraction-best">0</span>
+                    </div>
+                </div>
+
+                <button class="game-btn" id="contraction-start-btn">Start Labor!</button>
+                <p class="contraction-tip" id="contraction-tip">Tip: Use multiple fingers for maximum taps!</p>
+            </div>
+        </div>
+    </section>
+
     <footer>
         <div class="container">
             <div class="olympic-rings-footer">
@@ -792,6 +831,177 @@
 
         // Initialize
         resetOwl();
+
+        // ============ CONTRACTION COUNTER GAME ============
+        const contractionStartBtn = document.getElementById('contraction-start-btn');
+        const contractionStatus = document.getElementById('contraction-status');
+        const waveFill = document.getElementById('wave-fill');
+        const tapZone = document.getElementById('tap-zone');
+        const tapText = document.getElementById('tap-text');
+        const tapCounter = document.getElementById('tap-counter');
+        const contractionNum = document.getElementById('contraction-num');
+        const totalTapsEl = document.getElementById('total-taps');
+        const contractionBest = document.getElementById('contraction-best');
+        const contractionTip = document.getElementById('contraction-tip');
+
+        let contractionState = 'idle'; // idle, waiting, active, rest, done
+        let currentContraction = 0;
+        let totalContractions = 5;
+        let tapsThisContraction = 0;
+        let totalTaps = 0;
+        let bestTaps = parseInt(localStorage.getItem('contractionBest')) || 0;
+        let contractionDuration = 4000; // ms - gets shorter each contraction
+        let restDuration = 3000; // ms between contractions
+
+        if (contractionBest) contractionBest.textContent = bestTaps;
+
+        function startContractionGame() {
+            currentContraction = 0;
+            totalTaps = 0;
+            tapsThisContraction = 0;
+            contractionDuration = 4000;
+            restDuration = 3000;
+
+            totalTapsEl.textContent = '0';
+            contractionNum.textContent = '0 / 5';
+            tapCounter.textContent = '0';
+
+            contractionStartBtn.style.display = 'none';
+            contractionTip.textContent = 'Get ready...';
+
+            nextContraction();
+        }
+
+        function nextContraction() {
+            currentContraction++;
+
+            if (currentContraction > totalContractions) {
+                endContractionGame();
+                return;
+            }
+
+            // Waiting phase
+            contractionState = 'waiting';
+            contractionNum.textContent = currentContraction + ' / ' + totalContractions;
+            tapZone.classList.remove('active');
+            tapZone.classList.add('disabled');
+
+            // Countdown
+            let countdown = 3;
+            contractionStatus.textContent = 'Contraction in ' + countdown + '...';
+            tapText.textContent = '😰';
+
+            const countdownInterval = setInterval(() => {
+                countdown--;
+                if (countdown > 0) {
+                    contractionStatus.textContent = 'Contraction in ' + countdown + '...';
+                } else {
+                    clearInterval(countdownInterval);
+                    startContraction();
+                }
+            }, 1000);
+        }
+
+        function startContraction() {
+            contractionState = 'active';
+            tapsThisContraction = 0;
+            tapCounter.textContent = '0';
+
+            contractionStatus.textContent = 'TAP TAP TAP!!! 😱';
+            tapText.textContent = '👶';
+            tapZone.classList.remove('disabled');
+            tapZone.classList.add('active');
+            contractionTip.textContent = 'TAP NOW!!!';
+
+            // Animate wave
+            waveFill.style.width = '0%';
+            let startTime = Date.now();
+
+            const waveInterval = setInterval(() => {
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min((elapsed / contractionDuration) * 100, 100);
+                waveFill.style.width = progress + '%';
+
+                if (elapsed >= contractionDuration) {
+                    clearInterval(waveInterval);
+                    endContraction();
+                }
+            }, 50);
+        }
+
+        function handleTap(e) {
+            if (contractionState !== 'active') return;
+            e.preventDefault();
+
+            tapsThisContraction++;
+            totalTaps++;
+            tapCounter.textContent = tapsThisContraction;
+            totalTapsEl.textContent = totalTaps;
+
+            // Visual feedback
+            tapText.textContent = tapsThisContraction % 2 === 0 ? '👶' : '🍼';
+        }
+
+        function endContraction() {
+            contractionState = 'rest';
+            tapZone.classList.remove('active');
+            tapZone.classList.add('disabled');
+
+            // Shorter duration for next contraction (gets harder!)
+            contractionDuration = Math.max(2000, contractionDuration - 400);
+            restDuration = Math.max(1500, restDuration - 300);
+
+            if (currentContraction < totalContractions) {
+                contractionStatus.textContent = 'Rest... 😮‍💨';
+                tapText.textContent = '😮‍💨';
+                contractionTip.textContent = tapsThisContraction + ' taps! Next one coming...';
+
+                setTimeout(nextContraction, restDuration);
+            } else {
+                nextContraction(); // Will trigger end game
+            }
+        }
+
+        function endContractionGame() {
+            contractionState = 'done';
+            tapZone.classList.remove('active', 'disabled');
+            waveFill.style.width = '0%';
+
+            // Check for new record
+            let isNewRecord = false;
+            if (totalTaps > bestTaps) {
+                bestTaps = totalTaps;
+                localStorage.setItem('contractionBest', bestTaps);
+                contractionBest.textContent = bestTaps;
+                isNewRecord = true;
+            }
+
+            // Show results
+            let rating = '';
+            if (totalTaps >= 200) rating = '🏆 SUPER MOM!';
+            else if (totalTaps >= 150) rating = '🥇 Champion!';
+            else if (totalTaps >= 100) rating = '🥈 Strong!';
+            else if (totalTaps >= 50) rating = '🥉 Good effort!';
+            else rating = '😅 Keep practicing!';
+
+            contractionStatus.textContent = '🎉 Baby Delivered! 🎉';
+            tapText.textContent = '👶';
+            tapCounter.textContent = '';
+            contractionTip.textContent = rating + (isNewRecord ? ' NEW RECORD!' : '') + ' Total: ' + totalTaps + ' taps';
+
+            contractionStartBtn.textContent = 'Try Again!';
+            contractionStartBtn.style.display = 'block';
+        }
+
+        // Event listeners
+        if (contractionStartBtn) {
+            contractionStartBtn.addEventListener('click', startContractionGame);
+        }
+
+        if (tapZone) {
+            tapZone.addEventListener('click', handleTap);
+            tapZone.addEventListener('touchstart', handleTap, { passive: false });
+        }
     </script>
 </body>
 </html>
