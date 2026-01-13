@@ -8,7 +8,10 @@
     <meta http-equiv="Expires" content="0">
     <title>Baby Olympian Shower - Sam & Gigi</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Lato:wght@300;400;700&family=Pacifico&family=Dancing+Script:wght@400;500;600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=16">
+    <link rel="stylesheet" href="style.css?v=17">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 </head>
 <body>
     <div class="snow-container">
@@ -1254,61 +1257,86 @@
         }
 
         // ============ FIREBASE LEADERBOARD ============
-        // Firebase configuration - using Realtime Database
+        // Firebase configuration
         const firebaseConfig = {
-            apiKey: "AIzaSyDxQxQxQxQxQxQxQxQxQxQxQxQxQxQxQxQ",
-            authDomain: "babyshower-leaderboard.firebaseapp.com",
-            databaseURL: "https://babyshower-leaderboard-default-rtdb.firebaseio.com",
-            projectId: "babyshower-leaderboard",
-            storageBucket: "babyshower-leaderboard.appspot.com",
-            messagingSenderId: "123456789",
-            appId: "1:123456789:web:abcdef123456"
+            apiKey: "AIzaSyDrUMaO_8d4THuLgpUfIUPX1xSStBAkvJY",
+            authDomain: "babyshower-labor.firebaseapp.com",
+            databaseURL: "https://babyshower-labor-default-rtdb.firebaseio.com",
+            projectId: "babyshower-labor",
+            storageBucket: "babyshower-labor.firebasestorage.app",
+            messagingSenderId: "510596443042",
+            appId: "1:510596443042:web:9d09c4e057f6cc706660fb"
         };
 
-        // For now, use localStorage as fallback (Firebase can be added later)
+        // Initialize Firebase
+        let firebaseInitialized = false;
+        let database = null;
+        let leaderboardRef = null;
+
+        try {
+            firebase.initializeApp(firebaseConfig);
+            database = firebase.database();
+            leaderboardRef = database.ref('leaderboard');
+            firebaseInitialized = true;
+            console.log('Firebase initialized successfully');
+        } catch (error) {
+            console.log('Firebase not configured, using localStorage fallback');
+        }
+
+        // Local fallback data
         let leaderboardData = JSON.parse(localStorage.getItem('laborLeaderboard')) || [];
 
         function saveToLeaderboard(name, score, faceData) {
             const entry = {
                 name: name,
                 score: score,
-                face: faceData || defaultFace,
+                face: faceData || null, // Don't store default face path
                 timestamp: Date.now()
             };
 
-            // Add to local array
+            if (firebaseInitialized && leaderboardRef) {
+                // Save to Firebase
+                leaderboardRef.push(entry)
+                    .then(() => console.log('Saved to Firebase!'))
+                    .catch((error) => {
+                        console.log('Firebase save failed, using localStorage', error);
+                        saveToLocalStorage(entry);
+                    });
+            } else {
+                saveToLocalStorage(entry);
+            }
+        }
+
+        function saveToLocalStorage(entry) {
             leaderboardData.push(entry);
-
-            // Sort by score (highest first)
             leaderboardData.sort((a, b) => b.score - a.score);
-
-            // Keep only top 20
             leaderboardData = leaderboardData.slice(0, 20);
-
-            // Save to localStorage
             localStorage.setItem('laborLeaderboard', JSON.stringify(leaderboardData));
-
-            // Update display
             renderLeaderboard();
         }
 
-        function renderLeaderboard() {
+        function renderLeaderboard(data) {
             if (!leaderboardGrid) return;
 
-            if (leaderboardData.length === 0) {
+            const entries = data || leaderboardData;
+
+            if (!entries || entries.length === 0) {
                 leaderboardGrid.innerHTML = '<p class="no-entries">No champions yet! Be the first to complete labor!</p>';
                 return;
             }
 
-            leaderboardGrid.innerHTML = leaderboardData.map((entry, index) => {
+            // Sort by score
+            const sortedEntries = [...entries].sort((a, b) => b.score - a.score).slice(0, 20);
+
+            leaderboardGrid.innerHTML = sortedEntries.map((entry, index) => {
                 const rankClass = index < 3 ? `rank-${index + 1}` : '';
                 const rankEmoji = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `#${index + 1}`;
-                const faceUrl = entry.face && entry.face.startsWith('data:') ? entry.face : (entry.face || defaultFace);
+                const faceUrl = entry.face && entry.face.startsWith('data:') ? entry.face : defaultFace;
 
                 return `
                     <div class="leaderboard-entry ${rankClass}">
                         <span class="leaderboard-rank">${rankEmoji}</span>
-                        <img src="${faceUrl}" alt="${entry.name}" class="leaderboard-face">
+                        <img src="${faceUrl}" alt="${entry.name}" class="leaderboard-face" onerror="this.src='${defaultFace}'">
                         <span class="leaderboard-name">${entry.name}</span>
                         <span class="leaderboard-score">${entry.score} taps</span>
                     </div>
@@ -1316,8 +1344,19 @@
             }).join('');
         }
 
-        // Load leaderboard on page load
-        renderLeaderboard();
+        // Listen for real-time updates from Firebase
+        if (firebaseInitialized && leaderboardRef) {
+            leaderboardRef.on('value', (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    const entries = Object.values(data);
+                    renderLeaderboard(entries);
+                }
+            });
+        } else {
+            // Load from localStorage
+            renderLeaderboard();
+        }
 
         // Event listeners
         if (contractionStartBtn) {
