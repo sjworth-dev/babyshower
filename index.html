@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <title>Baby Olympian Shower - Sam & Gigi</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Lato:wght@300;400;700&family=Pacifico&family=Dancing+Script:wght@400;500;600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=25">
+    <link rel="stylesheet" href="style.css?v=26">
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
@@ -491,6 +491,7 @@
                 <div class="rsvp-card face-rsvp-card">
                     <h3 class="rsvp-title-script">RSVP with a Selfie!</h3>
                     <p class="rsvp-intro">Take a quick selfie and we'll recognize you instantly</p>
+                    <div id="debug-output" style="display:none; background:#ff0; color:#000; padding:10px; font-size:12px; margin:10px 0; border-radius:5px;"></div>
 
                     <!-- Step 1: Camera / Take Selfie -->
                     <div id="face-rsvp-camera" class="face-rsvp-step">
@@ -1507,6 +1508,18 @@
 
         // ============ FACIAL RECOGNITION RSVP ============
         console.log('Face recognition script starting...');
+
+        // Debug helper - shows messages on screen for mobile testing
+        const debugOutput = document.getElementById('debug-output');
+        function debug(msg) {
+            console.log(msg);
+            if (debugOutput) {
+                debugOutput.style.display = 'block';
+                debugOutput.innerHTML += msg + '<br>';
+            }
+        }
+        debug('Script loaded OK');
+
         const MODEL_URL = 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api/model';
 
         // DOM Elements
@@ -1559,11 +1572,14 @@
 
         // Start camera
         async function startCamera() {
+            debug('startCamera() called');
             try {
                 startCameraBtn.textContent = 'Loading...';
                 startCameraBtn.disabled = true;
 
+                debug('Loading face models...');
                 await loadFaceModels();
+                debug('Models loaded');
 
                 // Mobile-friendly constraints
                 const constraints = {
@@ -1575,22 +1591,28 @@
                     audio: false
                 };
 
+                debug('Requesting camera...');
                 const stream = await navigator.mediaDevices.getUserMedia(constraints);
+                debug('Got stream');
                 faceVideo.srcObject = stream;
 
                 // Wait for video to be ready
                 await new Promise((resolve) => {
                     faceVideo.onloadedmetadata = () => {
+                        debug('Video metadata loaded');
                         resolve();
                     };
                 });
 
+                debug('Playing video...');
                 await faceVideo.play();
+                debug('Video playing');
 
                 startCameraBtn.style.display = 'none';
                 startCameraBtn.disabled = false;
                 captureBtn.style.display = 'inline-flex';
             } catch (error) {
+                debug('ERROR: ' + error.message);
                 console.error('Camera error:', error);
                 alert('Could not access camera: ' + error.message + '. Please allow camera permissions and make sure you are using HTTPS.');
                 startCameraBtn.innerHTML = '<span class="btn-icon">📸</span> Try Again';
@@ -1880,14 +1902,15 @@
         }
 
         // Event listeners
-        console.log('Setting up event listeners, startCameraBtn:', startCameraBtn);
+        debug('Setting up listeners, btn found: ' + !!startCameraBtn);
         if (startCameraBtn) {
             startCameraBtn.addEventListener('click', function() {
-                console.log('Start camera button clicked');
+                debug('Button clicked!');
                 startCamera();
             });
+            debug('Click listener attached');
         } else {
-            console.error('startCameraBtn not found!');
+            debug('ERROR: Button not found!');
         }
         if (captureBtn) captureBtn.addEventListener('click', captureAndAnalyze);
         if (registerGuestBtn) registerGuestBtn.addEventListener('click', registerNewGuest);
