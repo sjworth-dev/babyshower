@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <title>Baby Olympian Shower - Sam & Gigi</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Lato:wght@300;400;700&family=Pacifico&family=Dancing+Script:wght@400;500;600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=27">
+    <link rel="stylesheet" href="style.css?v=28">
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
@@ -1548,11 +1548,15 @@
         const successMessageText = document.getElementById('success-message-text');
         const guestFacesContainer = document.getElementById('guest-faces');
         const totalAttendingEl = document.getElementById('total-attending');
+        const partnerRsvpSection = document.getElementById('partner-rsvp-section');
+        const partnerNameDisplay = document.getElementById('partner-name-display');
+        const rsvpForPartnerCheckbox = document.getElementById('rsvp-for-partner');
         debug('DOM elements loaded');
 
         let currentFaceDescriptor = null;
         let currentGuestId = null;
         let currentPhotoData = null;
+        let currentPartner = null;
         let labeledDescriptors = [];
         let modelsLoaded = false;
 
@@ -1945,12 +1949,8 @@
         const adminSaveGuest = document.getElementById('admin-save-guest');
         const adminStatus = document.getElementById('admin-status');
         const registeredGuestsList = document.getElementById('registered-guests-list');
-        const partnerRsvpSection = document.getElementById('partner-rsvp-section');
-        const partnerNameDisplay = document.getElementById('partner-name-display');
-        const rsvpForPartnerCheckbox = document.getElementById('rsvp-for-partner');
 
         let adminPhotoData = null;
-        let currentPartner = null; // Store partner info when guest is recognized
 
         // Toggle admin section
         if (toggleAdminBtn) {
