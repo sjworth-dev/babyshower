@@ -1557,9 +1557,15 @@ section {
 
 .registry-items {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
     margin-bottom: 20px;
+}
+
+@media (max-width: 500px) {
+    .registry-items {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 .registry-item {
