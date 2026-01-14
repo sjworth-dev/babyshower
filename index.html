@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <title>Baby Olympian Shower - Sam & Gigi</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Lato:wght@300;400;700&family=Pacifico&family=Dancing+Script:wght@400;500;600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=30">
+    <link rel="stylesheet" href="style.css?v=31">
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
@@ -584,6 +584,20 @@
                             <div class="success-icon">🎿</div>
                             <h4>You're all set!</h4>
                             <p id="success-message-text">We can't wait to celebrate with you!</p>
+
+                            <!-- Registry Showcase -->
+                            <div class="registry-showcase">
+                                <h5>Help Us Prepare for Baby!</h5>
+                                <p class="registry-intro">Check out our baby registry</p>
+                                <div class="registry-items" id="registry-items">
+                                    <!-- Filled by JS with random items -->
+                                </div>
+                                <a href="https://withjoy.com/alexandrasbabyregistry-ecmk95tts/registry" target="_blank" class="registry-link-btn">
+                                    <span class="btn-icon">🎁</span>
+                                    View Full Registry
+                                </a>
+                            </div>
+
                             <button id="rsvp-again-btn" class="face-btn secondary-btn">
                                 <span class="btn-icon">👥</span>
                                 RSVP Another Guest
@@ -1801,6 +1815,7 @@
             // Show success
             attendStep.style.display = 'none';
             successStep.style.display = 'block';
+            showRandomRegistryItems();
 
             if (attending) {
                 if (partnerIncluded) {
@@ -1867,6 +1882,39 @@
             }
 
             totalAttendingEl.textContent = totalAttending;
+        }
+
+        // Registry items (sample items from the registry)
+        const registryItems = [
+            { name: 'Baby Monitor', emoji: '📺', price: '$149' },
+            { name: 'Stroller', emoji: '🛒', price: '$299' },
+            { name: 'Car Seat', emoji: '🚗', price: '$249' },
+            { name: 'Crib', emoji: '🛏️', price: '$399' },
+            { name: 'High Chair', emoji: '🪑', price: '$129' },
+            { name: 'Diaper Bag', emoji: '👜', price: '$79' },
+            { name: 'Baby Clothes Set', emoji: '👶', price: '$45' },
+            { name: 'Bottles & Accessories', emoji: '🍼', price: '$35' },
+            { name: 'Blanket Set', emoji: '🧣', price: '$55' },
+            { name: 'Baby Swing', emoji: '🎠', price: '$189' },
+            { name: 'Play Mat', emoji: '🎨', price: '$89' },
+            { name: 'Bath Set', emoji: '🛁', price: '$49' }
+        ];
+
+        // Show random registry items
+        function showRandomRegistryItems() {
+            const container = document.getElementById('registry-items');
+            if (!container) return;
+
+            // Shuffle and pick 4
+            const shuffled = [...registryItems].sort(() => Math.random() - 0.5);
+            const selected = shuffled.slice(0, 4);
+
+            container.innerHTML = selected.map(item => `
+                <div class="registry-item">
+                    <span class="registry-item-emoji">${item.emoji}</span>
+                    <span class="registry-item-name">${item.name}</span>
+                </div>
+            `).join('');
         }
 
         // Event listeners
