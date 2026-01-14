@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <title>Baby Olympian Shower - Sam & Gigi</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Lato:wght@300;400;700&family=Pacifico&family=Dancing+Script:wght@400;500;600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=26">
+    <link rel="stylesheet" href="style.css?v=27">
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
@@ -1520,6 +1520,8 @@
         }
         debug('Script loaded OK');
 
+        try {
+        debug('Getting DOM elements...');
         const MODEL_URL = 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api/model';
 
         // DOM Elements
@@ -1546,6 +1548,7 @@
         const successMessageText = document.getElementById('success-message-text');
         const guestFacesContainer = document.getElementById('guest-faces');
         const totalAttendingEl = document.getElementById('total-attending');
+        debug('DOM elements loaded');
 
         let currentFaceDescriptor = null;
         let currentGuestId = null;
@@ -1554,8 +1557,11 @@
         let modelsLoaded = false;
 
         // Initialize Firebase for RSVP guests (using existing config)
+        debug('Initializing Firebase ref...');
         const guestsRef = firebase.database().ref('rsvp-guests');
+        debug('Firebase ref created');
 
+        debug('Defining functions...');
         // Load face-api models
         async function loadFaceModels() {
             if (modelsLoaded) return;
@@ -1920,7 +1926,14 @@
         if (rsvpAgainBtn) rsvpAgainBtn.addEventListener('click', resetToCamera);
 
         // Load guest list on page load
+        debug('Loading guest list...');
         loadGuestList();
+        debug('Setup complete!');
+
+        } catch(e) {
+            debug('FATAL ERROR: ' + e.message);
+            console.error('Script error:', e);
+        }
 
         // ============ ADMIN: PRE-REGISTER GUESTS ============
         const toggleAdminBtn = document.getElementById('toggle-admin');
