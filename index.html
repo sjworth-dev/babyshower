@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <title>Baby Olympian Shower - Sam & Gigi</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Lato:wght@300;400;700&family=Pacifico&family=Dancing+Script:wght@400;500;600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=33">
+    <link rel="stylesheet" href="style.css?v=34">
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
@@ -274,6 +274,7 @@
                         <p>Sam & Gigi's Home</p>
                         <p class="address">525 Washington Ave</p>
                         <p class="address">New Orleans</p>
+                        <p class="outdoor-note">Outdoors - Dress Warmly!</p>
                     </div>
 
                     <div class="info-box">
@@ -284,6 +285,18 @@
                         <p class="theme-detail">Milano Cortina 2026</p>
                         <p class="theme-detail">Ladin Sud Tyrol Style</p>
                     </div>
+                </div>
+
+                <div class="weather-alert">
+                    <div class="weather-alert-header">
+                        <span class="weather-alert-icon">🏔️</span>
+                        <h4>Rooftop Weather Alert</h4>
+                    </div>
+                    <p class="weather-alert-message">We'll be celebrating on our rooftop deck - bundle up!</p>
+                    <div class="weather-forecast" id="weather-forecast">
+                        <div class="weather-loading">Loading forecast...</div>
+                    </div>
+                    <p class="weather-tip">Bring layers, jackets, and warm accessories!</p>
                 </div>
             </div>
         </section>
@@ -2208,6 +2221,87 @@
                 });
             });
         }
+    </script>
+
+    <!-- Weather Forecast Script -->
+    <script>
+        // Fetch live weather forecast for New Orleans
+        async function fetchWeatherForecast() {
+            const forecastContainer = document.getElementById('weather-forecast');
+            const eventDate = new Date('2026-02-01');
+
+            try {
+                // Weather.gov API - First get the grid point for New Orleans (525 Washington Ave)
+                const pointsResponse = await fetch('https://api.weather.gov/points/29.9511,-90.0715');
+                if (!pointsResponse.ok) throw new Error('Failed to fetch location data');
+
+                const pointsData = await pointsResponse.json();
+                const forecastUrl = pointsData.properties.forecast;
+
+                // Fetch the forecast
+                const forecastResponse = await fetch(forecastUrl);
+                if (!forecastResponse.ok) throw new Error('Failed to fetch forecast');
+
+                const forecastData = await forecastResponse.json();
+                const periods = forecastData.properties.periods;
+
+                // Find the forecast for Feb 1st (daytime)
+                const targetDate = '2026-02-01';
+                let dayForecast = null;
+
+                for (const period of periods) {
+                    const periodDate = period.startTime.split('T')[0];
+                    if (periodDate === targetDate && period.isDaytime) {
+                        dayForecast = period;
+                        break;
+                    }
+                }
+
+                if (dayForecast) {
+                    // Get weather icon based on forecast
+                    const weatherIcon = getWeatherIcon(dayForecast.shortForecast);
+
+                    forecastContainer.innerHTML = `
+                        <div class="weather-date">Saturday, February 1st</div>
+                        <div class="weather-details">
+                            <span class="weather-icon">${weatherIcon}</span>
+                            <span class="weather-temp">${dayForecast.temperature}°${dayForecast.temperatureUnit}</span>
+                            <span class="weather-desc">${dayForecast.shortForecast}</span>
+                        </div>
+                    `;
+                } else {
+                    // Forecast not yet available (more than 7 days out)
+                    forecastContainer.innerHTML = `
+                        <div class="weather-date">Saturday, February 1st</div>
+                        <p class="weather-error">Forecast available closer to the event.<br>
+                        <a href="https://forecast.weather.gov/MapClick.php?lat=29.9511&lon=-90.0715" target="_blank">Check Weather.gov</a></p>
+                    `;
+                }
+            } catch (error) {
+                console.error('Weather fetch error:', error);
+                forecastContainer.innerHTML = `
+                    <div class="weather-date">Saturday, February 1st</div>
+                    <p class="weather-error">Forecast temporarily unavailable.<br>
+                    <a href="https://forecast.weather.gov/MapClick.php?lat=29.9511&lon=-90.0715" target="_blank">Check Weather.gov</a></p>
+                `;
+            }
+        }
+
+        function getWeatherIcon(forecast) {
+            const f = forecast.toLowerCase();
+            if (f.includes('snow')) return '🌨️';
+            if (f.includes('rain') || f.includes('shower')) return '🌧️';
+            if (f.includes('thunder') || f.includes('storm')) return '⛈️';
+            if (f.includes('cloud') || f.includes('overcast')) return '☁️';
+            if (f.includes('partly') || f.includes('mostly sunny')) return '⛅';
+            if (f.includes('sun') || f.includes('clear')) return '☀️';
+            if (f.includes('fog') || f.includes('mist')) return '🌫️';
+            if (f.includes('wind')) return '💨';
+            return '🌤️';
+        }
+
+        // Fetch weather when page loads
+        document.addEventListener('DOMContentLoaded', fetchWeatherForecast);
     </script>
 </body>
 </html>
