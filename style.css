@@ -783,6 +783,10 @@ section {
         padding: 15px 20px;
     }
 
+    .weather-ticker-content {
+        animation: ticker-scroll 10s linear infinite;
+    }
+
     .ticker-item {
         font-size: 1em;
     }
