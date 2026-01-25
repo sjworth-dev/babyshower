@@ -721,14 +721,23 @@ section {
 }
 
 .weather-ticker-content {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     padding: 18px 20px;
-    animation: ticker-scroll 20s linear infinite;
     white-space: nowrap;
 }
 
 .weather-ticker-content:hover {
+    animation-play-state: paused;
+}
+
+.weather-ticker-inner {
+    display: inline-flex;
+    align-items: center;
+    animation: ticker-scroll var(--ticker-duration, 20s) linear infinite;
+}
+
+.weather-ticker-inner:hover {
     animation-play-state: paused;
 }
 
@@ -737,7 +746,7 @@ section {
         transform: translateX(0);
     }
     100% {
-        transform: translateX(-50%);
+        transform: translateX(-100%);
     }
 }
 
@@ -772,6 +781,11 @@ section {
     font-weight: 600;
 }
 
+.ticker-strip {
+    display: inline-flex;
+    align-items: center;
+}
+
 @media (max-width: 768px) {
     .weather-ticker-container {
         flex-direction: column;
@@ -781,10 +795,6 @@ section {
     .weather-ticker-label {
         justify-content: center;
         padding: 15px 20px;
-    }
-
-    .weather-ticker-content {
-        animation: ticker-scroll 5s linear infinite;
     }
 
     .ticker-item {

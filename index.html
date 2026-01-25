@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <title>Baby Olympian Shower - Sam & Gigi</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Lato:wght@300;400;700&family=Pacifico&family=Dancing+Script:wght@400;500;600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=38">
+    <link rel="stylesheet" href="style.css?v=39">
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
@@ -2276,9 +2276,25 @@
                     ];
                 }
 
-                // Duplicate items for seamless loop
-                const allItems = [...tickerItems, ...tickerItems].join('<span class="ticker-separator">❄</span>');
-                tickerContent.innerHTML = allItems;
+                // Create seamless loop with two identical strips
+                const itemsHtml = tickerItems.join('<span class="ticker-separator">❄</span>') + '<span class="ticker-separator">❄</span>';
+                tickerContent.innerHTML = `
+                    <div class="weather-ticker-inner">
+                        <span class="ticker-strip">${itemsHtml}</span>
+                        <span class="ticker-strip">${itemsHtml}</span>
+                    </div>
+                `;
+
+                // Calculate animation duration based on content width
+                setTimeout(() => {
+                    const strip = tickerContent.querySelector('.ticker-strip');
+                    if (strip) {
+                        const width = strip.offsetWidth;
+                        const speed = window.innerWidth <= 768 ? 80 : 50; // pixels per second
+                        const duration = width / speed;
+                        tickerContent.querySelector('.weather-ticker-inner').style.setProperty('--ticker-duration', duration + 's');
+                    }
+                }, 100);
 
             } catch (error) {
                 console.error('Weather fetch error:', error);
@@ -2287,8 +2303,23 @@
                     `<span class="ticker-item">Bring <span class="ticker-highlight">layers, jackets & warm accessories</span></span>`,
                     `<span class="ticker-item">Expect chilly weather - bundle up!</span>`
                 ];
-                const allItems = [...fallbackItems, ...fallbackItems].join('<span class="ticker-separator">❄</span>');
-                tickerContent.innerHTML = allItems;
+                const itemsHtml = fallbackItems.join('<span class="ticker-separator">❄</span>') + '<span class="ticker-separator">❄</span>';
+                tickerContent.innerHTML = `
+                    <div class="weather-ticker-inner">
+                        <span class="ticker-strip">${itemsHtml}</span>
+                        <span class="ticker-strip">${itemsHtml}</span>
+                    </div>
+                `;
+
+                setTimeout(() => {
+                    const strip = tickerContent.querySelector('.ticker-strip');
+                    if (strip) {
+                        const width = strip.offsetWidth;
+                        const speed = window.innerWidth <= 768 ? 80 : 50;
+                        const duration = width / speed;
+                        tickerContent.querySelector('.weather-ticker-inner').style.setProperty('--ticker-duration', duration + 's');
+                    }
+                }, 100);
             }
         }
 
