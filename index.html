@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <title>Baby Olympian Shower - Sam & Gigi</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Lato:wght@300;400;700&family=Pacifico&family=Dancing+Script:wght@400;500;600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=34">
+    <link rel="stylesheet" href="style.css?v=35">
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
@@ -287,16 +287,16 @@
                     </div>
                 </div>
 
-                <div class="weather-alert">
-                    <div class="weather-alert-header">
-                        <span class="weather-alert-icon">🏔️</span>
-                        <h4>Rooftop Weather Alert</h4>
+                <div class="weather-ticker-container">
+                    <div class="weather-ticker-label">
+                        <span class="ticker-icon">🏔️</span>
+                        <span>ROOFTOP ALERT</span>
                     </div>
-                    <p class="weather-alert-message">We'll be celebrating on our rooftop deck - bundle up!</p>
-                    <div class="weather-forecast" id="weather-forecast">
-                        <div class="weather-loading">Loading forecast...</div>
+                    <div class="weather-ticker">
+                        <div class="weather-ticker-content" id="weather-ticker-content">
+                            <span class="ticker-item">Loading forecast...</span>
+                        </div>
                     </div>
-                    <p class="weather-tip">Bring layers, jackets, and warm accessories!</p>
                 </div>
             </div>
         </section>
@@ -2223,12 +2223,11 @@
         }
     </script>
 
-    <!-- Weather Forecast Script -->
+    <!-- Weather Ticker Script -->
     <script>
         // Fetch live weather forecast for New Orleans
         async function fetchWeatherForecast() {
-            const forecastContainer = document.getElementById('weather-forecast');
-            const eventDate = new Date('2026-02-01');
+            const tickerContent = document.getElementById('weather-ticker-content');
 
             try {
                 // Weather.gov API - First get the grid point for New Orleans (525 Washington Ave)
@@ -2257,33 +2256,39 @@
                     }
                 }
 
-                if (dayForecast) {
-                    // Get weather icon based on forecast
-                    const weatherIcon = getWeatherIcon(dayForecast.shortForecast);
+                // Build ticker messages
+                let tickerItems = [];
 
-                    forecastContainer.innerHTML = `
-                        <div class="weather-date">Saturday, February 1st</div>
-                        <div class="weather-details">
-                            <span class="weather-icon">${weatherIcon}</span>
-                            <span class="weather-temp">${dayForecast.temperature}°${dayForecast.temperatureUnit}</span>
-                            <span class="weather-desc">${dayForecast.shortForecast}</span>
-                        </div>
-                    `;
+                if (dayForecast) {
+                    const weatherIcon = getWeatherIcon(dayForecast.shortForecast);
+                    tickerItems = [
+                        `<span class="ticker-item">We're celebrating on our <span class="ticker-highlight">ROOFTOP</span> - dress warmly!</span>`,
+                        `<span class="ticker-item"><span class="ticker-weather-icon">${weatherIcon}</span> Feb 1st Forecast: <span class="ticker-temp">${dayForecast.temperature}°${dayForecast.temperatureUnit}</span> - ${dayForecast.shortForecast}</span>`,
+                        `<span class="ticker-item">Bring <span class="ticker-highlight">layers, jackets & warm accessories</span></span>`,
+                        `<span class="ticker-item">Wind: ${dayForecast.windSpeed} ${dayForecast.windDirection}</span>`
+                    ];
                 } else {
-                    // Forecast not yet available (more than 7 days out)
-                    forecastContainer.innerHTML = `
-                        <div class="weather-date">Saturday, February 1st</div>
-                        <p class="weather-error">Forecast available closer to the event.<br>
-                        <a href="https://forecast.weather.gov/MapClick.php?lat=29.9511&lon=-90.0715" target="_blank">Check Weather.gov</a></p>
-                    `;
+                    tickerItems = [
+                        `<span class="ticker-item">We're celebrating on our <span class="ticker-highlight">ROOFTOP</span> - dress warmly!</span>`,
+                        `<span class="ticker-item">Forecast available closer to Feb 1st</span>`,
+                        `<span class="ticker-item">Bring <span class="ticker-highlight">layers, jackets & warm accessories</span></span>`,
+                        `<span class="ticker-item">Expect chilly weather - bundle up!</span>`
+                    ];
                 }
+
+                // Duplicate items for seamless loop
+                const allItems = [...tickerItems, ...tickerItems].join('<span class="ticker-separator">❄</span>');
+                tickerContent.innerHTML = allItems;
+
             } catch (error) {
                 console.error('Weather fetch error:', error);
-                forecastContainer.innerHTML = `
-                    <div class="weather-date">Saturday, February 1st</div>
-                    <p class="weather-error">Forecast temporarily unavailable.<br>
-                    <a href="https://forecast.weather.gov/MapClick.php?lat=29.9511&lon=-90.0715" target="_blank">Check Weather.gov</a></p>
-                `;
+                const fallbackItems = [
+                    `<span class="ticker-item">We're celebrating on our <span class="ticker-highlight">ROOFTOP</span> - dress warmly!</span>`,
+                    `<span class="ticker-item">Bring <span class="ticker-highlight">layers, jackets & warm accessories</span></span>`,
+                    `<span class="ticker-item">Expect chilly weather - bundle up!</span>`
+                ];
+                const allItems = [...fallbackItems, ...fallbackItems].join('<span class="ticker-separator">❄</span>');
+                tickerContent.innerHTML = allItems;
             }
         }
 
