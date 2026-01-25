@@ -663,6 +663,15 @@ section {
     border: 2px solid rgba(255, 255, 255, 0.2);
 }
 
+.weather-ticker-container.top-ticker {
+    margin-top: 0;
+    border-radius: 0;
+    border: none;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+    z-index: 100;
+}
+
 .weather-ticker-label {
     background: linear-gradient(135deg, #c41e3a 0%, #8b0000 100%);
     color: var(--snow-white);
