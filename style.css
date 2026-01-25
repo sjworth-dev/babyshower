@@ -2100,7 +2100,7 @@ section {
 footer {
     background: linear-gradient(135deg, var(--dark-wood) 0%, var(--deep-pine) 100%);
     color: var(--alpine-cream);
-    padding: 60px 20px;
+    padding: 60px 20px 100px;
     text-align: center;
     border-top: 4px solid var(--mountain-brown);
 }
@@ -3789,5 +3789,89 @@ footer p {
 
     .gigi-ramp {
         height: 450px;
+    }
+}
+
+/* Registry Ticker - Bottom Bar */
+.registry-ticker {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(135deg, var(--warm-gold) 0%, #e6b800 50%, var(--warm-gold) 100%);
+    padding: 12px 20px;
+    text-decoration: none;
+    z-index: 1000;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.registry-ticker:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 -6px 25px rgba(0, 0, 0, 0.2);
+}
+
+.registry-ticker-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.ticker-gift {
+    font-size: 1.4em;
+    animation: giftBounce 1s ease-in-out infinite;
+}
+
+.ticker-gift:last-child {
+    animation-delay: 0.5s;
+}
+
+@keyframes giftBounce {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-3px) rotate(-5deg); }
+    75% { transform: translateY(-3px) rotate(5deg); }
+}
+
+.ticker-text {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.3em;
+    font-weight: 600;
+    color: var(--dark-wood);
+}
+
+.ticker-cta {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1em;
+    font-weight: 700;
+    color: var(--deep-pine);
+    background: white;
+    padding: 6px 16px;
+    border-radius: 20px;
+    transition: transform 0.2s ease;
+}
+
+.registry-ticker:hover .ticker-cta {
+    transform: scale(1.05);
+}
+
+@media (max-width: 480px) {
+    .registry-ticker {
+        padding: 10px 15px;
+    }
+
+    .ticker-text {
+        font-size: 1.1em;
+    }
+
+    .ticker-cta {
+        font-size: 0.95em;
+        padding: 5px 12px;
+    }
+
+    .ticker-gift {
+        font-size: 1.2em;
     }
 }
