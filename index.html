@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <title>Baby Olympian Shower - Sam & Gigi</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Lato:wght@300;400;700&family=Pacifico&family=Dancing+Script:wght@400;500;600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=37">
+    <link rel="stylesheet" href="style.css?v=38">
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
@@ -60,7 +60,7 @@
     <div class="weather-ticker-container top-ticker">
         <div class="weather-ticker-label">
             <span class="ticker-icon">🏔️</span>
-            <span>ROOFTOP ALERT</span>
+            <span>PEAK CONDITIONS</span>
         </div>
         <div class="weather-ticker">
             <div class="weather-ticker-content" id="weather-ticker-content">
@@ -2262,14 +2262,14 @@
                 if (dayForecast) {
                     const weatherIcon = getWeatherIcon(dayForecast.shortForecast);
                     tickerItems = [
-                        `<span class="ticker-item">We're celebrating on our <span class="ticker-highlight">ROOFTOP</span> - dress warmly!</span>`,
+                        `<span class="ticker-item">Join us at the <span class="ticker-highlight">SUMMIT</span> - dress warmly!</span>`,
                         `<span class="ticker-item"><span class="ticker-weather-icon">${weatherIcon}</span> Feb 1st Forecast: <span class="ticker-temp">${dayForecast.temperature}°${dayForecast.temperatureUnit}</span> - ${dayForecast.shortForecast}</span>`,
                         `<span class="ticker-item">Bring <span class="ticker-highlight">layers, jackets & warm accessories</span></span>`,
                         `<span class="ticker-item">Wind: ${dayForecast.windSpeed} ${dayForecast.windDirection}</span>`
                     ];
                 } else {
                     tickerItems = [
-                        `<span class="ticker-item">We're celebrating on our <span class="ticker-highlight">ROOFTOP</span> - dress warmly!</span>`,
+                        `<span class="ticker-item">Join us at the <span class="ticker-highlight">SUMMIT</span> - dress warmly!</span>`,
                         `<span class="ticker-item">Forecast available closer to Feb 1st</span>`,
                         `<span class="ticker-item">Bring <span class="ticker-highlight">layers, jackets & warm accessories</span></span>`,
                         `<span class="ticker-item">Expect chilly weather - bundle up!</span>`
@@ -2283,7 +2283,7 @@
             } catch (error) {
                 console.error('Weather fetch error:', error);
                 const fallbackItems = [
-                    `<span class="ticker-item">We're celebrating on our <span class="ticker-highlight">ROOFTOP</span> - dress warmly!</span>`,
+                    `<span class="ticker-item">Join us at the <span class="ticker-highlight">SUMMIT</span> - dress warmly!</span>`,
                     `<span class="ticker-item">Bring <span class="ticker-highlight">layers, jackets & warm accessories</span></span>`,
                     `<span class="ticker-item">Expect chilly weather - bundle up!</span>`
                 ];
