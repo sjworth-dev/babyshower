@@ -753,7 +753,7 @@
                     </div>
                     <div class="tap-zone" id="tap-zone">
                         <div class="face-container" id="face-container">
-                            <img src="Gigi Head 1.png" alt="Tap!" class="tap-face" id="tap-face">
+                            <img src="Parker 1.png" alt="Tap!" class="tap-face" id="tap-face">
                             <div class="sweat-drops" id="sweat-drops">
                                 <span class="sweat">💧</span>
                                 <span class="sweat">💧</span>
@@ -1161,8 +1161,8 @@
         let playerFaceData = null; // Base64 image data
         let playerName = '';
 
-        // Default face (Gigi)
-        const defaultFace = 'Gigi Head 1.png';
+        // Default face (Parker)
+        const defaultFace = 'Parker 1.png';
 
         let contractionState = 'idle'; // idle, waiting, active, rest, done
         let currentContraction = 0;
@@ -2379,7 +2379,7 @@
             function updateCountdown() {
                 const now = new Date();
                 const diff = showerDate - now;
-                const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
 
                 if (days > 1) {
                     countdownEl.textContent = `Only ${days} days away and still haven't bought us a gift?`;
