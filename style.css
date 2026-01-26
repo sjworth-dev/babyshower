@@ -1090,6 +1090,119 @@ section {
     }
 }
 
+/* Labor Bets Plug - LaborBets Brand Style */
+.labor-bets-plug {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin-top: 35px;
+    padding: 20px 35px;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border: 1px solid rgba(99, 102, 241, 0.4);
+    border-radius: 16px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.labor-bets-plug::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.labor-bets-plug:hover {
+    transform: translateY(-3px);
+    border-color: rgba(99, 102, 241, 0.7);
+    box-shadow: 0 10px 40px rgba(99, 102, 241, 0.25), 0 0 20px rgba(236, 72, 153, 0.15);
+}
+
+.labor-bets-plug:hover::before {
+    opacity: 1;
+}
+
+.plug-logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.4em;
+    font-weight: 700;
+    background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+    z-index: 1;
+}
+
+.plug-text {
+    font-size: 0.9em;
+    color: #94a3b8;
+    position: relative;
+    z-index: 1;
+}
+
+.plug-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.95em;
+    font-weight: 600;
+    color: #10b981;
+    position: relative;
+    z-index: 1;
+}
+
+.plug-odds {
+    display: inline-flex;
+    gap: 12px;
+    margin-top: 5px;
+    position: relative;
+    z-index: 1;
+}
+
+.plug-odds span {
+    font-size: 0.8em;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-weight: 500;
+}
+
+.plug-odds .odds-up {
+    background: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+}
+
+.plug-odds .odds-down {
+    background: rgba(236, 72, 153, 0.15);
+    color: #ec4899;
+}
+
+@media (max-width: 480px) {
+    .labor-bets-plug {
+        padding: 15px 25px;
+        margin-top: 25px;
+    }
+
+    .plug-logo {
+        font-size: 1.2em;
+    }
+
+    .plug-text {
+        font-size: 0.8em;
+    }
+
+    .plug-cta {
+        font-size: 0.85em;
+    }
+}
+
 /* RSVP Section - Alpine Elegance */
 .rsvp-section {
     background: linear-gradient(180deg, var(--alpine-mist) 0%, var(--glacier-blue) 100%);
