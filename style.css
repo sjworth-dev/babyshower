@@ -2193,11 +2193,59 @@ footer p {
     align-items: center;
     cursor: pointer;
     transition: transform 0.3s ease;
+    opacity: 0;
+    transform: scale(0.8);
 }
 
-.snow-globe:hover,
-.snow-globe.shaking {
+.snow-globe.in-view {
+    animation: globeEntrance 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.snow-globe.in-view.animated {
+    opacity: 1;
+    transform: scale(1);
+    animation: none;
+}
+
+.snow-globe:nth-child(2).in-view {
+    animation-delay: 0.2s;
+}
+
+@keyframes globeEntrance {
+    0% {
+        opacity: 0;
+        transform: scale(0.8) rotate(0deg);
+    }
+    20% {
+        opacity: 1;
+        transform: scale(1.05) rotate(-2deg);
+    }
+    35% {
+        opacity: 1;
+        transform: scale(0.98) rotate(1.5deg);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.02) rotate(-1deg);
+    }
+    65% {
+        opacity: 1;
+        transform: scale(0.99) rotate(0.5deg);
+    }
+    80% {
+        opacity: 1;
+        transform: scale(1.01) rotate(-0.3deg);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+.snow-globe.animated:hover,
+.snow-globe.animated.shaking {
     animation: globeShake 0.3s ease-in-out infinite;
+    opacity: 1;
 }
 
 @keyframes globeShake {

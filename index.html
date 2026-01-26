@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <title>Baby Olympian Shower - Sam & Gigi</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Lato:wght@300;400;700&family=Pacifico&family=Dancing+Script:wght@400;500;600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=44">
+    <link rel="stylesheet" href="style.css?v=46">
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
@@ -1520,6 +1520,27 @@
                     globe.classList.remove('shaking');
                 }, 2000);
             }, { passive: true });
+        });
+
+        // Snow globe scroll animation - expand and shake when entering view
+        const globeObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in-view');
+                    // After animation ends, add 'animated' class to enable hover effects
+                    entry.target.addEventListener('animationend', () => {
+                        entry.target.classList.add('animated');
+                    }, { once: true });
+                    globeObserver.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.3,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        snowGlobes.forEach(globe => {
+            globeObserver.observe(globe);
         });
 
         // ============ FACIAL RECOGNITION RSVP ============
