@@ -2344,10 +2344,35 @@
     <a href="https://withjoy.com/alexandrasbabyregistry-ecmk95tts/registry" target="_blank" class="registry-ticker">
         <div class="registry-ticker-content">
             <span class="ticker-gift">🎁</span>
-            <span class="ticker-text">Still haven't bought a gift?</span>
-            <span class="ticker-cta">Check out the registry!</span>
+            <span class="ticker-text" id="registry-countdown">Only X days away and still haven't bought us a gift?</span>
+            <span class="ticker-cta">View the registry!</span>
             <span class="ticker-gift">🎁</span>
         </div>
     </a>
+    <script>
+        // Registry countdown
+        (function() {
+            const showerDate = new Date('2026-02-01T13:00:00');
+            const countdownEl = document.getElementById('registry-countdown');
+
+            function updateCountdown() {
+                const now = new Date();
+                const diff = showerDate - now;
+                const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+
+                if (days > 1) {
+                    countdownEl.textContent = `Only ${days} days away and still haven't bought us a gift?`;
+                } else if (days === 1) {
+                    countdownEl.textContent = "It's TOMORROW and you still haven't bought us a gift?!";
+                } else if (days === 0) {
+                    countdownEl.textContent = "It's TODAY! Last chance to grab a gift!";
+                } else {
+                    countdownEl.textContent = "Thanks for celebrating with us!";
+                }
+            }
+
+            updateCountdown();
+        })();
+    </script>
 </body>
 </html>
