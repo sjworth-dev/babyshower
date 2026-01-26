@@ -3859,24 +3859,25 @@ footer p {
 
 @media (max-width: 480px) {
     .registry-ticker {
-        padding: 8px 12px;
+        padding: 6px 10px;
     }
 
     .registry-ticker-content {
-        gap: 6px;
+        gap: 8px;
+        flex-wrap: nowrap;
     }
 
     .ticker-text {
-        font-size: 0.85em;
-        text-align: center;
+        font-size: 0.8em;
     }
 
     .ticker-cta {
-        font-size: 0.8em;
-        padding: 4px 10px;
+        font-size: 0.75em;
+        padding: 3px 8px;
+        white-space: nowrap;
     }
 
     .ticker-gift {
-        font-size: 1em;
+        display: none;
     }
 }
