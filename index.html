@@ -2718,5 +2718,207 @@
             laborBetsObserver.observe(proudParentsSection);
         }
     </script>
+
+    <!-- CONTRACTION SIMULATOR -->
+    <div class="contraction-overlay" id="contraction-overlay">
+        <div class="contraction-warning">
+            <span class="contraction-icon">🤰</span>
+            <span class="contraction-text">CONTRACTION!</span>
+            <span class="contraction-icon">😮‍💨</span>
+        </div>
+    </div>
+
+    <style>
+        /* Contraction Overlay */
+        .contraction-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 99999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .contraction-overlay.active {
+            opacity: 1;
+            animation: contraction-squeeze 8s ease-in-out forwards;
+        }
+
+        @keyframes contraction-squeeze {
+            /* Build up */
+            0% {
+                background: transparent;
+                box-shadow: inset 0 0 0 0 rgba(255, 0, 0, 0);
+            }
+            /* Starting to feel it */
+            10% {
+                background: rgba(255, 0, 0, 0.05);
+                box-shadow: inset 0 0 100px 20px rgba(255, 0, 0, 0.2);
+            }
+            /* Building intensity */
+            25% {
+                background: rgba(255, 0, 0, 0.1);
+                box-shadow: inset 0 0 200px 60px rgba(255, 0, 0, 0.4);
+            }
+            /* Peak contraction */
+            40% {
+                background: rgba(255, 0, 0, 0.2);
+                box-shadow: inset 0 0 300px 150px rgba(255, 0, 0, 0.6);
+            }
+            50% {
+                background: rgba(255, 0, 0, 0.25);
+                box-shadow: inset 0 0 400px 200px rgba(255, 0, 0, 0.7);
+            }
+            /* Starting to release */
+            65% {
+                background: rgba(255, 0, 0, 0.15);
+                box-shadow: inset 0 0 250px 100px rgba(255, 0, 0, 0.4);
+            }
+            /* Relief coming */
+            80% {
+                background: rgba(255, 0, 0, 0.05);
+                box-shadow: inset 0 0 100px 30px rgba(255, 0, 0, 0.2);
+            }
+            /* Contraction over */
+            100% {
+                background: transparent;
+                box-shadow: inset 0 0 0 0 rgba(255, 0, 0, 0);
+            }
+        }
+
+        /* Page squeeze effect */
+        body.contracting {
+            animation: body-squeeze 8s ease-in-out forwards;
+        }
+
+        @keyframes body-squeeze {
+            0% { transform: scale(1) perspective(1000px) rotateX(0deg); filter: saturate(1); }
+            10% { transform: scale(0.99) perspective(1000px) rotateX(0.5deg); filter: saturate(1.1); }
+            25% { transform: scale(0.97) perspective(1000px) rotateX(1deg); filter: saturate(1.3); }
+            40% { transform: scale(0.94) perspective(1000px) rotateX(2deg); filter: saturate(1.5) brightness(0.9); }
+            50% { transform: scale(0.92) perspective(1000px) rotateX(2.5deg); filter: saturate(1.7) brightness(0.85); }
+            65% { transform: scale(0.95) perspective(1000px) rotateX(1.5deg); filter: saturate(1.3) brightness(0.95); }
+            80% { transform: scale(0.98) perspective(1000px) rotateX(0.5deg); filter: saturate(1.1); }
+            100% { transform: scale(1) perspective(1000px) rotateX(0deg); filter: saturate(1); }
+        }
+
+        /* Warning text */
+        .contraction-warning {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px 40px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 3px solid #ff0000;
+            border-radius: 20px;
+            opacity: 0;
+            transform: scale(0.5);
+            animation: warning-pop 8s ease-in-out forwards;
+            box-shadow: 0 0 50px rgba(255, 0, 0, 0.5);
+        }
+
+        @keyframes warning-pop {
+            0% { opacity: 0; transform: scale(0.5); }
+            15% { opacity: 1; transform: scale(1.1); }
+            25% { transform: scale(1); }
+            75% { opacity: 1; transform: scale(1); }
+            90% { opacity: 0.5; transform: scale(0.9); }
+            100% { opacity: 0; transform: scale(0.5); }
+        }
+
+        .contraction-icon {
+            font-size: 3em;
+            animation: icon-shake 0.1s ease-in-out infinite;
+        }
+
+        @keyframes icon-shake {
+            0%, 100% { transform: translateX(-2px) rotate(-5deg); }
+            50% { transform: translateX(2px) rotate(5deg); }
+        }
+
+        .contraction-text {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2em;
+            font-weight: 800;
+            color: #ff0000;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+            animation: text-pulse 0.5s ease-in-out infinite;
+        }
+
+        @keyframes text-pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
+
+        /* Breathing prompt after contraction */
+        .breathe-prompt {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 15px 30px;
+            background: rgba(0, 200, 100, 0.9);
+            border-radius: 30px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.2em;
+            font-weight: 600;
+            color: white;
+            z-index: 100000;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            box-shadow: 0 4px 20px rgba(0, 200, 100, 0.5);
+        }
+
+        .breathe-prompt.show {
+            opacity: 1;
+            animation: breathe-bounce 1s ease-in-out infinite;
+        }
+
+        @keyframes breathe-bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+    </style>
+
+    <div class="breathe-prompt" id="breathe-prompt">😮‍💨 Breathe... You made it through! 😮‍💨</div>
+
+    <script>
+        // Contraction Simulator - triggers after 20 seconds
+        const contractionOverlay = document.getElementById('contraction-overlay');
+        const breathePrompt = document.getElementById('breathe-prompt');
+        let contractionTriggered = false;
+
+        function triggerContraction() {
+            if (contractionTriggered) return;
+            contractionTriggered = true;
+
+            // Start the contraction
+            contractionOverlay.classList.add('active');
+            document.body.classList.add('contracting');
+
+            // Show breathing prompt after contraction ends
+            setTimeout(() => {
+                contractionOverlay.classList.remove('active');
+                document.body.classList.remove('contracting');
+                breathePrompt.classList.add('show');
+
+                // Hide breathing prompt after 4 seconds
+                setTimeout(() => {
+                    breathePrompt.classList.remove('show');
+                }, 4000);
+            }, 8000);
+        }
+
+        // Trigger contraction after 20 seconds
+        setTimeout(triggerContraction, 20000);
+    </script>
 </body>
 </html>
