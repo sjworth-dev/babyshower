@@ -1098,8 +1098,8 @@ section {
     gap: 8px;
     margin-top: 35px;
     padding: 20px 35px;
-    background: linear-gradient(145deg, #1a1a2e 0%, #16213e 100%);
-    border: 1px solid rgba(0, 200, 83, 0.4);
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border: 1px solid rgba(99, 102, 241, 0.4);
     border-radius: 16px;
     text-decoration: none;
     transition: all 0.3s ease;
@@ -1114,15 +1114,15 @@ section {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, rgba(0, 200, 83, 0.1) 0%, rgba(0, 230, 118, 0.1) 100%);
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
     opacity: 0;
     transition: opacity 0.3s ease;
 }
 
 .labor-bets-plug:hover {
     transform: translateY(-3px);
-    border-color: #00c853;
-    box-shadow: 0 10px 40px rgba(0, 200, 83, 0.25), 0 0 20px rgba(0, 200, 83, 0.3);
+    border-color: rgba(99, 102, 241, 0.7);
+    box-shadow: 0 10px 40px rgba(99, 102, 241, 0.25), 0 0 20px rgba(236, 72, 153, 0.15);
 }
 
 .labor-bets-plug:hover::before {
@@ -1133,13 +1133,12 @@ section {
     font-family: 'Space Grotesk', sans-serif;
     font-size: 1.4em;
     font-weight: 700;
-    color: #fff;
+    background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     position: relative;
     z-index: 1;
-}
-
-.plug-logo span {
-    color: #00c853;
 }
 
 .plug-text {
@@ -1155,7 +1154,7 @@ section {
     gap: 6px;
     font-size: 0.95em;
     font-weight: 600;
-    color: #00c853;
+    color: #10b981;
     position: relative;
     z-index: 1;
 }
@@ -1176,28 +1175,13 @@ section {
 }
 
 .plug-odds .odds-up {
-    background: rgba(0, 200, 83, 0.15);
-    color: #00c853;
+    background: rgba(16, 185, 129, 0.15);
+    color: #10b981;
 }
 
 .plug-odds .odds-down {
-    background: rgba(255, 107, 53, 0.15);
-    color: #ff6b35;
-}
-
-/* Make widget full-width in snow-globe-container */
-.snow-globe-container .labor-bets-plug {
-    flex-basis: 100%;
-    margin: 20px auto;
-    order: 1;
-}
-
-.snow-globe-container .proud-parents-banner {
-    order: 2;
-}
-
-.snow-globe-container .snow-globe:last-of-type {
-    order: 3;
+    background: rgba(236, 72, 153, 0.15);
+    color: #ec4899;
 }
 
 @media (max-width: 480px) {
