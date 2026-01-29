@@ -2719,17 +2719,37 @@
         }
     </script>
 
-    <!-- CONTRACTION SIMULATOR -->
+    <!-- 🤰 MEGA CONTRACTION SIMULATOR 🤰 -->
     <div class="contraction-overlay" id="contraction-overlay">
+        <!-- Black bars squeezing in -->
+        <div class="squeeze-bar squeeze-left"></div>
+        <div class="squeeze-bar squeeze-right"></div>
+        <div class="squeeze-bar squeeze-top"></div>
+        <div class="squeeze-bar squeeze-bottom"></div>
+
+        <!-- Strobe flash layer -->
+        <div class="contraction-strobe"></div>
+
+        <!-- GIANT WARNING -->
         <div class="contraction-warning">
-            <span class="contraction-icon">🤰</span>
-            <span class="contraction-text">CONTRACTION!</span>
-            <span class="contraction-icon">😮‍💨</span>
+            <div class="warning-line">⚠️ ⚠️ ⚠️ ⚠️ ⚠️</div>
+            <div class="mega-text">CONTRACTION!</div>
+            <div class="sub-text">😱 BREATHE THROUGH IT 😱</div>
+            <div class="pain-meter">
+                <div class="pain-label">INTENSITY</div>
+                <div class="pain-bar"><div class="pain-fill"></div></div>
+            </div>
+            <div class="warning-line">⚠️ ⚠️ ⚠️ ⚠️ ⚠️</div>
         </div>
+
+        <!-- Heartbeat pulse rings -->
+        <div class="heartbeat-ring ring1"></div>
+        <div class="heartbeat-ring ring2"></div>
+        <div class="heartbeat-ring ring3"></div>
     </div>
 
     <style>
-        /* Contraction Overlay */
+        /* ========== MEGA CONTRACTION STYLES ========== */
         .contraction-overlay {
             position: fixed;
             top: 0;
@@ -2737,144 +2757,309 @@
             right: 0;
             bottom: 0;
             pointer-events: none;
-            z-index: 99999;
+            z-index: 999999;
             opacity: 0;
-            transition: opacity 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
+            background: rgba(0, 0, 0, 0);
+            transition: opacity 0.2s ease;
         }
 
         .contraction-overlay.active {
             opacity: 1;
-            animation: contraction-squeeze 8s ease-in-out forwards;
+            pointer-events: all;
         }
 
-        @keyframes contraction-squeeze {
-            /* Build up */
-            0% {
-                background: transparent;
-                box-shadow: inset 0 0 0 0 rgba(255, 0, 0, 0);
-            }
-            /* Starting to feel it */
-            10% {
-                background: rgba(255, 0, 0, 0.05);
-                box-shadow: inset 0 0 100px 20px rgba(255, 0, 0, 0.2);
-            }
-            /* Building intensity */
-            25% {
-                background: rgba(255, 0, 0, 0.1);
-                box-shadow: inset 0 0 200px 60px rgba(255, 0, 0, 0.4);
-            }
-            /* Peak contraction */
-            40% {
-                background: rgba(255, 0, 0, 0.2);
-                box-shadow: inset 0 0 300px 150px rgba(255, 0, 0, 0.6);
-            }
-            50% {
-                background: rgba(255, 0, 0, 0.25);
-                box-shadow: inset 0 0 400px 200px rgba(255, 0, 0, 0.7);
-            }
-            /* Starting to release */
-            65% {
-                background: rgba(255, 0, 0, 0.15);
-                box-shadow: inset 0 0 250px 100px rgba(255, 0, 0, 0.4);
-            }
-            /* Relief coming */
-            80% {
-                background: rgba(255, 0, 0, 0.05);
-                box-shadow: inset 0 0 100px 30px rgba(255, 0, 0, 0.2);
-            }
-            /* Contraction over */
-            100% {
-                background: transparent;
-                box-shadow: inset 0 0 0 0 rgba(255, 0, 0, 0);
-            }
+        /* BLACK BARS SQUEEZING IN */
+        .squeeze-bar {
+            position: absolute;
+            background: #000;
+            z-index: 1;
         }
 
-        /* Page squeeze effect */
-        body.contracting {
-            animation: body-squeeze 8s ease-in-out forwards;
+        .squeeze-left, .squeeze-right {
+            top: 0;
+            bottom: 0;
+            width: 0;
         }
 
-        @keyframes body-squeeze {
-            0% { transform: scale(1) perspective(1000px) rotateX(0deg); filter: saturate(1); }
-            10% { transform: scale(0.99) perspective(1000px) rotateX(0.5deg); filter: saturate(1.1); }
-            25% { transform: scale(0.97) perspective(1000px) rotateX(1deg); filter: saturate(1.3); }
-            40% { transform: scale(0.94) perspective(1000px) rotateX(2deg); filter: saturate(1.5) brightness(0.9); }
-            50% { transform: scale(0.92) perspective(1000px) rotateX(2.5deg); filter: saturate(1.7) brightness(0.85); }
-            65% { transform: scale(0.95) perspective(1000px) rotateX(1.5deg); filter: saturate(1.3) brightness(0.95); }
-            80% { transform: scale(0.98) perspective(1000px) rotateX(0.5deg); filter: saturate(1.1); }
-            100% { transform: scale(1) perspective(1000px) rotateX(0deg); filter: saturate(1); }
+        .squeeze-left { left: 0; }
+        .squeeze-right { right: 0; }
+
+        .squeeze-top, .squeeze-bottom {
+            left: 0;
+            right: 0;
+            height: 0;
         }
 
-        /* Warning text */
-        .contraction-warning {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            padding: 20px 40px;
-            background: rgba(0, 0, 0, 0.8);
-            border: 3px solid #ff0000;
-            border-radius: 20px;
+        .squeeze-top { top: 0; }
+        .squeeze-bottom { bottom: 0; }
+
+        .contraction-overlay.active .squeeze-left,
+        .contraction-overlay.active .squeeze-right {
+            animation: squeeze-horizontal 10s ease-in-out forwards;
+        }
+
+        .contraction-overlay.active .squeeze-top,
+        .contraction-overlay.active .squeeze-bottom {
+            animation: squeeze-vertical 10s ease-in-out forwards;
+        }
+
+        @keyframes squeeze-horizontal {
+            0% { width: 0; }
+            20% { width: 5%; }
+            40% { width: 15%; }
+            50% { width: 25%; }
+            60% { width: 15%; }
+            80% { width: 5%; }
+            100% { width: 0; }
+        }
+
+        @keyframes squeeze-vertical {
+            0% { height: 0; }
+            20% { height: 3%; }
+            40% { height: 10%; }
+            50% { height: 15%; }
+            60% { height: 10%; }
+            80% { height: 3%; }
+            100% { height: 0; }
+        }
+
+        /* STROBE FLASH */
+        .contraction-strobe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 2;
             opacity: 0;
-            transform: scale(0.5);
-            animation: warning-pop 8s ease-in-out forwards;
-            box-shadow: 0 0 50px rgba(255, 0, 0, 0.5);
         }
 
-        @keyframes warning-pop {
-            0% { opacity: 0; transform: scale(0.5); }
-            15% { opacity: 1; transform: scale(1.1); }
-            25% { transform: scale(1); }
-            75% { opacity: 1; transform: scale(1); }
-            90% { opacity: 0.5; transform: scale(0.9); }
-            100% { opacity: 0; transform: scale(0.5); }
+        .contraction-overlay.active .contraction-strobe {
+            animation: strobe-pain 10s ease-in-out forwards;
         }
 
-        .contraction-icon {
-            font-size: 3em;
-            animation: icon-shake 0.1s ease-in-out infinite;
+        @keyframes strobe-pain {
+            0% { background: transparent; opacity: 0; }
+            10% { background: rgba(255, 0, 0, 0.3); opacity: 1; }
+            12% { background: rgba(255, 50, 50, 0.5); }
+            14% { background: rgba(255, 0, 0, 0.3); }
+            20% { background: rgba(255, 0, 0, 0.4); }
+            22% { background: rgba(255, 100, 100, 0.6); }
+            24% { background: rgba(255, 0, 0, 0.4); }
+            30% { background: rgba(255, 0, 0, 0.5); }
+            32% { background: rgba(255, 150, 150, 0.7); }
+            34% { background: rgba(255, 0, 0, 0.5); }
+            40% { background: rgba(255, 0, 0, 0.6); }
+            42% { background: rgba(255, 200, 200, 0.8); }
+            44% { background: rgba(255, 0, 0, 0.6); }
+            46% { background: rgba(255, 255, 255, 0.9); }
+            48% { background: rgba(255, 0, 0, 0.7); }
+            50% { background: rgba(255, 0, 0, 0.7); }
+            52% { background: rgba(255, 255, 255, 0.9); }
+            54% { background: rgba(255, 0, 0, 0.6); }
+            60% { background: rgba(255, 0, 0, 0.5); }
+            70% { background: rgba(255, 0, 0, 0.3); }
+            80% { background: rgba(255, 0, 0, 0.1); }
+            100% { background: transparent; opacity: 0; }
         }
 
-        @keyframes icon-shake {
-            0%, 100% { transform: translateX(-2px) rotate(-5deg); }
-            50% { transform: translateX(2px) rotate(5deg); }
+        /* GIANT WARNING TEXT */
+        .contraction-warning {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            opacity: 0;
+            transform: scale(0.3);
         }
 
-        .contraction-text {
-            font-family: 'Space Grotesk', sans-serif;
+        .contraction-overlay.active .contraction-warning {
+            animation: warning-mega-pop 10s ease-in-out forwards;
+        }
+
+        @keyframes warning-mega-pop {
+            0% { opacity: 0; transform: scale(0.3); }
+            10% { opacity: 1; transform: scale(1.2); }
+            15% { transform: scale(1); }
+            85% { opacity: 1; transform: scale(1); }
+            95% { opacity: 0; transform: scale(0.5); }
+            100% { opacity: 0; transform: scale(0.3); }
+        }
+
+        .warning-line {
             font-size: 2em;
-            font-weight: 800;
+            letter-spacing: 20px;
+            animation: warning-flash 0.3s ease-in-out infinite;
+            margin: 10px 0;
+        }
+
+        @keyframes warning-flash {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .mega-text {
+            font-family: 'Space Grotesk', 'Impact', sans-serif;
+            font-size: 8vw;
+            font-weight: 900;
             color: #ff0000;
             text-transform: uppercase;
-            letter-spacing: 4px;
-            text-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
-            animation: text-pulse 0.5s ease-in-out infinite;
+            letter-spacing: 10px;
+            text-shadow:
+                0 0 20px #ff0000,
+                0 0 40px #ff0000,
+                0 0 60px #ff0000,
+                0 0 80px #ff0000,
+                4px 4px 0 #000,
+                -4px -4px 0 #000;
+            animation: mega-shake 0.05s ease-in-out infinite;
+            -webkit-text-stroke: 3px #000;
         }
 
-        @keyframes text-pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.8; transform: scale(1.05); }
+        @keyframes mega-shake {
+            0% { transform: translate(-5px, -5px) rotate(-1deg); }
+            25% { transform: translate(5px, -3px) rotate(1deg); }
+            50% { transform: translate(-3px, 5px) rotate(-0.5deg); }
+            75% { transform: translate(3px, 3px) rotate(0.5deg); }
+            100% { transform: translate(-5px, -5px) rotate(-1deg); }
         }
 
-        /* Breathing prompt after contraction */
+        .sub-text {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3vw;
+            color: #fff;
+            text-shadow: 0 0 20px #ff0000;
+            margin: 20px 0;
+            animation: sub-pulse 0.5s ease-in-out infinite;
+        }
+
+        @keyframes sub-pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        /* PAIN METER */
+        .pain-meter {
+            margin: 30px auto;
+            width: 80%;
+            max-width: 500px;
+        }
+
+        .pain-label {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5em;
+            color: #fff;
+            letter-spacing: 5px;
+            margin-bottom: 10px;
+        }
+
+        .pain-bar {
+            width: 100%;
+            height: 30px;
+            background: #333;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 3px solid #fff;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+        }
+
+        .pain-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #ffff00, #ff9900, #ff0000, #ff0000);
+            border-radius: 12px;
+            transition: width 0.1s ease;
+        }
+
+        .contraction-overlay.active .pain-fill {
+            animation: pain-fill-anim 10s ease-in-out forwards;
+        }
+
+        @keyframes pain-fill-anim {
+            0% { width: 0%; background: linear-gradient(90deg, #00ff00, #00ff00); }
+            20% { width: 30%; background: linear-gradient(90deg, #ffff00, #ffcc00); }
+            40% { width: 70%; background: linear-gradient(90deg, #ff9900, #ff6600); }
+            50% { width: 100%; background: linear-gradient(90deg, #ff0000, #cc0000); box-shadow: 0 0 30px #ff0000; }
+            60% { width: 70%; background: linear-gradient(90deg, #ff9900, #ff6600); }
+            80% { width: 30%; background: linear-gradient(90deg, #ffff00, #ffcc00); }
+            100% { width: 0%; background: linear-gradient(90deg, #00ff00, #00ff00); }
+        }
+
+        /* HEARTBEAT RINGS */
+        .heartbeat-ring {
+            position: absolute;
+            border: 4px solid rgba(255, 0, 0, 0.5);
+            border-radius: 50%;
+            opacity: 0;
+        }
+
+        .ring1 { width: 100px; height: 100px; }
+        .ring2 { width: 200px; height: 200px; }
+        .ring3 { width: 300px; height: 300px; }
+
+        .contraction-overlay.active .heartbeat-ring {
+            animation: heartbeat-pulse 0.8s ease-out infinite;
+        }
+
+        .contraction-overlay.active .ring2 { animation-delay: 0.2s; }
+        .contraction-overlay.active .ring3 { animation-delay: 0.4s; }
+
+        @keyframes heartbeat-pulse {
+            0% { transform: scale(0.5); opacity: 0.8; border-color: rgba(255, 0, 0, 0.8); }
+            100% { transform: scale(3); opacity: 0; border-color: rgba(255, 0, 0, 0); }
+        }
+
+        /* PAGE EFFECTS DURING CONTRACTION */
+        body.contracting {
+            animation: body-mega-squeeze 10s ease-in-out forwards;
+        }
+
+        @keyframes body-mega-squeeze {
+            0% { transform: scale(1); filter: saturate(1) brightness(1); }
+            10% { transform: scale(0.98) rotate(-0.5deg); filter: saturate(1.2) brightness(0.95); }
+            20% { transform: scale(0.95) rotate(0.5deg); filter: saturate(1.4) brightness(0.9); }
+            30% { transform: scale(0.92) rotate(-1deg); filter: saturate(1.6) brightness(0.85); }
+            40% { transform: scale(0.88) rotate(1deg); filter: saturate(2) brightness(0.8); }
+            50% { transform: scale(0.85) rotate(-0.5deg); filter: saturate(2.5) brightness(0.7) hue-rotate(10deg); }
+            60% { transform: scale(0.88) rotate(0.5deg); filter: saturate(2) brightness(0.8); }
+            70% { transform: scale(0.92) rotate(-0.5deg); filter: saturate(1.6) brightness(0.85); }
+            80% { transform: scale(0.95) rotate(0.3deg); filter: saturate(1.3) brightness(0.9); }
+            90% { transform: scale(0.98) rotate(-0.2deg); filter: saturate(1.1) brightness(0.95); }
+            100% { transform: scale(1) rotate(0); filter: saturate(1) brightness(1); }
+        }
+
+        /* SCREEN SHAKE DURING PEAK */
+        body.contracting.peak-pain {
+            animation: body-mega-squeeze 10s ease-in-out forwards, earthquake-shake 0.05s ease-in-out infinite;
+        }
+
+        @keyframes earthquake-shake {
+            0% { margin-left: -10px; margin-top: -10px; }
+            25% { margin-left: 10px; margin-top: -5px; }
+            50% { margin-left: -5px; margin-top: 10px; }
+            75% { margin-left: 5px; margin-top: 5px; }
+            100% { margin-left: -10px; margin-top: -10px; }
+        }
+
+        /* BREATHING PROMPT */
         .breathe-prompt {
             position: fixed;
             bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
-            padding: 15px 30px;
-            background: rgba(0, 200, 100, 0.9);
-            border-radius: 30px;
+            padding: 20px 50px;
+            background: linear-gradient(135deg, #00c853 0%, #00e676 100%);
+            border-radius: 50px;
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.2em;
-            font-weight: 600;
+            font-size: 1.5em;
+            font-weight: 700;
             color: white;
-            z-index: 100000;
+            z-index: 1000000;
             opacity: 0;
             transition: opacity 0.5s ease;
-            box-shadow: 0 4px 20px rgba(0, 200, 100, 0.5);
+            box-shadow: 0 10px 40px rgba(0, 200, 100, 0.5);
         }
 
         .breathe-prompt.show {
@@ -2883,15 +3068,30 @@
         }
 
         @keyframes breathe-bounce {
-            0%, 100% { transform: translateX(-50%) translateY(0); }
-            50% { transform: translateX(-50%) translateY(-10px); }
+            0%, 100% { transform: translateX(-50%) translateY(0) scale(1); }
+            50% { transform: translateX(-50%) translateY(-15px) scale(1.05); }
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 768px) {
+            .mega-text {
+                font-size: 12vw;
+                letter-spacing: 5px;
+            }
+            .sub-text {
+                font-size: 5vw;
+            }
+            .warning-line {
+                font-size: 1.5em;
+                letter-spacing: 10px;
+            }
         }
     </style>
 
-    <div class="breathe-prompt" id="breathe-prompt">😮‍💨 Breathe... You made it through! 😮‍💨</div>
+    <div class="breathe-prompt" id="breathe-prompt">😮‍💨 You survived! Only 20 more to go... 😮‍💨</div>
 
     <script>
-        // Contraction Simulator - triggers after 20 seconds
+        // MEGA CONTRACTION SIMULATOR
         const contractionOverlay = document.getElementById('contraction-overlay');
         const breathePrompt = document.getElementById('breathe-prompt');
         let contractionTriggered = false;
@@ -2900,24 +3100,45 @@
             if (contractionTriggered) return;
             contractionTriggered = true;
 
-            // Start the contraction
+            // Start the contraction!
             contractionOverlay.classList.add('active');
             document.body.classList.add('contracting');
 
-            // Show breathing prompt after contraction ends
+            // Add peak pain shake at 40-60% (4-6 seconds in)
+            setTimeout(() => {
+                document.body.classList.add('peak-pain');
+            }, 4000);
+
+            // Remove peak pain shake
+            setTimeout(() => {
+                document.body.classList.remove('peak-pain');
+            }, 6000);
+
+            // Try to vibrate phone if supported
+            if (navigator.vibrate) {
+                // Vibration pattern matching contraction intensity
+                navigator.vibrate([
+                    100, 100, 200, 100, 300, 100, 400, 100, 500, 100,
+                    600, 100, 700, 100, 800, 100, 800, 100, 800, 100,
+                    700, 100, 600, 100, 500, 100, 400, 100, 300, 100,
+                    200, 100, 100
+                ]);
+            }
+
+            // End contraction
             setTimeout(() => {
                 contractionOverlay.classList.remove('active');
                 document.body.classList.remove('contracting');
+                document.body.classList.remove('peak-pain');
                 breathePrompt.classList.add('show');
 
-                // Hide breathing prompt after 4 seconds
                 setTimeout(() => {
                     breathePrompt.classList.remove('show');
-                }, 4000);
-            }, 8000);
+                }, 5000);
+            }, 10000);
         }
 
-        // Trigger contraction after 20 seconds
+        // Trigger after 20 seconds
         setTimeout(triggerContraction, 20000);
     </script>
 </body>
